@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class stone : MonoBehaviour
 {
-    private MeshRenderer rend;
+    private MeshRenderer meshRend;
     private Collider gravity;
+    private Renderer rend;
     private static int index = 0;
     private gameMaster.node node;
     private bool isCreate;
@@ -13,20 +14,29 @@ public class stone : MonoBehaviour
     public void initNode(ref gameMaster.node n) { node = n; }
     void Start() {
         index++;
-        rend = GetComponent<MeshRenderer>();
+        rend = GetComponent<Renderer>();
+        meshRend = GetComponent<MeshRenderer>();
         gravity = GetComponent<Collider>();
     }
 
     void OnMouseDown() {
         if (!isCreate) {
-            rend.enabled = true;
+            rend.material = goban.currentGM.getCurrentMaterial();
+            node.player = goban.currentGM.getplayerTurn();
+            goban.currentGM.nextPlayer();
+            meshRend.enabled = true;
             isCreate = true;
             gravity.attachedRigidbody.useGravity = true;
         }
     }
-    void OnMouseEnter() { if (!isCreate) rend.enabled = true; }
+    void OnMouseEnter() {
+        if (!isCreate) {
+            rend.material = goban.currentGM.getCurrentMaterial();
+            meshRend.enabled = true;
+        }
+    }
 
-    void OnMouseExit() { if (!isCreate) rend.enabled = false; }
+    void OnMouseExit() { if (!isCreate) meshRend.enabled = false;}
 
     public int getIndex() { return index; }
 }

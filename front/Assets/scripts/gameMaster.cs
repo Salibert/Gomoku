@@ -8,9 +8,25 @@ public class gameMaster : MonoBehaviour
         public int player;
         public bool captered;
     }
-    public static int player;
+    private int playerTurn;
+    private Material materialCurrentPlayer;
+    public Material player1;
+    public Material player2;
+    void Start() {
+        playerTurn = 1;
+        materialCurrentPlayer = player1;
+    }
 
-    void Start() { player = 1; }
+    public void nextPlayer() {
+        if (playerTurn == 1) {
+            playerTurn = 2;
+            materialCurrentPlayer = player2;
+        } else {
+            playerTurn = 1;
+            materialCurrentPlayer = player1;
+        }
+    }
 
-    void nextPlayer() { player = player == 1 ? 2 : 1; }
+    public int getplayerTurn() { return playerTurn; }
+    public Material getCurrentMaterial() { return materialCurrentPlayer; }
 }

@@ -6,8 +6,10 @@ public class goban : MonoBehaviour
     public Transform stonePrefab;
     public static gameMaster.node[][] board;
     private Transform inter;
+    public static gameMaster currentGM;
     void Start()
     {
+        currentGM = GameObject.Find("gameMaster").GetComponent<gameMaster>();
         board = new gameMaster.node[19][];
         Transform line = null;
         Transform lines = transform.Find("lines").transform;
