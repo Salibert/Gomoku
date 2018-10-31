@@ -263,6 +263,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 61.399002, y: 90.240005, z: 90}
+--- !u!1 &682191357
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 682191358}
+  m_Layer: 0
+  m_Name: stones
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &682191358
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682191357}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.38966754, y: -8.184105, z: -6.5357623}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1642655020}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &978879627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -629,7 +659,11 @@ PrefabInstance:
     - target: {fileID: 3935071875062277407, guid: 91624dd7cbfb148eab4a6b3ea7de747c, type: 3}
       propertyPath: intersectionPrefab
       value: 
-      objectReference: {fileID: 2806119421052564050, guid: 4e8e8c13c222442fdaeaae4ccbb768ff, type: 3}
+      objectReference: {fileID: 2215780767137108384, guid: 32c4049c164984c72b370af3346ea900, type: 3}
+    - target: {fileID: 3935071875062277407, guid: 91624dd7cbfb148eab4a6b3ea7de747c, type: 3}
+      propertyPath: stonePrefab
+      value: 
+      objectReference: {fileID: 2215780767137108384, guid: 32c4049c164984c72b370af3346ea900, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91624dd7cbfb148eab4a6b3ea7de747c, type: 3}
 --- !u!4 &1642655020 stripped
@@ -637,50 +671,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7940708845248537777, guid: 91624dd7cbfb148eab4a6b3ea7de747c, type: 3}
   m_PrefabInstance: {fileID: 978879627}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1767125814
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1767125815}
-  - component: {fileID: 1767125816}
-  m_Layer: 0
-  m_Name: intersections
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1767125815
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767125814}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1642655020}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1767125816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767125814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1109ad4024f32459086e2a852f016657, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  intersectionPrefab: {fileID: 2806119421052564050, guid: 4e8e8c13c222442fdaeaae4ccbb768ff, type: 3}
 --- !u!1 &1941095529
 GameObject:
   m_ObjectHideFlags: 0
