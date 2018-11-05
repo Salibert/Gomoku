@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package board;
+
+message Vector3 {
+    double x = 1;
+    double y = 2;
+    double z = 3;
+}
+
+message Vector2Int {
+    int32 x = 1;
+    int32 y = 2;
+}
+
+message Node {
+    Vector3 position = 1;
+    Vector2Int posArray = 2;
+    int32 index = 3;
+    int32 player = 4;
+    bool captered = 5;
+}

@@ -1,0 +1,13 @@
+syntax = "proto3";
+package back;
+
+import "board.proto";
+
+message playedAIRequest {
+    repeated board.Nodes board = 1;
+    board.Node last_cost = 2;
+}
+
+message playedAIResponse {
+    string message = 1;
+}
