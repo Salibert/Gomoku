@@ -7,13 +7,11 @@ public class stone : MonoBehaviour
     private MeshRenderer meshRend;
     private Collider gravity;
     private Renderer rend;
-    private static int index = 0;
     private gameMaster.node node;
     private bool isCreate;
 
     public void initNode(ref gameMaster.node n) { node = n; }
     void Start() {
-        index++;
         rend = GetComponent<Renderer>();
         meshRend = GetComponent<MeshRenderer>();
         gravity = GetComponent<Collider>();
@@ -37,6 +35,4 @@ public class stone : MonoBehaviour
     }
 
     void OnMouseExit() { if (!isCreate) meshRend.enabled = false;}
-
-    public int getIndex() { return index; }
 }

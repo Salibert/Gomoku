@@ -17,44 +17,40 @@ public class goban : MonoBehaviour
         for (int i = 0; i < lines.childCount; i++)
         {
             line = lines.GetChild(i).transform;
-            if (line.rotation.y == 0) {
-                board[i] = findIntersections(line);
-                createIntersection(ref board[i], i);
-            }
+            if (line.rotation.y == 0)
+                board[i] = createStones(findIntersections(line), i);
         }
     }
 
-    private void createIntersection(ref gameMaster.node[] lines, int x) {
+    private gameMaster.node[] createStones(Vector3[] pos, int x) {
         Transform newInstance;
-        for (int i = 0; i < lines.Length; i++){
+        gameMaster.node[] lines = new gameMaster.node[19];
+        for (int i = 0; i < pos.Length; i++){
             lines[i].posArray.x = x;
             lines[i].posArray.y = i;
-            newInstance = Instantiate(stonePrefab, lines[i].position, new Quaternion() { x=0, y=0, z=0 }, inter);
+            newInstance = Instantiate(stonePrefab, pos[i], new Quaternion() { x=0, y=0, z=0 }, inter);
             newInstance.GetComponent<MeshRenderer>().enabled = false;
             newInstance.GetComponent<stone>().initNode(ref lines[i]);
         };
+        return lines;
     }
-    private gameMaster.node[] findIntersections(Transform line) {
+    private Vector3[] findIntersections(Transform line) {
 
         Vector3 fwd = transform.TransformDirection(transform.forward);
-        List<gameMaster.node> nodes = new List<gameMaster.node>();
+        List<Vector3> pos = new List<Vector3>();
         List<RaycastHit> hitsAll = new List<RaycastHit>();
 
         hitsAll.AddRange(Physics.RaycastAll(line.position, fwd, 1000));
         hitsAll.AddRange(Physics.RaycastAll(line.position, fwd * -1, 1000));
         hitsAll.ForEach(el => {
-            nodes.Add(new gameMaster.node() {
-                position = new Vector3() { x = line.position.x, y = line.position.y + 1f, z = el.transform.position.z }
-            });
+            pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 1f, z = el.transform.position.z });
         });
-        nodes.Add(new gameMaster.node() {
-            position = new Vector3() { x = line.position.x, y = line.position.y + 1f, z = line.position.z }
-        });
-        nodes.Sort(delegate(gameMaster.node x, gameMaster.node y) {
-            if (x.position.z == y.position.z)
+        pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 1f, z = line.position.z });
+        pos.Sort(delegate(Vector3 x, Vector3 y) {
+            if (x.z == y.z)
                 return 0;
-            return x.position.z > y.position.z ? 1 : -1;
+            return x.z > y.z ? 1 : -1;
         });
-        return nodes.ToArray();
+        return pos.ToArray();
     }
 }

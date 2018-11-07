@@ -2,9 +2,7 @@
 public class gameMaster : MonoBehaviour
 {
     public struct node {
-        public Vector3 position;
         public Vector2Int posArray;
-        public int index;
         public int player;
         public bool captered;
     }

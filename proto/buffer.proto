@@ -1,0 +1,22 @@
+syntax = "proto3";
+package buffer;
+
+import "board.proto";
+
+message initGameRequest {
+    repeated board.Node board = 1;
+    string gameId = 2;
+}
+
+message  initGameResponse {
+    string message = 1;
+}
+
+message playedAIRequest {
+    board.Node currentPlayerMove = 2;
+}
+
+message playedAIResponse {
+    board.Node currentAIMove = 1;
+    repeated board.Node helperPlayer = 2;
+}
