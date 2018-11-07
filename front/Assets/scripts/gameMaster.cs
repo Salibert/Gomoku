@@ -1,4 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using Grpc.Core;
+using GrpcBuffer;
+using System;
 public class gameMaster : MonoBehaviour
 {
     public struct node {
@@ -27,4 +31,5 @@ public class gameMaster : MonoBehaviour
 
     public int getplayerTurn() { return playerTurn; }
     public Material getCurrentMaterial() { return materialCurrentPlayer; }
+
 }

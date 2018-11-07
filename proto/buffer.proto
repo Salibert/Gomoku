@@ -1,10 +1,24 @@
 syntax = "proto3";
-package buffer;
+package grpcBuffer;
 
-import "board.proto";
+message Vector2Int {
+    int32 x = 1;
+    int32 y = 2;
+}
+
+message Node {
+    Vector2Int posArray = 1;
+    int32 player = 2;
+    bool captered = 3;
+}
+
+service gameServe {
+    rpc initGame(initGameRequest) returns (initGameResponse) {}
+    rpc playedAI(stream playedAIRequest) returns (stream playedAIResponse) {}
+}
 
 message initGameRequest {
-    repeated board.Node board = 1;
+    repeated Node board = 1;
     string gameId = 2;
 }
 
@@ -13,10 +27,10 @@ message  initGameResponse {
 }
 
 message playedAIRequest {
-    board.Node currentPlayerMove = 2;
+    Node currentPlayerMove = 2;
 }
 
 message playedAIResponse {
-    board.Node currentAIMove = 1;
-    repeated board.Node helperPlayer = 2;
+    Node currentAIMove = 1;
+    repeated Node helperPlayer = 2;
 }
