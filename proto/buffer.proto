@@ -1,18 +1,19 @@
 syntax = "proto3";
+
+option java_multiple_files = true;
+option java_outer_classname = "grpcBufferProto";
+option objc_class_prefix = "GBP";
+
 package grpcBuffer;
 
-message Vector2Int {
+message Node {
     int32 x = 1;
     int32 y = 2;
+    int32 player = 3;
+    bool captered = 4;
 }
 
-message Node {
-    Vector2Int posArray = 1;
-    int32 player = 2;
-    bool captered = 3;
-}
-
-service gameServe {
+service gameServer {
     rpc initGame(initGameRequest) returns (initGameResponse) {}
     rpc playedAI(stream playedAIRequest) returns (stream playedAIResponse) {}
 }

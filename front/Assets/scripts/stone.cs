@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GrpcBuffer;
 
 public class stone : MonoBehaviour
 {
     private MeshRenderer meshRend;
     private Collider gravity;
     private Renderer rend;
-    private gameMaster.node node;
+    private Node node;
     private bool isCreate;
 
-    public void initNode(ref gameMaster.node n) { node = n; }
+    public void initNode(ref Node n) { node = n; }
     void Start() {
         rend = GetComponent<Renderer>();
         meshRend = GetComponent<MeshRenderer>();

@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GrpcBuffer;
 public class goban : MonoBehaviour
 {
     public Transform stonePrefab;
-    public static gameMaster.node[][] board;
+    public static Node[][] board;
     private Transform inter;
     public static gameMaster currentGM;
     void Start()
     {
         currentGM = GameObject.Find("gameMaster").GetComponent<gameMaster>();
-        board = new gameMaster.node[19][];
+        board = new Node[19][];
         Transform line = null;
         Transform lines = transform.Find("lines").transform;
         inter = transform.Find("stones");
@@ -22,12 +23,12 @@ public class goban : MonoBehaviour
         }
     }
 
-    private gameMaster.node[] createStones(Vector3[] pos, int x) {
+    private Node[] createStones(Vector3[] pos, int x) {
         Transform newInstance;
-        gameMaster.node[] lines = new gameMaster.node[19];
+        Node[] lines = new Node[19];
         for (int i = 0; i < pos.Length; i++){
-            lines[i].posArray.x = x;
-            lines[i].posArray.y = i;
+            lines[i].x = x;
+            lines[i].y = i;
             newInstance = Instantiate(stonePrefab, pos[i], new Quaternion() { x=0, y=0, z=0 }, inter);
             newInstance.GetComponent<MeshRenderer>().enabled = false;
             newInstance.GetComponent<stone>().initNode(ref lines[i]);

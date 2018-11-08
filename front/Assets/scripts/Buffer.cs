@@ -24,25 +24,23 @@ namespace GrpcBuffer {
     static BufferReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgxidWZmZXIucHJvdG8SCmdycGNCdWZmZXIiIgoKVmVjdG9yMkludBIJCgF4",
-            "GAEgASgFEgkKAXkYAiABKAUiUgoETm9kZRIoCghwb3NBcnJheRgBIAEoCzIW",
-            "LmdycGNCdWZmZXIuVmVjdG9yMkludBIOCgZwbGF5ZXIYAiABKAUSEAoIY2Fw",
-            "dGVyZWQYAyABKAgiQgoPaW5pdEdhbWVSZXF1ZXN0Eh8KBWJvYXJkGAEgAygL",
-            "MhAuZ3JwY0J1ZmZlci5Ob2RlEg4KBmdhbWVJZBgCIAEoCSIjChBpbml0R2Ft",
-            "ZVJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkiPgoPcGxheWVkQUlSZXF1ZXN0",
-            "EisKEWN1cnJlbnRQbGF5ZXJNb3ZlGAIgASgLMhAuZ3JwY0J1ZmZlci5Ob2Rl",
-            "ImMKEHBsYXllZEFJUmVzcG9uc2USJwoNY3VycmVudEFJTW92ZRgBIAEoCzIQ",
-            "LmdycGNCdWZmZXIuTm9kZRImCgxoZWxwZXJQbGF5ZXIYAiADKAsyEC5ncnBj",
-            "QnVmZmVyLk5vZGUyoQEKCWdhbWVTZXJ2ZRJHCghpbml0R2FtZRIbLmdycGNC",
-            "dWZmZXIuaW5pdEdhbWVSZXF1ZXN0GhwuZ3JwY0J1ZmZlci5pbml0R2FtZVJl",
-            "c3BvbnNlIgASSwoIcGxheWVkQUkSGy5ncnBjQnVmZmVyLnBsYXllZEFJUmVx",
-            "dWVzdBocLmdycGNCdWZmZXIucGxheWVkQUlSZXNwb25zZSIAKAEwAWIGcHJv",
-            "dG8z"));
+            "CgxidWZmZXIucHJvdG8SCmdycGNCdWZmZXIiPgoETm9kZRIJCgF4GAEgASgF",
+            "EgkKAXkYAiABKAUSDgoGcGxheWVyGAMgASgFEhAKCGNhcHRlcmVkGAQgASgI",
+            "IkIKD2luaXRHYW1lUmVxdWVzdBIfCgVib2FyZBgBIAMoCzIQLmdycGNCdWZm",
+            "ZXIuTm9kZRIOCgZnYW1lSWQYAiABKAkiIwoQaW5pdEdhbWVSZXNwb25zZRIP",
+            "CgdtZXNzYWdlGAEgASgJIj4KD3BsYXllZEFJUmVxdWVzdBIrChFjdXJyZW50",
+            "UGxheWVyTW92ZRgCIAEoCzIQLmdycGNCdWZmZXIuTm9kZSJjChBwbGF5ZWRB",
+            "SVJlc3BvbnNlEicKDWN1cnJlbnRBSU1vdmUYASABKAsyEC5ncnBjQnVmZmVy",
+            "Lk5vZGUSJgoMaGVscGVyUGxheWVyGAIgAygLMhAuZ3JwY0J1ZmZlci5Ob2Rl",
+            "MqIBCgpnYW1lU2VydmVyEkcKCGluaXRHYW1lEhsuZ3JwY0J1ZmZlci5pbml0",
+            "R2FtZVJlcXVlc3QaHC5ncnBjQnVmZmVyLmluaXRHYW1lUmVzcG9uc2UiABJL",
+            "CghwbGF5ZWRBSRIbLmdycGNCdWZmZXIucGxheWVkQUlSZXF1ZXN0GhwuZ3Jw",
+            "Y0J1ZmZlci5wbGF5ZWRBSVJlc3BvbnNlIgAoATABQhlCD2dycGNCdWZmZXJQ",
+            "cm90b1ABogIDR0JQYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.Vector2Int), global::GrpcBuffer.Vector2Int.Parser, new[]{ "X", "Y" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.Node), global::GrpcBuffer.Node.Parser, new[]{ "PosArray", "Player", "Captered" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.Node), global::GrpcBuffer.Node.Parser, new[]{ "X", "Y", "Player", "Captered" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.initGameRequest), global::GrpcBuffer.initGameRequest.Parser, new[]{ "Board", "GameId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.initGameResponse), global::GrpcBuffer.initGameResponse.Parser, new[]{ "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.playedAIRequest), global::GrpcBuffer.playedAIRequest.Parser, new[]{ "CurrentPlayerMove" }, null, null, null),
@@ -53,11 +51,11 @@ namespace GrpcBuffer {
 
   }
   #region Messages
-  public sealed partial class Vector2Int : pb::IMessage<Vector2Int> {
-    private static readonly pb::MessageParser<Vector2Int> _parser = new pb::MessageParser<Vector2Int>(() => new Vector2Int());
+  public sealed partial class Node : pb::IMessage<Node> {
+    private static readonly pb::MessageParser<Node> _parser = new pb::MessageParser<Node>(() => new Node());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Vector2Int> Parser { get { return _parser; } }
+    public static pb::MessageParser<Node> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -70,22 +68,24 @@ namespace GrpcBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Vector2Int() {
+    public Node() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Vector2Int(Vector2Int other) : this() {
+    public Node(Node other) : this() {
       x_ = other.x_;
       y_ = other.y_;
+      player_ = other.player_;
+      captered_ = other.captered_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Vector2Int Clone() {
-      return new Vector2Int(this);
+    public Node Clone() {
+      return new Node(this);
     }
 
     /// <summary>Field number for the "x" field.</summary>
@@ -110,155 +110,8 @@ namespace GrpcBuffer {
       }
     }
 
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as Vector2Int);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Vector2Int other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (X != other.X) return false;
-      if (Y != other.Y) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (X != 0) hash ^= X.GetHashCode();
-      if (Y != 0) hash ^= Y.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (X != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(X);
-      }
-      if (Y != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(Y);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (X != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(X);
-      }
-      if (Y != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Y);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Vector2Int other) {
-      if (other == null) {
-        return;
-      }
-      if (other.X != 0) {
-        X = other.X;
-      }
-      if (other.Y != 0) {
-        Y = other.Y;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            X = input.ReadInt32();
-            break;
-          }
-          case 16: {
-            Y = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
-  public sealed partial class Node : pb::IMessage<Node> {
-    private static readonly pb::MessageParser<Node> _parser = new pb::MessageParser<Node>(() => new Node());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Node> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[1]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Node() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Node(Node other) : this() {
-      posArray_ = other.posArray_ != null ? other.posArray_.Clone() : null;
-      player_ = other.player_;
-      captered_ = other.captered_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Node Clone() {
-      return new Node(this);
-    }
-
-    /// <summary>Field number for the "posArray" field.</summary>
-    public const int PosArrayFieldNumber = 1;
-    private global::GrpcBuffer.Vector2Int posArray_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::GrpcBuffer.Vector2Int PosArray {
-      get { return posArray_; }
-      set {
-        posArray_ = value;
-      }
-    }
-
     /// <summary>Field number for the "player" field.</summary>
-    public const int PlayerFieldNumber = 2;
+    public const int PlayerFieldNumber = 3;
     private int player_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Player {
@@ -269,7 +122,7 @@ namespace GrpcBuffer {
     }
 
     /// <summary>Field number for the "captered" field.</summary>
-    public const int CapteredFieldNumber = 3;
+    public const int CapteredFieldNumber = 4;
     private bool captered_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Captered {
@@ -292,7 +145,8 @@ namespace GrpcBuffer {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(PosArray, other.PosArray)) return false;
+      if (X != other.X) return false;
+      if (Y != other.Y) return false;
       if (Player != other.Player) return false;
       if (Captered != other.Captered) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -301,7 +155,8 @@ namespace GrpcBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (posArray_ != null) hash ^= PosArray.GetHashCode();
+      if (X != 0) hash ^= X.GetHashCode();
+      if (Y != 0) hash ^= Y.GetHashCode();
       if (Player != 0) hash ^= Player.GetHashCode();
       if (Captered != false) hash ^= Captered.GetHashCode();
       if (_unknownFields != null) {
@@ -317,16 +172,20 @@ namespace GrpcBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (posArray_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(PosArray);
+      if (X != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(X);
+      }
+      if (Y != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Y);
       }
       if (Player != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteInt32(Player);
       }
       if (Captered != false) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteBool(Captered);
       }
       if (_unknownFields != null) {
@@ -337,8 +196,11 @@ namespace GrpcBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (posArray_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PosArray);
+      if (X != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(X);
+      }
+      if (Y != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Y);
       }
       if (Player != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Player);
@@ -357,11 +219,11 @@ namespace GrpcBuffer {
       if (other == null) {
         return;
       }
-      if (other.posArray_ != null) {
-        if (posArray_ == null) {
-          posArray_ = new global::GrpcBuffer.Vector2Int();
-        }
-        PosArray.MergeFrom(other.PosArray);
+      if (other.X != 0) {
+        X = other.X;
+      }
+      if (other.Y != 0) {
+        Y = other.Y;
       }
       if (other.Player != 0) {
         Player = other.Player;
@@ -380,18 +242,19 @@ namespace GrpcBuffer {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            if (posArray_ == null) {
-              posArray_ = new global::GrpcBuffer.Vector2Int();
-            }
-            input.ReadMessage(posArray_);
+          case 8: {
+            X = input.ReadInt32();
             break;
           }
           case 16: {
-            Player = input.ReadInt32();
+            Y = input.ReadInt32();
             break;
           }
           case 24: {
+            Player = input.ReadInt32();
+            break;
+          }
+          case 32: {
             Captered = input.ReadBool();
             break;
           }
@@ -409,7 +272,7 @@ namespace GrpcBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[2]; }
+      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -558,7 +421,7 @@ namespace GrpcBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[3]; }
+      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -687,7 +550,7 @@ namespace GrpcBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[4]; }
+      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -822,7 +685,7 @@ namespace GrpcBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[5]; }
+      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

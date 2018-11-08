@@ -5,18 +5,19 @@ using GrpcBuffer;
 using System;
 public class gameMaster : MonoBehaviour
 {
-    public struct node {
-        public Vector2Int posArray;
-        public int player;
-        public bool captered;
-    }
     private int playerTurn;
     private Material materialCurrentPlayer;
     public Material player1;
     public Material player2;
+    private string host;
+    private Channel ch;
+    private DefaultCallInvoker invoker;
+
     void Start() {
         playerTurn = 1;
         materialCurrentPlayer = player1;
+        ch = new Channel(host, port, ChannelCredentials.Insecure);
+        invoker = new DefaultCallInvoker(ch);
     }
 
     public void nextPlayer() {
