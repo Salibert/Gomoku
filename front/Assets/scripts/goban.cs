@@ -12,15 +12,20 @@ public class goban : MonoBehaviour
     {
         currentGM = GameObject.Find("gameMaster").GetComponent<gameMaster>();
         board = new Node[19][];
+        List<Node> initialBoard = new List<Node>();
         Transform line = null;
         Transform lines = transform.Find("lines").transform;
         inter = transform.Find("stones");
         for (int i = 0; i < lines.childCount; i++)
         {
             line = lines.GetChild(i).transform;
-            if (line.rotation.y == 0)
+            if (line.rotation.y == 0) {
                 board[i] = createStones(findIntersections(line), i);
+                initialBoard.Add(board[i]);
+            }
         }
+        gameMaster Client = getClient();
+        var reply = Client.initGame(new initGameRpequest(){ board= initialBoard.ToArray(), gameId = "SALUT SEB"});
     }
 
     private Node[] createStones(Vector3[] pos, int x) {

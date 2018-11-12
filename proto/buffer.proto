@@ -1,37 +1,33 @@
 syntax = "proto3";
 
-option java_multiple_files = true;
-option java_outer_classname = "grpcBufferProto";
-option objc_class_prefix = "GBP";
-
-package grpcBuffer;
+package gomokuBuffer;
 
 message Node {
-    int32 x = 1;
-    int32 y = 2;
-    int32 player = 3;
-    bool captered = 4;
+    int32 X = 1;
+    int32 Y = 2;
+    int32 Player = 3;
+    bool Captered = 4;
 }
 
-service gameServer {
-    rpc initGame(initGameRequest) returns (initGameResponse) {}
-    rpc playedAI(stream playedAIRequest) returns (stream playedAIResponse) {}
+service Game {
+    rpc InitGame(InitGameRequest) returns (InitGameResponse) {}
+    /* rpc PlayedAI(stream PlayedAIRequest) returns (stream PlayedAIResponse) {}*/
 }
 
-message initGameRequest {
-    repeated Node board = 1;
-    string gameId = 2;
+message InitGameRequest {
+    repeated Node Board = 1;
+    string GameId = 2;
 }
 
-message  initGameResponse {
-    string message = 1;
+message  InitGameResponse {
+    string Message = 1;
 }
 
-message playedAIRequest {
-    Node currentPlayerMove = 2;
+message PlayedAIRequest {
+    Node CurrentPlayerMove = 2;
 }
 
-message playedAIResponse {
-    Node currentAIMove = 1;
-    repeated Node helperPlayer = 2;
+message PlayedAIResponse {
+    Node CurrentAIMove = 1;
+    repeated Node HelperPlayer = 2;
 }

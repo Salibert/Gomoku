@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace GrpcBuffer {
+namespace GomokuBuffer {
 
   /// <summary>Holder for reflection information generated from buffer.proto</summary>
   public static partial class BufferReflection {
@@ -24,27 +24,25 @@ namespace GrpcBuffer {
     static BufferReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgxidWZmZXIucHJvdG8SCmdycGNCdWZmZXIiPgoETm9kZRIJCgF4GAEgASgF",
-            "EgkKAXkYAiABKAUSDgoGcGxheWVyGAMgASgFEhAKCGNhcHRlcmVkGAQgASgI",
-            "IkIKD2luaXRHYW1lUmVxdWVzdBIfCgVib2FyZBgBIAMoCzIQLmdycGNCdWZm",
-            "ZXIuTm9kZRIOCgZnYW1lSWQYAiABKAkiIwoQaW5pdEdhbWVSZXNwb25zZRIP",
-            "CgdtZXNzYWdlGAEgASgJIj4KD3BsYXllZEFJUmVxdWVzdBIrChFjdXJyZW50",
-            "UGxheWVyTW92ZRgCIAEoCzIQLmdycGNCdWZmZXIuTm9kZSJjChBwbGF5ZWRB",
-            "SVJlc3BvbnNlEicKDWN1cnJlbnRBSU1vdmUYASABKAsyEC5ncnBjQnVmZmVy",
-            "Lk5vZGUSJgoMaGVscGVyUGxheWVyGAIgAygLMhAuZ3JwY0J1ZmZlci5Ob2Rl",
-            "MqIBCgpnYW1lU2VydmVyEkcKCGluaXRHYW1lEhsuZ3JwY0J1ZmZlci5pbml0",
-            "R2FtZVJlcXVlc3QaHC5ncnBjQnVmZmVyLmluaXRHYW1lUmVzcG9uc2UiABJL",
-            "CghwbGF5ZWRBSRIbLmdycGNCdWZmZXIucGxheWVkQUlSZXF1ZXN0GhwuZ3Jw",
-            "Y0J1ZmZlci5wbGF5ZWRBSVJlc3BvbnNlIgAoATABQhlCD2dycGNCdWZmZXJQ",
-            "cm90b1ABogIDR0JQYgZwcm90bzM="));
+            "CgxidWZmZXIucHJvdG8SDGdvbW9rdUJ1ZmZlciI+CgROb2RlEgkKAVgYASAB",
+            "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUSEAoIQ2FwdGVyZWQYBCAB",
+            "KAgiRAoPSW5pdEdhbWVSZXF1ZXN0EiEKBUJvYXJkGAEgAygLMhIuZ29tb2t1",
+            "QnVmZmVyLk5vZGUSDgoGR2FtZUlkGAIgASgJIiMKEEluaXRHYW1lUmVzcG9u",
+            "c2USDwoHTWVzc2FnZRgBIAEoCSJACg9QbGF5ZWRBSVJlcXVlc3QSLQoRQ3Vy",
+            "cmVudFBsYXllck1vdmUYAiABKAsyEi5nb21va3VCdWZmZXIuTm9kZSJnChBQ",
+            "bGF5ZWRBSVJlc3BvbnNlEikKDUN1cnJlbnRBSU1vdmUYASABKAsyEi5nb21v",
+            "a3VCdWZmZXIuTm9kZRIoCgxIZWxwZXJQbGF5ZXIYAiADKAsyEi5nb21va3VC",
+            "dWZmZXIuTm9kZTJTCgRHYW1lEksKCEluaXRHYW1lEh0uZ29tb2t1QnVmZmVy",
+            "LkluaXRHYW1lUmVxdWVzdBoeLmdvbW9rdUJ1ZmZlci5Jbml0R2FtZVJlc3Bv",
+            "bnNlIgBiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.Node), global::GrpcBuffer.Node.Parser, new[]{ "X", "Y", "Player", "Captered" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.initGameRequest), global::GrpcBuffer.initGameRequest.Parser, new[]{ "Board", "GameId" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.initGameResponse), global::GrpcBuffer.initGameResponse.Parser, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.playedAIRequest), global::GrpcBuffer.playedAIRequest.Parser, new[]{ "CurrentPlayerMove" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GrpcBuffer.playedAIResponse), global::GrpcBuffer.playedAIResponse.Parser, new[]{ "CurrentAIMove", "HelperPlayer" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Node), global::GomokuBuffer.Node.Parser, new[]{ "X", "Y", "Player", "Captered" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.InitGameRequest), global::GomokuBuffer.InitGameRequest.Parser, new[]{ "Board", "GameId" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.InitGameResponse), global::GomokuBuffer.InitGameResponse.Parser, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.PlayedAIRequest), global::GomokuBuffer.PlayedAIRequest.Parser, new[]{ "CurrentPlayerMove" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.PlayedAIResponse), global::GomokuBuffer.PlayedAIResponse.Parser, new[]{ "CurrentAIMove", "HelperPlayer" }, null, null, null)
           }));
     }
     #endregion
@@ -59,7 +57,7 @@ namespace GrpcBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[0]; }
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -88,7 +86,7 @@ namespace GrpcBuffer {
       return new Node(this);
     }
 
-    /// <summary>Field number for the "x" field.</summary>
+    /// <summary>Field number for the "X" field.</summary>
     public const int XFieldNumber = 1;
     private int x_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -99,7 +97,7 @@ namespace GrpcBuffer {
       }
     }
 
-    /// <summary>Field number for the "y" field.</summary>
+    /// <summary>Field number for the "Y" field.</summary>
     public const int YFieldNumber = 2;
     private int y_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -110,7 +108,7 @@ namespace GrpcBuffer {
       }
     }
 
-    /// <summary>Field number for the "player" field.</summary>
+    /// <summary>Field number for the "Player" field.</summary>
     public const int PlayerFieldNumber = 3;
     private int player_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -121,7 +119,7 @@ namespace GrpcBuffer {
       }
     }
 
-    /// <summary>Field number for the "captered" field.</summary>
+    /// <summary>Field number for the "Captered" field.</summary>
     public const int CapteredFieldNumber = 4;
     private bool captered_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -264,15 +262,15 @@ namespace GrpcBuffer {
 
   }
 
-  public sealed partial class initGameRequest : pb::IMessage<initGameRequest> {
-    private static readonly pb::MessageParser<initGameRequest> _parser = new pb::MessageParser<initGameRequest>(() => new initGameRequest());
+  public sealed partial class InitGameRequest : pb::IMessage<InitGameRequest> {
+    private static readonly pb::MessageParser<InitGameRequest> _parser = new pb::MessageParser<InitGameRequest>(() => new InitGameRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<initGameRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<InitGameRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[1]; }
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -281,35 +279,35 @@ namespace GrpcBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public initGameRequest() {
+    public InitGameRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public initGameRequest(initGameRequest other) : this() {
+    public InitGameRequest(InitGameRequest other) : this() {
       board_ = other.board_.Clone();
       gameId_ = other.gameId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public initGameRequest Clone() {
-      return new initGameRequest(this);
+    public InitGameRequest Clone() {
+      return new InitGameRequest(this);
     }
 
-    /// <summary>Field number for the "board" field.</summary>
+    /// <summary>Field number for the "Board" field.</summary>
     public const int BoardFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::GrpcBuffer.Node> _repeated_board_codec
-        = pb::FieldCodec.ForMessage(10, global::GrpcBuffer.Node.Parser);
-    private readonly pbc::RepeatedField<global::GrpcBuffer.Node> board_ = new pbc::RepeatedField<global::GrpcBuffer.Node>();
+    private static readonly pb::FieldCodec<global::GomokuBuffer.Node> _repeated_board_codec
+        = pb::FieldCodec.ForMessage(10, global::GomokuBuffer.Node.Parser);
+    private readonly pbc::RepeatedField<global::GomokuBuffer.Node> board_ = new pbc::RepeatedField<global::GomokuBuffer.Node>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::GrpcBuffer.Node> Board {
+    public pbc::RepeatedField<global::GomokuBuffer.Node> Board {
       get { return board_; }
     }
 
-    /// <summary>Field number for the "gameId" field.</summary>
+    /// <summary>Field number for the "GameId" field.</summary>
     public const int GameIdFieldNumber = 2;
     private string gameId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -322,11 +320,11 @@ namespace GrpcBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as initGameRequest);
+      return Equals(other as InitGameRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(initGameRequest other) {
+    public bool Equals(InitGameRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -380,7 +378,7 @@ namespace GrpcBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(initGameRequest other) {
+    public void MergeFrom(InitGameRequest other) {
       if (other == null) {
         return;
       }
@@ -413,15 +411,15 @@ namespace GrpcBuffer {
 
   }
 
-  public sealed partial class initGameResponse : pb::IMessage<initGameResponse> {
-    private static readonly pb::MessageParser<initGameResponse> _parser = new pb::MessageParser<initGameResponse>(() => new initGameResponse());
+  public sealed partial class InitGameResponse : pb::IMessage<InitGameResponse> {
+    private static readonly pb::MessageParser<InitGameResponse> _parser = new pb::MessageParser<InitGameResponse>(() => new InitGameResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<initGameResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<InitGameResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[2]; }
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -430,24 +428,24 @@ namespace GrpcBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public initGameResponse() {
+    public InitGameResponse() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public initGameResponse(initGameResponse other) : this() {
+    public InitGameResponse(InitGameResponse other) : this() {
       message_ = other.message_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public initGameResponse Clone() {
-      return new initGameResponse(this);
+    public InitGameResponse Clone() {
+      return new InitGameResponse(this);
     }
 
-    /// <summary>Field number for the "message" field.</summary>
+    /// <summary>Field number for the "Message" field.</summary>
     public const int MessageFieldNumber = 1;
     private string message_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -460,11 +458,11 @@ namespace GrpcBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as initGameResponse);
+      return Equals(other as InitGameResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(initGameResponse other) {
+    public bool Equals(InitGameResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -514,7 +512,7 @@ namespace GrpcBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(initGameResponse other) {
+    public void MergeFrom(InitGameResponse other) {
       if (other == null) {
         return;
       }
@@ -542,15 +540,15 @@ namespace GrpcBuffer {
 
   }
 
-  public sealed partial class playedAIRequest : pb::IMessage<playedAIRequest> {
-    private static readonly pb::MessageParser<playedAIRequest> _parser = new pb::MessageParser<playedAIRequest>(() => new playedAIRequest());
+  public sealed partial class PlayedAIRequest : pb::IMessage<PlayedAIRequest> {
+    private static readonly pb::MessageParser<PlayedAIRequest> _parser = new pb::MessageParser<PlayedAIRequest>(() => new PlayedAIRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<playedAIRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<PlayedAIRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[3]; }
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -559,28 +557,28 @@ namespace GrpcBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public playedAIRequest() {
+    public PlayedAIRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public playedAIRequest(playedAIRequest other) : this() {
+    public PlayedAIRequest(PlayedAIRequest other) : this() {
       currentPlayerMove_ = other.currentPlayerMove_ != null ? other.currentPlayerMove_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public playedAIRequest Clone() {
-      return new playedAIRequest(this);
+    public PlayedAIRequest Clone() {
+      return new PlayedAIRequest(this);
     }
 
-    /// <summary>Field number for the "currentPlayerMove" field.</summary>
+    /// <summary>Field number for the "CurrentPlayerMove" field.</summary>
     public const int CurrentPlayerMoveFieldNumber = 2;
-    private global::GrpcBuffer.Node currentPlayerMove_;
+    private global::GomokuBuffer.Node currentPlayerMove_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::GrpcBuffer.Node CurrentPlayerMove {
+    public global::GomokuBuffer.Node CurrentPlayerMove {
       get { return currentPlayerMove_; }
       set {
         currentPlayerMove_ = value;
@@ -589,11 +587,11 @@ namespace GrpcBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as playedAIRequest);
+      return Equals(other as PlayedAIRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(playedAIRequest other) {
+    public bool Equals(PlayedAIRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -643,13 +641,13 @@ namespace GrpcBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(playedAIRequest other) {
+    public void MergeFrom(PlayedAIRequest other) {
       if (other == null) {
         return;
       }
       if (other.currentPlayerMove_ != null) {
         if (currentPlayerMove_ == null) {
-          currentPlayerMove_ = new global::GrpcBuffer.Node();
+          currentPlayerMove_ = new global::GomokuBuffer.Node();
         }
         CurrentPlayerMove.MergeFrom(other.CurrentPlayerMove);
       }
@@ -666,7 +664,7 @@ namespace GrpcBuffer {
             break;
           case 18: {
             if (currentPlayerMove_ == null) {
-              currentPlayerMove_ = new global::GrpcBuffer.Node();
+              currentPlayerMove_ = new global::GomokuBuffer.Node();
             }
             input.ReadMessage(currentPlayerMove_);
             break;
@@ -677,15 +675,15 @@ namespace GrpcBuffer {
 
   }
 
-  public sealed partial class playedAIResponse : pb::IMessage<playedAIResponse> {
-    private static readonly pb::MessageParser<playedAIResponse> _parser = new pb::MessageParser<playedAIResponse>(() => new playedAIResponse());
+  public sealed partial class PlayedAIResponse : pb::IMessage<PlayedAIResponse> {
+    private static readonly pb::MessageParser<PlayedAIResponse> _parser = new pb::MessageParser<PlayedAIResponse>(() => new PlayedAIResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<playedAIResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<PlayedAIResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GrpcBuffer.BufferReflection.Descriptor.MessageTypes[4]; }
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -694,52 +692,52 @@ namespace GrpcBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public playedAIResponse() {
+    public PlayedAIResponse() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public playedAIResponse(playedAIResponse other) : this() {
+    public PlayedAIResponse(PlayedAIResponse other) : this() {
       currentAIMove_ = other.currentAIMove_ != null ? other.currentAIMove_.Clone() : null;
       helperPlayer_ = other.helperPlayer_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public playedAIResponse Clone() {
-      return new playedAIResponse(this);
+    public PlayedAIResponse Clone() {
+      return new PlayedAIResponse(this);
     }
 
-    /// <summary>Field number for the "currentAIMove" field.</summary>
+    /// <summary>Field number for the "CurrentAIMove" field.</summary>
     public const int CurrentAIMoveFieldNumber = 1;
-    private global::GrpcBuffer.Node currentAIMove_;
+    private global::GomokuBuffer.Node currentAIMove_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::GrpcBuffer.Node CurrentAIMove {
+    public global::GomokuBuffer.Node CurrentAIMove {
       get { return currentAIMove_; }
       set {
         currentAIMove_ = value;
       }
     }
 
-    /// <summary>Field number for the "helperPlayer" field.</summary>
+    /// <summary>Field number for the "HelperPlayer" field.</summary>
     public const int HelperPlayerFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::GrpcBuffer.Node> _repeated_helperPlayer_codec
-        = pb::FieldCodec.ForMessage(18, global::GrpcBuffer.Node.Parser);
-    private readonly pbc::RepeatedField<global::GrpcBuffer.Node> helperPlayer_ = new pbc::RepeatedField<global::GrpcBuffer.Node>();
+    private static readonly pb::FieldCodec<global::GomokuBuffer.Node> _repeated_helperPlayer_codec
+        = pb::FieldCodec.ForMessage(18, global::GomokuBuffer.Node.Parser);
+    private readonly pbc::RepeatedField<global::GomokuBuffer.Node> helperPlayer_ = new pbc::RepeatedField<global::GomokuBuffer.Node>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::GrpcBuffer.Node> HelperPlayer {
+    public pbc::RepeatedField<global::GomokuBuffer.Node> HelperPlayer {
       get { return helperPlayer_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as playedAIResponse);
+      return Equals(other as PlayedAIResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(playedAIResponse other) {
+    public bool Equals(PlayedAIResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -793,13 +791,13 @@ namespace GrpcBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(playedAIResponse other) {
+    public void MergeFrom(PlayedAIResponse other) {
       if (other == null) {
         return;
       }
       if (other.currentAIMove_ != null) {
         if (currentAIMove_ == null) {
-          currentAIMove_ = new global::GrpcBuffer.Node();
+          currentAIMove_ = new global::GomokuBuffer.Node();
         }
         CurrentAIMove.MergeFrom(other.CurrentAIMove);
       }
@@ -817,7 +815,7 @@ namespace GrpcBuffer {
             break;
           case 10: {
             if (currentAIMove_ == null) {
-              currentAIMove_ = new global::GrpcBuffer.Node();
+              currentAIMove_ = new global::GomokuBuffer.Node();
             }
             input.ReadMessage(currentAIMove_);
             break;
