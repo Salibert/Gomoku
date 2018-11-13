@@ -1,42 +1,57 @@
 ﻿using UnityEngine;
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using GrpcBuffer;
+using GomokuBuffer;
 public class goban : MonoBehaviour
 {
     public Transform stonePrefab;
-    public static Node[][] board;
+    public static GomokuBuffer.Node[][] board;
     private Transform inter;
-    public static gameMaster currentGM;
+    public static gameMaster GM;
     void Start()
     {
-        currentGM = GameObject.Find("gameMaster").GetComponent<gameMaster>();
-        board = new Node[19][];
-        List<Node> initialBoard = new List<Node>();
+        GM = GameObject.Find("gameMaster").GetComponent<gameMaster>();
+        board = new GomokuBuffer.Node[19][];
         Transform line = null;
         Transform lines = transform.Find("lines").transform;
         inter = transform.Find("stones");
+        GomokuBuffer.Node[] sendBoard = new GomokuBuffer.Node[19 * 19];
+        int index = 0;
         for (int i = 0; i < lines.childCount; i++)
         {
             line = lines.GetChild(i).transform;
             if (line.rotation.y == 0) {
                 board[i] = createStones(findIntersections(line), i);
-                initialBoard.Add(board[i]);
+                for (int j = 0; j < board.Length; j++)
+                    sendBoard[index++] = (GomokuBuffer.Node)board[i][j].Clone();
             }
         }
-        gameMaster Client = getClient();
-        var reply = Client.initGame(new initGameRpequest(){ board= initialBoard.ToArray(), gameId = "SALUT SEB"});
+        try {
+            Debug.Log("SALUT TOI");
+            var client = GM.GetClient();
+            if (client == null)
+                Debug.Log("OKOK BRO");
+            GomokuBuffer.InitGameResponse reply = client.InitGame(new GomokuBuffer.InitGameRequest(){ GameId="SALUT TOI"});
+            Debug.Log("SALUT TOI");
+            Debug.Log(reply.Message);
+            GM.GetChannel().ShutdownAsync().Wait();
+        } catch (Exception e) {
+            Debug.Log(e);
+        }
+
     }
 
-    private Node[] createStones(Vector3[] pos, int x) {
+    private GomokuBuffer.Node[] createStones(Vector3[] pos, int x) {
         Transform newInstance;
-        Node[] lines = new Node[19];
+        GomokuBuffer.Node[] lines = new GomokuBuffer.Node[19];
         for (int i = 0; i < pos.Length; i++){
-            lines[i].x = x;
-            lines[i].y = i;
+            GomokuBuffer.Node node = new GomokuBuffer.Node() { X=x, Y=i };
             newInstance = Instantiate(stonePrefab, pos[i], new Quaternion() { x=0, y=0, z=0 }, inter);
             newInstance.GetComponent<MeshRenderer>().enabled = false;
-            newInstance.GetComponent<stone>().initNode(ref lines[i]);
+            newInstance.GetComponent<stone>().initNode(ref node);
+            lines[i] = node;
         };
         return lines;
     }
@@ -49,9 +64,9 @@ public class goban : MonoBehaviour
         hitsAll.AddRange(Physics.RaycastAll(line.position, fwd, 1000));
         hitsAll.AddRange(Physics.RaycastAll(line.position, fwd * -1, 1000));
         hitsAll.ForEach(el => {
-            pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 1f, z = el.transform.position.z });
+            pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 0.8f, z = el.transform.position.z });
         });
-        pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 1f, z = line.position.z });
+        pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 0.8f, z = line.position.z });
         pos.Sort(delegate(Vector3 x, Vector3 y) {
             if (x.z == y.z)
                 return 0;

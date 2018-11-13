@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 
 	pb "./pb"
 	"google.golang.org/grpc"
@@ -18,18 +19,17 @@ var (
 	GrpcServer = grpc.NewServer()
 )
 
-func init() {
-	reflection.Register(GrpcServer)
-}
-
-func newServer(srv pb.GameServer) {
-	pb.RegisterGameServer(GrpcServer, srv)
-}
-
 // Server ...
 type Server struct{}
 
+func init() {
+	pb.RegisterGameServer(GrpcServer, &Server{})
+	reflection.Register(GrpcServer)
+}
+
 // InitGame ...
 func (s *Server) InitGame(context context.Context, in *pb.InitGameRequest) (*pb.InitGameResponse, error) {
+	fmt.Println("SALUT TOI")
+	fmt.Println(in)
 	return &pb.InitGameResponse{Message: "OKOK frere"}, nil
 }

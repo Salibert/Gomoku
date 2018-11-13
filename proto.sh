@@ -9,4 +9,4 @@ protoc --proto_path=proto --go_out=plugins=grpc:back/server/pb/. buffer.proto
 
 rm -rf $PATH_OUT_FRONT/Buffer.cs
 rm -rf $PATH_OUT_FRONT/BufferGRPC.cs
-$PATH_GRPC_FRONT/protoc --proto_path=proto --plugin=$PLUGIN_FRONT/. --csharp_out $PATH_OUT_FRONT --plugin=$PLUGIN_FRONT/. --grpc_out $PATH_OUT_FRONT buffer.proto 
+$PATH_GRPC_FRONT/protoc --proto_path=proto --plugin=$PLUGIN_FRONT --csharp_out $PATH_OUT_FRONT/. --plugin=$PLUGIN_FRONT --grpc_out $PATH_OUT_FRONT buffer.proto 

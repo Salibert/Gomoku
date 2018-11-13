@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Grpc.Core;
-using GrpcBuffer;
+using GomokuBuffer;
 using System;
-using csharp.client;
+
 public class gameMaster : MonoBehaviour
 {
     private int playerTurn;
@@ -11,7 +11,11 @@ public class gameMaster : MonoBehaviour
     public Material player1;
     public Material player2;
 
+    private Channel channel;
+    private Game.GameClient Client;
     void Start() {
+        channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
+        Client = new Game.GameClient(channel);
         playerTurn = 1;
         materialCurrentPlayer = player1;
     }
@@ -29,4 +33,10 @@ public class gameMaster : MonoBehaviour
     public int getplayerTurn() { return playerTurn; }
     public Material getCurrentMaterial() { return materialCurrentPlayer; }
 
+    public Game.GameClient GetClient() {
+        return Client;
+    }
+    public Channel GetChannel() {
+        return channel;
+    }
 }
