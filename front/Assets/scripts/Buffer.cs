@@ -28,21 +28,20 @@ namespace GomokuBuffer {
             "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUSEAoIQ2FwdGVyZWQYBCAB",
             "KAgiRAoPSW5pdEdhbWVSZXF1ZXN0EiEKBUJvYXJkGAEgAygLMhIuZ29tb2t1",
             "QnVmZmVyLk5vZGUSDgoGR2FtZUlkGAIgASgJIiMKEEluaXRHYW1lUmVzcG9u",
-            "c2USDwoHTWVzc2FnZRgBIAEoCSJACg9QbGF5ZWRBSVJlcXVlc3QSLQoRQ3Vy",
-            "cmVudFBsYXllck1vdmUYAiABKAsyEi5nb21va3VCdWZmZXIuTm9kZSJnChBQ",
-            "bGF5ZWRBSVJlc3BvbnNlEikKDUN1cnJlbnRBSU1vdmUYASABKAsyEi5nb21v",
-            "a3VCdWZmZXIuTm9kZRIoCgxIZWxwZXJQbGF5ZXIYAiADKAsyEi5nb21va3VC",
-            "dWZmZXIuTm9kZTJTCgRHYW1lEksKCEluaXRHYW1lEh0uZ29tb2t1QnVmZmVy",
-            "LkluaXRHYW1lUmVxdWVzdBoeLmdvbW9rdUJ1ZmZlci5Jbml0R2FtZVJlc3Bv",
-            "bnNlIgBiBnByb3RvMw=="));
+            "c2USDwoHTWVzc2FnZRgBIAEoCSIiCg9QbGF5ZWRBSVJlcXVlc3QSDwoHTWVz",
+            "c2FnZRgBIAEoCSIjChBQbGF5ZWRBSVJlc3BvbnNlEg8KB01lc3NhZ2UYASAB",
+            "KAkypAEKBEdhbWUSSwoISW5pdEdhbWUSHS5nb21va3VCdWZmZXIuSW5pdEdh",
+            "bWVSZXF1ZXN0Gh4uZ29tb2t1QnVmZmVyLkluaXRHYW1lUmVzcG9uc2UiABJP",
+            "CghQbGF5ZWRBSRIdLmdvbW9rdUJ1ZmZlci5QbGF5ZWRBSVJlcXVlc3QaHi5n",
+            "b21va3VCdWZmZXIuUGxheWVkQUlSZXNwb25zZSIAKAEwAWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Node), global::GomokuBuffer.Node.Parser, new[]{ "X", "Y", "Player", "Captered" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.InitGameRequest), global::GomokuBuffer.InitGameRequest.Parser, new[]{ "Board", "GameId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.InitGameResponse), global::GomokuBuffer.InitGameResponse.Parser, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.PlayedAIRequest), global::GomokuBuffer.PlayedAIRequest.Parser, new[]{ "CurrentPlayerMove" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.PlayedAIResponse), global::GomokuBuffer.PlayedAIResponse.Parser, new[]{ "CurrentAIMove", "HelperPlayer" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.PlayedAIRequest), global::GomokuBuffer.PlayedAIRequest.Parser, new[]{ "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.PlayedAIResponse), global::GomokuBuffer.PlayedAIResponse.Parser, new[]{ "Message" }, null, null, null)
           }));
     }
     #endregion
@@ -565,7 +564,7 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public PlayedAIRequest(PlayedAIRequest other) : this() {
-      currentPlayerMove_ = other.currentPlayerMove_ != null ? other.currentPlayerMove_.Clone() : null;
+      message_ = other.message_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -574,14 +573,17 @@ namespace GomokuBuffer {
       return new PlayedAIRequest(this);
     }
 
-    /// <summary>Field number for the "CurrentPlayerMove" field.</summary>
-    public const int CurrentPlayerMoveFieldNumber = 2;
-    private global::GomokuBuffer.Node currentPlayerMove_;
+    /// <summary>Field number for the "Message" field.</summary>
+    public const int MessageFieldNumber = 1;
+    private string message_ = "";
+    /// <summary>
+    /// Node CurrentPlayerMove = 2;
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::GomokuBuffer.Node CurrentPlayerMove {
-      get { return currentPlayerMove_; }
+    public string Message {
+      get { return message_; }
       set {
-        currentPlayerMove_ = value;
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -598,14 +600,14 @@ namespace GomokuBuffer {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(CurrentPlayerMove, other.CurrentPlayerMove)) return false;
+      if (Message != other.Message) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (currentPlayerMove_ != null) hash ^= CurrentPlayerMove.GetHashCode();
+      if (Message.Length != 0) hash ^= Message.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -619,9 +621,9 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (currentPlayerMove_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(CurrentPlayerMove);
+      if (Message.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Message);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -631,8 +633,8 @@ namespace GomokuBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (currentPlayerMove_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CurrentPlayerMove);
+      if (Message.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -645,11 +647,8 @@ namespace GomokuBuffer {
       if (other == null) {
         return;
       }
-      if (other.currentPlayerMove_ != null) {
-        if (currentPlayerMove_ == null) {
-          currentPlayerMove_ = new global::GomokuBuffer.Node();
-        }
-        CurrentPlayerMove.MergeFrom(other.CurrentPlayerMove);
+      if (other.Message.Length != 0) {
+        Message = other.Message;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -662,11 +661,8 @@ namespace GomokuBuffer {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 18: {
-            if (currentPlayerMove_ == null) {
-              currentPlayerMove_ = new global::GomokuBuffer.Node();
-            }
-            input.ReadMessage(currentPlayerMove_);
+          case 10: {
+            Message = input.ReadString();
             break;
           }
         }
@@ -700,8 +696,7 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public PlayedAIResponse(PlayedAIResponse other) : this() {
-      currentAIMove_ = other.currentAIMove_ != null ? other.currentAIMove_.Clone() : null;
-      helperPlayer_ = other.helperPlayer_.Clone();
+      message_ = other.message_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -710,25 +705,19 @@ namespace GomokuBuffer {
       return new PlayedAIResponse(this);
     }
 
-    /// <summary>Field number for the "CurrentAIMove" field.</summary>
-    public const int CurrentAIMoveFieldNumber = 1;
-    private global::GomokuBuffer.Node currentAIMove_;
+    /// <summary>Field number for the "Message" field.</summary>
+    public const int MessageFieldNumber = 1;
+    private string message_ = "";
+    /// <summary>
+    /// Node CurrentAIMove = 1;
+    /// repeated Node HelperPlayer = 2;
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::GomokuBuffer.Node CurrentAIMove {
-      get { return currentAIMove_; }
+    public string Message {
+      get { return message_; }
       set {
-        currentAIMove_ = value;
+        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
-    }
-
-    /// <summary>Field number for the "HelperPlayer" field.</summary>
-    public const int HelperPlayerFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::GomokuBuffer.Node> _repeated_helperPlayer_codec
-        = pb::FieldCodec.ForMessage(18, global::GomokuBuffer.Node.Parser);
-    private readonly pbc::RepeatedField<global::GomokuBuffer.Node> helperPlayer_ = new pbc::RepeatedField<global::GomokuBuffer.Node>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::GomokuBuffer.Node> HelperPlayer {
-      get { return helperPlayer_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -744,16 +733,14 @@ namespace GomokuBuffer {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(CurrentAIMove, other.CurrentAIMove)) return false;
-      if(!helperPlayer_.Equals(other.helperPlayer_)) return false;
+      if (Message != other.Message) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (currentAIMove_ != null) hash ^= CurrentAIMove.GetHashCode();
-      hash ^= helperPlayer_.GetHashCode();
+      if (Message.Length != 0) hash ^= Message.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -767,11 +754,10 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (currentAIMove_ != null) {
+      if (Message.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteMessage(CurrentAIMove);
+        output.WriteString(Message);
       }
-      helperPlayer_.WriteTo(output, _repeated_helperPlayer_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -780,10 +766,9 @@ namespace GomokuBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (currentAIMove_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CurrentAIMove);
+      if (Message.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
       }
-      size += helperPlayer_.CalculateSize(_repeated_helperPlayer_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -795,13 +780,9 @@ namespace GomokuBuffer {
       if (other == null) {
         return;
       }
-      if (other.currentAIMove_ != null) {
-        if (currentAIMove_ == null) {
-          currentAIMove_ = new global::GomokuBuffer.Node();
-        }
-        CurrentAIMove.MergeFrom(other.CurrentAIMove);
+      if (other.Message.Length != 0) {
+        Message = other.Message;
       }
-      helperPlayer_.Add(other.helperPlayer_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -814,14 +795,7 @@ namespace GomokuBuffer {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            if (currentAIMove_ == null) {
-              currentAIMove_ = new global::GomokuBuffer.Node();
-            }
-            input.ReadMessage(currentAIMove_);
-            break;
-          }
-          case 18: {
-            helperPlayer_.AddEntriesFrom(input, _repeated_helperPlayer_codec);
+            Message = input.ReadString();
             break;
           }
         }

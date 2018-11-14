@@ -21,9 +21,9 @@ public class stone : MonoBehaviour
 
     void OnMouseDown() {
         if (!isCreate) {
-            rend.material = goban.GM.getCurrentMaterial();
-            node.Player = goban.GM.getplayerTurn();
-            goban.GM.nextPlayer();
+            rend.material = goban.GM.GetCurrentMaterial();
+            node.Player = goban.GM.GetplayerTurn();
+            goban.GM.NextPlayer();
             meshRend.enabled = true;
             isCreate = true;
             gravity.attachedRigidbody.useGravity = true;
@@ -31,7 +31,7 @@ public class stone : MonoBehaviour
     }
     void OnMouseEnter() {
         if (!isCreate) {
-            rend.material = goban.GM.getCurrentMaterial();
+            rend.material = goban.GM.GetCurrentMaterial();
             meshRend.enabled = true;
         }
     }

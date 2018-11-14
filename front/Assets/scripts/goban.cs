@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using GomokuBuffer;
+
 public class goban : MonoBehaviour
 {
     public Transform stonePrefab;
@@ -17,24 +18,25 @@ public class goban : MonoBehaviour
         Transform line = null;
         Transform lines = transform.Find("lines").transform;
         inter = transform.Find("stones");
-        GomokuBuffer.Node[] sendBoard = new GomokuBuffer.Node[19 * 19];
-        int index = 0;
+        List<GomokuBuffer.Node> sentedBoard = new List<GomokuBuffer.Node>();
+        // GomokuBuffer.Node[] sendBoard = new GomokuBuffer.Node[19 * 19];
+        // int index = 0;
         for (int i = 0; i < lines.childCount; i++)
         {
             line = lines.GetChild(i).transform;
             if (line.rotation.y == 0) {
                 board[i] = createStones(findIntersections(line), i);
-                for (int j = 0; j < board.Length; j++)
-                    sendBoard[index++] = (GomokuBuffer.Node)board[i][j].Clone();
+                sentedBoard.AddRange(board[i]);
+                // for (int j = 0; j < board.Length; j++)
+                //     sendBoard[index++] = (GomokuBuffer.Node)board[i][j].Clone();
             }
         }
         try {
-            Debug.Log("SALUT TOI");
-            var client = GM.GetClient();
-            if (client == null)
-                Debug.Log("OKOK BRO");
-            GomokuBuffer.InitGameResponse reply = client.InitGame(new GomokuBuffer.InitGameRequest(){ GameId="SALUT TOI"});
-            Debug.Log("SALUT TOI");
+            GomokuBuffer.InitGameResponse reply = GM.GetClient().InitGame(
+                new GomokuBuffer.InitGameRequest(){
+                    Board= { sentedBoard.ToArray() },
+                    GameId= GM.GetGameID()
+                });
             Debug.Log(reply.Message);
             GM.GetChannel().ShutdownAsync().Wait();
         } catch (Exception e) {

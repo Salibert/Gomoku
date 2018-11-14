@@ -11,7 +11,7 @@ message Node {
 
 service Game {
     rpc InitGame(InitGameRequest) returns (InitGameResponse) {}
-    /* rpc PlayedAI(stream PlayedAIRequest) returns (stream PlayedAIResponse) {}*/
+    rpc PlayedAI(stream PlayedAIRequest) returns (stream PlayedAIResponse) {}
 }
 
 message InitGameRequest {
@@ -24,10 +24,12 @@ message  InitGameResponse {
 }
 
 message PlayedAIRequest {
-    Node CurrentPlayerMove = 2;
+    string Message = 1;
+    // Node CurrentPlayerMove = 2;
 }
 
 message PlayedAIResponse {
-    Node CurrentAIMove = 1;
-    repeated Node HelperPlayer = 2;
+    string Message = 1;
+    // Node CurrentAIMove = 1;
+    // repeated Node HelperPlayer = 2;
 }
