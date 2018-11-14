@@ -3,6 +3,10 @@ using UnityEngine.UI;
 using Grpc.Core;
 using GomokuBuffer;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 public class gameMaster : MonoBehaviour
 {
@@ -11,9 +15,9 @@ public class gameMaster : MonoBehaviour
     public Material player1;
     public Material player2;
 
-    private Channel channel;
-    private string gameID;
-    private Game.GameClient Client;
+    protected Channel channel;
+    protected string gameID;
+    protected Game.GameClient Client;
     void Awake() {
         channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
         Client = new Game.GameClient(channel);
@@ -41,8 +45,49 @@ public class gameMaster : MonoBehaviour
     public Channel GetChannel() {
         return channel;
     }
-
     public string GetGameID() {
         return gameID;
     }
+    async public void GetInitGame(List<GomokuBuffer.Node> sentedBoard) {    
+        try {
+            GomokuBuffer.InitGameResponse reply = await Client.InitGameAsync(
+                new GomokuBuffer.InitGameRequest(){ Board= { sentedBoard.ToArray() }, GameId= gameID
+            });
+            Debug.Log(reply.Message);
+        } catch (Exception e) {
+            Debug.Log("RPC failed" + e);
+            throw;
+        }
+    }
+
+    async public void GetPlayed(GomokuBuffer.Node node, string message) {
+        try {
+            GomokuBuffer.StonePlayed reply = await Client.PlayedAsync(
+                new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), Message=message
+            });
+            Transform stone = goban.GetStone(reply.CurrentPlayerMove);
+            stone.transform.GetComponent<stone>().SetStone();
+        } catch (Exception e) {
+            Debug.Log("RPC failed" + e);
+            throw;
+        }
+    }
+    // async public Task Played(GomokuBuffer.Node node, string Message) {
+    //     try {
+    //         using (var call = Client.Played()) {
+    //             var responseReaderTask = Task.Run(async () => {
+    //                 while(await call.ResponseStream.MoveNext()) {
+    //                     var note = call.ResponseStream.Current;
+    //                     Debug.Log(note);
+    //                 }
+    //             });
+    //             await call.RequestStream.WriteAsync(new GomokuBuffer.StonePlayed() { Message = Message });
+    //             await call.RequestStream.CompleteAsync();
+    //             await responseReaderTask;
+    //         }
+    //     } catch (RpcException e) {
+    //         Debug.Log("RPC failed" + e);
+    //         throw;
+    //     }
+    // }
 }

@@ -28,20 +28,19 @@ namespace GomokuBuffer {
             "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUSEAoIQ2FwdGVyZWQYBCAB",
             "KAgiRAoPSW5pdEdhbWVSZXF1ZXN0EiEKBUJvYXJkGAEgAygLMhIuZ29tb2t1",
             "QnVmZmVyLk5vZGUSDgoGR2FtZUlkGAIgASgJIiMKEEluaXRHYW1lUmVzcG9u",
-            "c2USDwoHTWVzc2FnZRgBIAEoCSIiCg9QbGF5ZWRBSVJlcXVlc3QSDwoHTWVz",
-            "c2FnZRgBIAEoCSIjChBQbGF5ZWRBSVJlc3BvbnNlEg8KB01lc3NhZ2UYASAB",
-            "KAkypAEKBEdhbWUSSwoISW5pdEdhbWUSHS5nb21va3VCdWZmZXIuSW5pdEdh",
-            "bWVSZXF1ZXN0Gh4uZ29tb2t1QnVmZmVyLkluaXRHYW1lUmVzcG9uc2UiABJP",
-            "CghQbGF5ZWRBSRIdLmdvbW9rdUJ1ZmZlci5QbGF5ZWRBSVJlcXVlc3QaHi5n",
-            "b21va3VCdWZmZXIuUGxheWVkQUlSZXNwb25zZSIAKAEwAWIGcHJvdG8z"));
+            "c2USDwoHTWVzc2FnZRgBIAEoCSJNCgtTdG9uZVBsYXllZBIPCgdNZXNzYWdl",
+            "GAEgASgJEi0KEUN1cnJlbnRQbGF5ZXJNb3ZlGAIgASgLMhIuZ29tb2t1QnVm",
+            "ZmVyLk5vZGUylQEKBEdhbWUSSwoISW5pdEdhbWUSHS5nb21va3VCdWZmZXIu",
+            "SW5pdEdhbWVSZXF1ZXN0Gh4uZ29tb2t1QnVmZmVyLkluaXRHYW1lUmVzcG9u",
+            "c2UiABJACgZQbGF5ZWQSGS5nb21va3VCdWZmZXIuU3RvbmVQbGF5ZWQaGS5n",
+            "b21va3VCdWZmZXIuU3RvbmVQbGF5ZWQiAGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Node), global::GomokuBuffer.Node.Parser, new[]{ "X", "Y", "Player", "Captered" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.InitGameRequest), global::GomokuBuffer.InitGameRequest.Parser, new[]{ "Board", "GameId" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.InitGameResponse), global::GomokuBuffer.InitGameResponse.Parser, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.PlayedAIRequest), global::GomokuBuffer.PlayedAIRequest.Parser, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.PlayedAIResponse), global::GomokuBuffer.PlayedAIResponse.Parser, new[]{ "Message" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.StonePlayed), global::GomokuBuffer.StonePlayed.Parser, new[]{ "Message", "CurrentPlayerMove" }, null, null, null)
           }));
     }
     #endregion
@@ -539,11 +538,11 @@ namespace GomokuBuffer {
 
   }
 
-  public sealed partial class PlayedAIRequest : pb::IMessage<PlayedAIRequest> {
-    private static readonly pb::MessageParser<PlayedAIRequest> _parser = new pb::MessageParser<PlayedAIRequest>(() => new PlayedAIRequest());
+  public sealed partial class StonePlayed : pb::IMessage<StonePlayed> {
+    private static readonly pb::MessageParser<StonePlayed> _parser = new pb::MessageParser<StonePlayed>(() => new StonePlayed());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<PlayedAIRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<StonePlayed> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -556,29 +555,27 @@ namespace GomokuBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public PlayedAIRequest() {
+    public StonePlayed() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public PlayedAIRequest(PlayedAIRequest other) : this() {
+    public StonePlayed(StonePlayed other) : this() {
       message_ = other.message_;
+      currentPlayerMove_ = other.currentPlayerMove_ != null ? other.currentPlayerMove_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public PlayedAIRequest Clone() {
-      return new PlayedAIRequest(this);
+    public StonePlayed Clone() {
+      return new StonePlayed(this);
     }
 
     /// <summary>Field number for the "Message" field.</summary>
     public const int MessageFieldNumber = 1;
     private string message_ = "";
-    /// <summary>
-    /// Node CurrentPlayerMove = 2;
-    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Message {
       get { return message_; }
@@ -587,13 +584,24 @@ namespace GomokuBuffer {
       }
     }
 
+    /// <summary>Field number for the "CurrentPlayerMove" field.</summary>
+    public const int CurrentPlayerMoveFieldNumber = 2;
+    private global::GomokuBuffer.Node currentPlayerMove_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as PlayedAIRequest);
+    public global::GomokuBuffer.Node CurrentPlayerMove {
+      get { return currentPlayerMove_; }
+      set {
+        currentPlayerMove_ = value;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(PlayedAIRequest other) {
+    public override bool Equals(object other) {
+      return Equals(other as StonePlayed);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(StonePlayed other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -601,6 +609,7 @@ namespace GomokuBuffer {
         return true;
       }
       if (Message != other.Message) return false;
+      if (!object.Equals(CurrentPlayerMove, other.CurrentPlayerMove)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -608,6 +617,7 @@ namespace GomokuBuffer {
     public override int GetHashCode() {
       int hash = 1;
       if (Message.Length != 0) hash ^= Message.GetHashCode();
+      if (currentPlayerMove_ != null) hash ^= CurrentPlayerMove.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -625,6 +635,10 @@ namespace GomokuBuffer {
         output.WriteRawTag(10);
         output.WriteString(Message);
       }
+      if (currentPlayerMove_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(CurrentPlayerMove);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -636,6 +650,9 @@ namespace GomokuBuffer {
       if (Message.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
       }
+      if (currentPlayerMove_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CurrentPlayerMove);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -643,12 +660,18 @@ namespace GomokuBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(PlayedAIRequest other) {
+    public void MergeFrom(StonePlayed other) {
       if (other == null) {
         return;
       }
       if (other.Message.Length != 0) {
         Message = other.Message;
+      }
+      if (other.currentPlayerMove_ != null) {
+        if (currentPlayerMove_ == null) {
+          currentPlayerMove_ = new global::GomokuBuffer.Node();
+        }
+        CurrentPlayerMove.MergeFrom(other.CurrentPlayerMove);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -665,137 +688,11 @@ namespace GomokuBuffer {
             Message = input.ReadString();
             break;
           }
-        }
-      }
-    }
-
-  }
-
-  public sealed partial class PlayedAIResponse : pb::IMessage<PlayedAIResponse> {
-    private static readonly pb::MessageParser<PlayedAIResponse> _parser = new pb::MessageParser<PlayedAIResponse>(() => new PlayedAIResponse());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<PlayedAIResponse> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[4]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public PlayedAIResponse() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public PlayedAIResponse(PlayedAIResponse other) : this() {
-      message_ = other.message_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public PlayedAIResponse Clone() {
-      return new PlayedAIResponse(this);
-    }
-
-    /// <summary>Field number for the "Message" field.</summary>
-    public const int MessageFieldNumber = 1;
-    private string message_ = "";
-    /// <summary>
-    /// Node CurrentAIMove = 1;
-    /// repeated Node HelperPlayer = 2;
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Message {
-      get { return message_; }
-      set {
-        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as PlayedAIResponse);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(PlayedAIResponse other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (Message != other.Message) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (Message.Length != 0) hash ^= Message.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (Message.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Message);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (Message.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(PlayedAIResponse other) {
-      if (other == null) {
-        return;
-      }
-      if (other.Message.Length != 0) {
-        Message = other.Message;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            Message = input.ReadString();
+          case 18: {
+            if (currentPlayerMove_ == null) {
+              currentPlayerMove_ = new global::GomokuBuffer.Node();
+            }
+            input.ReadMessage(currentPlayerMove_);
             break;
           }
         }

@@ -10,8 +10,9 @@ message Node {
 }
 
 service Game {
-    rpc InitGame(InitGameRequest) returns (InitGameResponse) {}
-    rpc PlayedAI(stream PlayedAIRequest) returns (stream PlayedAIResponse) {}
+    rpc InitGame(InitGameRequest) returns (InitGameResponse) {} /* simple RPC */
+    rpc Played(StonePlayed) returns (StonePlayed) {} /* simple RPC */
+    // rpc Played(stream StonePlayed) returns (stream StonePlayed) {} /* A bidirectional streaming RPC */
 }
 
 message InitGameRequest {
@@ -23,13 +24,7 @@ message  InitGameResponse {
     string Message = 1;
 }
 
-message PlayedAIRequest {
+message StonePlayed {
     string Message = 1;
-    // Node CurrentPlayerMove = 2;
-}
-
-message PlayedAIResponse {
-    string Message = 1;
-    // Node CurrentAIMove = 1;
-    // repeated Node HelperPlayer = 2;
+    Node CurrentPlayerMove = 2;
 }

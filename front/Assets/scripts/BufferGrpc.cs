@@ -14,8 +14,7 @@ namespace GomokuBuffer {
 
     static readonly grpc::Marshaller<global::GomokuBuffer.InitGameRequest> __Marshaller_gomokuBuffer_InitGameRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::GomokuBuffer.InitGameRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::GomokuBuffer.InitGameResponse> __Marshaller_gomokuBuffer_InitGameResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::GomokuBuffer.InitGameResponse.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::GomokuBuffer.PlayedAIRequest> __Marshaller_gomokuBuffer_PlayedAIRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::GomokuBuffer.PlayedAIRequest.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::GomokuBuffer.PlayedAIResponse> __Marshaller_gomokuBuffer_PlayedAIResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::GomokuBuffer.PlayedAIResponse.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::GomokuBuffer.StonePlayed> __Marshaller_gomokuBuffer_StonePlayed = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::GomokuBuffer.StonePlayed.Parser.ParseFrom);
 
     static readonly grpc::Method<global::GomokuBuffer.InitGameRequest, global::GomokuBuffer.InitGameResponse> __Method_InitGame = new grpc::Method<global::GomokuBuffer.InitGameRequest, global::GomokuBuffer.InitGameResponse>(
         grpc::MethodType.Unary,
@@ -24,12 +23,12 @@ namespace GomokuBuffer {
         __Marshaller_gomokuBuffer_InitGameRequest,
         __Marshaller_gomokuBuffer_InitGameResponse);
 
-    static readonly grpc::Method<global::GomokuBuffer.PlayedAIRequest, global::GomokuBuffer.PlayedAIResponse> __Method_PlayedAI = new grpc::Method<global::GomokuBuffer.PlayedAIRequest, global::GomokuBuffer.PlayedAIResponse>(
-        grpc::MethodType.DuplexStreaming,
+    static readonly grpc::Method<global::GomokuBuffer.StonePlayed, global::GomokuBuffer.StonePlayed> __Method_Played = new grpc::Method<global::GomokuBuffer.StonePlayed, global::GomokuBuffer.StonePlayed>(
+        grpc::MethodType.Unary,
         __ServiceName,
-        "PlayedAI",
-        __Marshaller_gomokuBuffer_PlayedAIRequest,
-        __Marshaller_gomokuBuffer_PlayedAIResponse);
+        "Played",
+        __Marshaller_gomokuBuffer_StonePlayed,
+        __Marshaller_gomokuBuffer_StonePlayed);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -45,7 +44,7 @@ namespace GomokuBuffer {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
-      public virtual global::System.Threading.Tasks.Task PlayedAI(grpc::IAsyncStreamReader<global::GomokuBuffer.PlayedAIRequest> requestStream, grpc::IServerStreamWriter<global::GomokuBuffer.PlayedAIResponse> responseStream, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::GomokuBuffer.StonePlayed> Played(global::GomokuBuffer.StonePlayed request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -91,13 +90,21 @@ namespace GomokuBuffer {
       {
         return CallInvoker.AsyncUnaryCall(__Method_InitGame, null, options, request);
       }
-      public virtual grpc::AsyncDuplexStreamingCall<global::GomokuBuffer.PlayedAIRequest, global::GomokuBuffer.PlayedAIResponse> PlayedAI(grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::GomokuBuffer.StonePlayed Played(global::GomokuBuffer.StonePlayed request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
-        return PlayedAI(new grpc::CallOptions(headers, deadline, cancellationToken));
+        return Played(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual grpc::AsyncDuplexStreamingCall<global::GomokuBuffer.PlayedAIRequest, global::GomokuBuffer.PlayedAIResponse> PlayedAI(grpc::CallOptions options)
+      public virtual global::GomokuBuffer.StonePlayed Played(global::GomokuBuffer.StonePlayed request, grpc::CallOptions options)
       {
-        return CallInvoker.AsyncDuplexStreamingCall(__Method_PlayedAI, null, options);
+        return CallInvoker.BlockingUnaryCall(__Method_Played, null, options, request);
+      }
+      public virtual grpc::AsyncUnaryCall<global::GomokuBuffer.StonePlayed> PlayedAsync(global::GomokuBuffer.StonePlayed request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return PlayedAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual grpc::AsyncUnaryCall<global::GomokuBuffer.StonePlayed> PlayedAsync(global::GomokuBuffer.StonePlayed request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_Played, null, options, request);
       }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       protected override GameClient NewInstance(ClientBaseConfiguration configuration)
@@ -112,7 +119,7 @@ namespace GomokuBuffer {
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_InitGame, serviceImpl.InitGame)
-          .AddMethod(__Method_PlayedAI, serviceImpl.PlayedAI).Build();
+          .AddMethod(__Method_Played, serviceImpl.Played).Build();
     }
 
   }

@@ -9,7 +9,6 @@ public class stone : MonoBehaviour
     private Collider gravity;
     private Renderer rend;
     private GomokuBuffer.Node node;
-
     private bool isCreate;
 
     public void initNode(ref GomokuBuffer.Node n) { node = n; }
@@ -20,13 +19,9 @@ public class stone : MonoBehaviour
     }
 
     void OnMouseDown() {
-        if (!isCreate) {
-            rend.material = goban.GM.GetCurrentMaterial();
-            node.Player = goban.GM.GetplayerTurn();
-            goban.GM.NextPlayer();
-            meshRend.enabled = true;
-            isCreate = true;
-            gravity.attachedRigidbody.useGravity = true;
+        if (!isCreate && goban.GM.GetplayerTurn() == 1) {
+            SetStone();
+            goban.GM.GetPlayed(node, "OKOK");
         }
     }
     void OnMouseEnter() {
@@ -40,5 +35,14 @@ public class stone : MonoBehaviour
         if (!isCreate) {
             meshRend.enabled = false;
         }
+    }
+
+    public void SetStone() {
+        rend.material = goban.GM.GetCurrentMaterial();
+        node.Player = goban.GM.GetplayerTurn();
+        goban.GM.NextPlayer();
+        isCreate = true;
+        gravity.attachedRigidbody.useGravity = true;
+        meshRend.enabled = true;
     }
 }
