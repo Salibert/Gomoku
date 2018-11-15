@@ -72,22 +72,4 @@ public class gameMaster : MonoBehaviour
             throw;
         }
     }
-    // async public Task Played(GomokuBuffer.Node node, string Message) {
-    //     try {
-    //         using (var call = Client.Played()) {
-    //             var responseReaderTask = Task.Run(async () => {
-    //                 while(await call.ResponseStream.MoveNext()) {
-    //                     var note = call.ResponseStream.Current;
-    //                     Debug.Log(note);
-    //                 }
-    //             });
-    //             await call.RequestStream.WriteAsync(new GomokuBuffer.StonePlayed() { Message = Message });
-    //             await call.RequestStream.CompleteAsync();
-    //             await responseReaderTask;
-    //         }
-    //     } catch (RpcException e) {
-    //         Debug.Log("RPC failed" + e);
-    //         throw;
-    //     }
-    // }
 }
