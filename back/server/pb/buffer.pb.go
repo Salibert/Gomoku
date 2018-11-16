@@ -85,86 +85,133 @@ func (m *Node) GetCaptered() bool {
 	return false
 }
 
-type InitGameRequest struct {
-	Board                []*Node  `protobuf:"bytes,1,rep,name=Board,proto3" json:"Board,omitempty"`
-	GameId               string   `protobuf:"bytes,2,opt,name=GameId,proto3" json:"GameId,omitempty"`
+type CDGameRequest struct {
+	GameID               string   `protobuf:"bytes,1,opt,name=GameID,proto3" json:"GameID,omitempty"`
+	Delete               bool     `protobuf:"varint,2,opt,name=Delete,proto3" json:"Delete,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *InitGameRequest) Reset()         { *m = InitGameRequest{} }
-func (m *InitGameRequest) String() string { return proto.CompactTextString(m) }
-func (*InitGameRequest) ProtoMessage()    {}
-func (*InitGameRequest) Descriptor() ([]byte, []int) {
+func (m *CDGameRequest) Reset()         { *m = CDGameRequest{} }
+func (m *CDGameRequest) String() string { return proto.CompactTextString(m) }
+func (*CDGameRequest) ProtoMessage()    {}
+func (*CDGameRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_1e21993b51421452, []int{1}
 }
 
-func (m *InitGameRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_InitGameRequest.Unmarshal(m, b)
+func (m *CDGameRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CDGameRequest.Unmarshal(m, b)
 }
-func (m *InitGameRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_InitGameRequest.Marshal(b, m, deterministic)
+func (m *CDGameRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CDGameRequest.Marshal(b, m, deterministic)
 }
-func (m *InitGameRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_InitGameRequest.Merge(m, src)
+func (m *CDGameRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CDGameRequest.Merge(m, src)
 }
-func (m *InitGameRequest) XXX_Size() int {
-	return xxx_messageInfo_InitGameRequest.Size(m)
+func (m *CDGameRequest) XXX_Size() int {
+	return xxx_messageInfo_CDGameRequest.Size(m)
 }
-func (m *InitGameRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_InitGameRequest.DiscardUnknown(m)
+func (m *CDGameRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CDGameRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_InitGameRequest proto.InternalMessageInfo
+var xxx_messageInfo_CDGameRequest proto.InternalMessageInfo
 
-func (m *InitGameRequest) GetBoard() []*Node {
+func (m *CDGameRequest) GetGameID() string {
 	if m != nil {
-		return m.Board
-	}
-	return nil
-}
-
-func (m *InitGameRequest) GetGameId() string {
-	if m != nil {
-		return m.GameId
+		return m.GameID
 	}
 	return ""
 }
 
-type InitGameResponse struct {
-	Message              string   `protobuf:"bytes,1,opt,name=Message,proto3" json:"Message,omitempty"`
+func (m *CDGameRequest) GetDelete() bool {
+	if m != nil {
+		return m.Delete
+	}
+	return false
+}
+
+type CheckRulesResponse struct {
+	IsPossible           bool     `protobuf:"varint,1,opt,name=isPossible,proto3" json:"isPossible,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *InitGameResponse) Reset()         { *m = InitGameResponse{} }
-func (m *InitGameResponse) String() string { return proto.CompactTextString(m) }
-func (*InitGameResponse) ProtoMessage()    {}
-func (*InitGameResponse) Descriptor() ([]byte, []int) {
+func (m *CheckRulesResponse) Reset()         { *m = CheckRulesResponse{} }
+func (m *CheckRulesResponse) String() string { return proto.CompactTextString(m) }
+func (*CheckRulesResponse) ProtoMessage()    {}
+func (*CheckRulesResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_1e21993b51421452, []int{2}
 }
 
-func (m *InitGameResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_InitGameResponse.Unmarshal(m, b)
+func (m *CheckRulesResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CheckRulesResponse.Unmarshal(m, b)
 }
-func (m *InitGameResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_InitGameResponse.Marshal(b, m, deterministic)
+func (m *CheckRulesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CheckRulesResponse.Marshal(b, m, deterministic)
 }
-func (m *InitGameResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_InitGameResponse.Merge(m, src)
+func (m *CheckRulesResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckRulesResponse.Merge(m, src)
 }
-func (m *InitGameResponse) XXX_Size() int {
-	return xxx_messageInfo_InitGameResponse.Size(m)
+func (m *CheckRulesResponse) XXX_Size() int {
+	return xxx_messageInfo_CheckRulesResponse.Size(m)
 }
-func (m *InitGameResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_InitGameResponse.DiscardUnknown(m)
+func (m *CheckRulesResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckRulesResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_InitGameResponse proto.InternalMessageInfo
+var xxx_messageInfo_CheckRulesResponse proto.InternalMessageInfo
 
-func (m *InitGameResponse) GetMessage() string {
+func (m *CheckRulesResponse) GetIsPossible() bool {
+	if m != nil {
+		return m.IsPossible
+	}
+	return false
+}
+
+type CDGameResponse struct {
+	IsSuccess            bool     `protobuf:"varint,1,opt,name=IsSuccess,proto3" json:"IsSuccess,omitempty"`
+	Message              string   `protobuf:"bytes,2,opt,name=Message,proto3" json:"Message,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CDGameResponse) Reset()         { *m = CDGameResponse{} }
+func (m *CDGameResponse) String() string { return proto.CompactTextString(m) }
+func (*CDGameResponse) ProtoMessage()    {}
+func (*CDGameResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_1e21993b51421452, []int{3}
+}
+
+func (m *CDGameResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CDGameResponse.Unmarshal(m, b)
+}
+func (m *CDGameResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CDGameResponse.Marshal(b, m, deterministic)
+}
+func (m *CDGameResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CDGameResponse.Merge(m, src)
+}
+func (m *CDGameResponse) XXX_Size() int {
+	return xxx_messageInfo_CDGameResponse.Size(m)
+}
+func (m *CDGameResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CDGameResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CDGameResponse proto.InternalMessageInfo
+
+func (m *CDGameResponse) GetIsSuccess() bool {
+	if m != nil {
+		return m.IsSuccess
+	}
+	return false
+}
+
+func (m *CDGameResponse) GetMessage() string {
 	if m != nil {
 		return m.Message
 	}
@@ -172,8 +219,8 @@ func (m *InitGameResponse) GetMessage() string {
 }
 
 type StonePlayed struct {
-	Message              string   `protobuf:"bytes,1,opt,name=Message,proto3" json:"Message,omitempty"`
-	CurrentPlayerMove    *Node    `protobuf:"bytes,2,opt,name=CurrentPlayerMove,proto3" json:"CurrentPlayerMove,omitempty"`
+	CurrentPlayerMove    *Node    `protobuf:"bytes,1,opt,name=CurrentPlayerMove,proto3" json:"CurrentPlayerMove,omitempty"`
+	GameID               string   `protobuf:"bytes,2,opt,name=GameID,proto3" json:"GameID,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -183,7 +230,7 @@ func (m *StonePlayed) Reset()         { *m = StonePlayed{} }
 func (m *StonePlayed) String() string { return proto.CompactTextString(m) }
 func (*StonePlayed) ProtoMessage()    {}
 func (*StonePlayed) Descriptor() ([]byte, []int) {
-	return fileDescriptor_1e21993b51421452, []int{3}
+	return fileDescriptor_1e21993b51421452, []int{4}
 }
 
 func (m *StonePlayed) XXX_Unmarshal(b []byte) error {
@@ -204,13 +251,6 @@ func (m *StonePlayed) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_StonePlayed proto.InternalMessageInfo
 
-func (m *StonePlayed) GetMessage() string {
-	if m != nil {
-		return m.Message
-	}
-	return ""
-}
-
 func (m *StonePlayed) GetCurrentPlayerMove() *Node {
 	if m != nil {
 		return m.CurrentPlayerMove
@@ -218,35 +258,47 @@ func (m *StonePlayed) GetCurrentPlayerMove() *Node {
 	return nil
 }
 
+func (m *StonePlayed) GetGameID() string {
+	if m != nil {
+		return m.GameID
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*Node)(nil), "gomokuBuffer.Node")
-	proto.RegisterType((*InitGameRequest)(nil), "gomokuBuffer.InitGameRequest")
-	proto.RegisterType((*InitGameResponse)(nil), "gomokuBuffer.InitGameResponse")
+	proto.RegisterType((*CDGameRequest)(nil), "gomokuBuffer.CDGameRequest")
+	proto.RegisterType((*CheckRulesResponse)(nil), "gomokuBuffer.CheckRulesResponse")
+	proto.RegisterType((*CDGameResponse)(nil), "gomokuBuffer.CDGameResponse")
 	proto.RegisterType((*StonePlayed)(nil), "gomokuBuffer.StonePlayed")
 }
 
 func init() { proto.RegisterFile("buffer.proto", fileDescriptor_1e21993b51421452) }
 
 var fileDescriptor_1e21993b51421452 = []byte{
-	// 284 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x91, 0xcf, 0x4a, 0xc3, 0x40,
-	0x10, 0xc6, 0xbb, 0xf6, 0x8f, 0xe9, 0x34, 0xa0, 0xce, 0x41, 0xd6, 0x80, 0x12, 0xf6, 0x94, 0x83,
-	0xe4, 0x50, 0x5f, 0xa0, 0xb4, 0x07, 0x29, 0x52, 0x91, 0x2d, 0x48, 0x7b, 0x4c, 0xd9, 0x69, 0x29,
-	0xda, 0x6c, 0xdc, 0x6c, 0x04, 0x1f, 0xc4, 0xf7, 0x95, 0x6c, 0x52, 0x6d, 0xd5, 0x1c, 0xbf, 0x99,
-	0x6f, 0x76, 0x7e, 0xdf, 0x2c, 0xf8, 0xab, 0x62, 0xbd, 0x26, 0x13, 0x67, 0x46, 0x5b, 0x8d, 0xfe,
-	0x46, 0xef, 0xf4, 0x4b, 0x31, 0x76, 0x35, 0xf1, 0x0c, 0x9d, 0x47, 0xad, 0x08, 0x7d, 0x60, 0x0b,
-	0xce, 0x42, 0x16, 0x75, 0x25, 0x5b, 0x94, 0x6a, 0xc9, 0x4f, 0x2a, 0xb5, 0xc4, 0x4b, 0xe8, 0x3d,
-	0xbd, 0x26, 0x1f, 0x64, 0x78, 0xdb, 0x95, 0x6a, 0x85, 0x01, 0x78, 0x93, 0x24, 0xb3, 0x64, 0x48,
-	0xf1, 0x4e, 0xc8, 0x22, 0x4f, 0x7e, 0x6b, 0x31, 0x87, 0xb3, 0x69, 0xba, 0xb5, 0xf7, 0xc9, 0x8e,
-	0x24, 0xbd, 0x15, 0x94, 0x5b, 0x8c, 0xa0, 0x3b, 0xd6, 0x89, 0x51, 0x9c, 0x85, 0xed, 0x68, 0x30,
-	0xc4, 0xf8, 0x10, 0x24, 0x2e, 0x29, 0x64, 0x65, 0x28, 0x17, 0x96, 0x83, 0x53, 0xe5, 0x18, 0xfa,
-	0xb2, 0x56, 0xe2, 0x16, 0xce, 0x7f, 0x1e, 0xcd, 0x33, 0x9d, 0xe6, 0x84, 0x1c, 0x4e, 0x67, 0x94,
-	0xe7, 0xc9, 0x86, 0x1c, 0x7e, 0x5f, 0xee, 0xa5, 0xd8, 0xc2, 0x60, 0x6e, 0x75, 0x4a, 0x8e, 0x56,
-	0x35, 0x1b, 0x71, 0x04, 0x17, 0x93, 0xc2, 0x18, 0x4a, 0x6d, 0x15, 0x6c, 0xa6, 0xdf, 0xc9, 0x6d,
-	0xfe, 0x1f, 0xf2, 0xaf, 0x79, 0xf8, 0xc9, 0xa0, 0x53, 0x52, 0xe1, 0x03, 0x78, 0x7b, 0x42, 0xbc,
-	0x3e, 0x9e, 0xfd, 0x75, 0x8e, 0xe0, 0xa6, 0xa9, 0x5d, 0x05, 0x13, 0x2d, 0x1c, 0xd5, 0x77, 0x57,
-	0x78, 0x75, 0xec, 0x3d, 0x88, 0x15, 0x34, 0xb7, 0x44, 0x6b, 0xd5, 0x73, 0x5f, 0x7e, 0xf7, 0x15,
-	0x00, 0x00, 0xff, 0xff, 0xaa, 0xf3, 0xb9, 0xfe, 0x02, 0x02, 0x00, 0x00,
+	// 338 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x92, 0x41, 0x4f, 0xfa, 0x40,
+	0x10, 0xc5, 0x29, 0x7f, 0xfe, 0x58, 0x06, 0x34, 0x71, 0x0e, 0xa6, 0x22, 0x31, 0x64, 0x4f, 0x9c,
+	0x38, 0xa0, 0x77, 0x89, 0xc5, 0x28, 0x31, 0x18, 0xb2, 0x24, 0x06, 0x8e, 0x85, 0x0e, 0x48, 0x28,
+	0x2c, 0x76, 0x5a, 0x13, 0xbf, 0xab, 0x1f, 0xc6, 0x74, 0xbb, 0x48, 0x2b, 0xea, 0xad, 0xbf, 0xb7,
+	0xbb, 0xf3, 0xf6, 0xbd, 0x2d, 0xd4, 0xa6, 0xf1, 0x7c, 0x4e, 0x61, 0x7b, 0x1b, 0xaa, 0x48, 0x61,
+	0x6d, 0xa1, 0xd6, 0x6a, 0x15, 0xdf, 0x6a, 0x4d, 0x3c, 0x43, 0xe9, 0x49, 0xf9, 0x84, 0x35, 0xb0,
+	0xc6, 0x8e, 0xd5, 0xb4, 0x5a, 0xff, 0xa5, 0x35, 0x4e, 0x68, 0xe2, 0x14, 0x53, 0x9a, 0xe0, 0x19,
+	0x94, 0x87, 0x81, 0xf7, 0x4e, 0xa1, 0xf3, 0x4f, 0x4b, 0x86, 0xb0, 0x0e, 0xb6, 0xeb, 0x6d, 0x23,
+	0x0a, 0xc9, 0x77, 0x4a, 0x4d, 0xab, 0x65, 0xcb, 0x2f, 0x16, 0x37, 0x70, 0xec, 0xf6, 0xee, 0xbd,
+	0x35, 0x49, 0x7a, 0x8d, 0x89, 0xa3, 0x64, 0x48, 0x82, 0xfd, 0x9e, 0x76, 0xa9, 0x48, 0x43, 0x89,
+	0xde, 0xa3, 0x80, 0x22, 0xd2, 0x7e, 0xb6, 0x34, 0x24, 0xae, 0x01, 0xdd, 0x17, 0x9a, 0xad, 0x64,
+	0x1c, 0x10, 0x4b, 0xe2, 0xad, 0xda, 0x30, 0xe1, 0x25, 0xc0, 0x92, 0x87, 0x8a, 0x79, 0x39, 0x0d,
+	0x48, 0x4f, 0xb2, 0x65, 0x46, 0x11, 0x0f, 0x70, 0xb2, 0xb3, 0x35, 0x27, 0x1a, 0x50, 0xe9, 0xf3,
+	0x28, 0x9e, 0xcd, 0x88, 0xd9, 0x1c, 0xd8, 0x0b, 0xe8, 0xc0, 0xd1, 0x80, 0x98, 0xbd, 0x45, 0x6a,
+	0x5f, 0x91, 0x3b, 0x14, 0x0b, 0xa8, 0x8e, 0x22, 0xb5, 0x21, 0x9d, 0xd5, 0xc7, 0x2e, 0x9c, 0xba,
+	0x71, 0x18, 0xd2, 0x26, 0x4a, 0xc3, 0x0f, 0xd4, 0x5b, 0xea, 0x5f, 0xed, 0x60, 0x3b, 0xdb, 0x68,
+	0x3b, 0xa9, 0x53, 0x1e, 0x6e, 0xce, 0x14, 0x50, 0xcc, 0x16, 0xd0, 0xf9, 0xb0, 0xa0, 0x94, 0x7c,
+	0xe2, 0x1d, 0x94, 0xd3, 0xbb, 0xe3, 0x45, 0x7e, 0x62, 0xae, 0xc8, 0x7a, 0xe3, 0xe7, 0xc5, 0x34,
+	0xae, 0x28, 0x60, 0xd7, 0xbc, 0x96, 0x8f, 0xe7, 0xf9, 0x9d, 0x99, 0x38, 0xf5, 0xdf, 0x97, 0x44,
+	0x01, 0x1f, 0x01, 0xf6, 0xd5, 0xff, 0x35, 0xa5, 0xf9, 0xed, 0x2a, 0x07, 0xef, 0x25, 0x0a, 0xd3,
+	0xb2, 0xfe, 0xeb, 0xae, 0x3e, 0x03, 0x00, 0x00, 0xff, 0xff, 0x29, 0x88, 0xc9, 0x76, 0x85, 0x02,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -261,8 +313,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type GameClient interface {
-	InitGame(ctx context.Context, in *InitGameRequest, opts ...grpc.CallOption) (*InitGameResponse, error)
+	CDGame(ctx context.Context, in *CDGameRequest, opts ...grpc.CallOption) (*CDGameResponse, error)
 	Played(ctx context.Context, in *StonePlayed, opts ...grpc.CallOption) (*StonePlayed, error)
+	CheckRules(ctx context.Context, in *StonePlayed, opts ...grpc.CallOption) (*CheckRulesResponse, error)
 }
 
 type gameClient struct {
@@ -273,9 +326,9 @@ func NewGameClient(cc *grpc.ClientConn) GameClient {
 	return &gameClient{cc}
 }
 
-func (c *gameClient) InitGame(ctx context.Context, in *InitGameRequest, opts ...grpc.CallOption) (*InitGameResponse, error) {
-	out := new(InitGameResponse)
-	err := c.cc.Invoke(ctx, "/gomokuBuffer.Game/InitGame", in, out, opts...)
+func (c *gameClient) CDGame(ctx context.Context, in *CDGameRequest, opts ...grpc.CallOption) (*CDGameResponse, error) {
+	out := new(CDGameResponse)
+	err := c.cc.Invoke(ctx, "/gomokuBuffer.Game/CDGame", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -291,30 +344,40 @@ func (c *gameClient) Played(ctx context.Context, in *StonePlayed, opts ...grpc.C
 	return out, nil
 }
 
+func (c *gameClient) CheckRules(ctx context.Context, in *StonePlayed, opts ...grpc.CallOption) (*CheckRulesResponse, error) {
+	out := new(CheckRulesResponse)
+	err := c.cc.Invoke(ctx, "/gomokuBuffer.Game/CheckRules", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GameServer is the server API for Game service.
 type GameServer interface {
-	InitGame(context.Context, *InitGameRequest) (*InitGameResponse, error)
+	CDGame(context.Context, *CDGameRequest) (*CDGameResponse, error)
 	Played(context.Context, *StonePlayed) (*StonePlayed, error)
+	CheckRules(context.Context, *StonePlayed) (*CheckRulesResponse, error)
 }
 
 func RegisterGameServer(s *grpc.Server, srv GameServer) {
 	s.RegisterService(&_Game_serviceDesc, srv)
 }
 
-func _Game_InitGame_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InitGameRequest)
+func _Game_CDGame_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CDGameRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GameServer).InitGame(ctx, in)
+		return srv.(GameServer).CDGame(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/gomokuBuffer.Game/InitGame",
+		FullMethod: "/gomokuBuffer.Game/CDGame",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GameServer).InitGame(ctx, req.(*InitGameRequest))
+		return srv.(GameServer).CDGame(ctx, req.(*CDGameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -337,17 +400,39 @@ func _Game_Played_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Game_CheckRules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StonePlayed)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GameServer).CheckRules(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gomokuBuffer.Game/CheckRules",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GameServer).CheckRules(ctx, req.(*StonePlayed))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Game_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "gomokuBuffer.Game",
 	HandlerType: (*GameServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "InitGame",
-			Handler:    _Game_InitGame_Handler,
+			MethodName: "CDGame",
+			Handler:    _Game_CDGame_Handler,
 		},
 		{
 			MethodName: "Played",
 			Handler:    _Game_Played_Handler,
+		},
+		{
+			MethodName: "CheckRules",
+			Handler:    _Game_CheckRules_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

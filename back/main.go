@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	"./server"
+	"github.com/Salibert/Gomoku/back/server"
 )
 
 func main() {
