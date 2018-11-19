@@ -4,11 +4,9 @@ import (
 	"context"
 	"sync"
 
+	"github.com/Salibert/Gomoku/back/board"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
-
-// Board ...
-type Board [][]pb.Node
 
 // BannedStone ...
 type BannedStone []pb.Node
@@ -16,7 +14,7 @@ type BannedStone []pb.Node
 // Game contains all the meta data of a part
 type Game struct {
 	rwmux                sync.RWMutex
-	board                Board
+	board                board.Board
 	forbiddenMovePlayer1 BannedStone
 	forbiddenMovePlayer2 BannedStone
 }
@@ -66,8 +64,9 @@ func (CurrentGames *Games) DeleteGame(gameID string) (*pb.CDGameResponse, error)
 	return &pb.CDGameResponse{IsSuccess: false}, nil
 }
 
-func (CurrentGames *Games) CheckRules(context context.Context, in *pb.StonePlayed) (*pb.CheckRulesResponse, error) {
-	return nil, &pb.CheckRulesResponse{IsPossible: true}
+// ProccessRules ...
+func (CurrentGames *Games) ProccessRules(context context.Context, in *pb.StonePlayed) (checkRules *pb.CheckRulesResponse, err error) {
+
 }
 
 // PlayedAI choose the best move for win

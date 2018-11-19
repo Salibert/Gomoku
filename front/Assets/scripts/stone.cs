@@ -21,7 +21,7 @@ public class stone : MonoBehaviour
     void OnMouseDown() {
         if (!isCreate && goban.GM.GetplayerTurn() == 1) {
             SetStone();
-            goban.GM.GetPlayed(node, "OKOK");
+            goban.GM.GetPlayed(node);
         }
     }
     void OnMouseEnter() {

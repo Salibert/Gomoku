@@ -10,21 +10,26 @@ message Node {
 }
 
 service Game {
-    rpc InitGame(InitGameRequest) returns (InitGameResponse) {} /* simple RPC */
+    rpc CDGame(CDGameRequest) returns (CDGameResponse) {} /* simple RPC */
     rpc Played(StonePlayed) returns (StonePlayed) {} /* simple RPC */
-    // rpc Played(stream StonePlayed) returns (stream StonePlayed) {} /* A bidirectional streaming RPC */
+    rpc CheckRules(StonePlayed) returns (CheckRulesResponse) {}
 }
 
-message InitGameRequest {
-    repeated Node Board = 1;
-    string GameId = 2;
+message CDGameRequest {
+    string GameID = 1;
+    bool Delete = 2;
 }
 
-message  InitGameResponse {
-    string Message = 1;
+message CheckRulesResponse {
+    bool IsPossible = 1;
+}
+
+message CDGameResponse {
+    bool IsSuccess = 1;
+    string Message = 2;
 }
 
 message StonePlayed {
-    string Message = 1;
-    Node CurrentPlayerMove = 2;
+    Node CurrentPlayerMove = 1;
+    string GameID = 2;
 }

@@ -26,21 +26,25 @@ namespace GomokuBuffer {
           string.Concat(
             "CgxidWZmZXIucHJvdG8SDGdvbW9rdUJ1ZmZlciI+CgROb2RlEgkKAVgYASAB",
             "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUSEAoIQ2FwdGVyZWQYBCAB",
-            "KAgiRAoPSW5pdEdhbWVSZXF1ZXN0EiEKBUJvYXJkGAEgAygLMhIuZ29tb2t1",
-            "QnVmZmVyLk5vZGUSDgoGR2FtZUlkGAIgASgJIiMKEEluaXRHYW1lUmVzcG9u",
-            "c2USDwoHTWVzc2FnZRgBIAEoCSJNCgtTdG9uZVBsYXllZBIPCgdNZXNzYWdl",
-            "GAEgASgJEi0KEUN1cnJlbnRQbGF5ZXJNb3ZlGAIgASgLMhIuZ29tb2t1QnVm",
-            "ZmVyLk5vZGUylQEKBEdhbWUSSwoISW5pdEdhbWUSHS5nb21va3VCdWZmZXIu",
-            "SW5pdEdhbWVSZXF1ZXN0Gh4uZ29tb2t1QnVmZmVyLkluaXRHYW1lUmVzcG9u",
-            "c2UiABJACgZQbGF5ZWQSGS5nb21va3VCdWZmZXIuU3RvbmVQbGF5ZWQaGS5n",
-            "b21va3VCdWZmZXIuU3RvbmVQbGF5ZWQiAGIGcHJvdG8z"));
+            "KAgiLwoNQ0RHYW1lUmVxdWVzdBIOCgZHYW1lSUQYASABKAkSDgoGRGVsZXRl",
+            "GAIgASgIIigKEkNoZWNrUnVsZXNSZXNwb25zZRISCgpJc1Bvc3NpYmxlGAEg",
+            "ASgIIjQKDkNER2FtZVJlc3BvbnNlEhEKCUlzU3VjY2VzcxgBIAEoCBIPCgdN",
+            "ZXNzYWdlGAIgASgJIkwKC1N0b25lUGxheWVkEi0KEUN1cnJlbnRQbGF5ZXJN",
+            "b3ZlGAEgASgLMhIuZ29tb2t1QnVmZmVyLk5vZGUSDgoGR2FtZUlEGAIgASgJ",
+            "MtwBCgRHYW1lEkUKBkNER2FtZRIbLmdvbW9rdUJ1ZmZlci5DREdhbWVSZXF1",
+            "ZXN0GhwuZ29tb2t1QnVmZmVyLkNER2FtZVJlc3BvbnNlIgASQAoGUGxheWVk",
+            "EhkuZ29tb2t1QnVmZmVyLlN0b25lUGxheWVkGhkuZ29tb2t1QnVmZmVyLlN0",
+            "b25lUGxheWVkIgASSwoKQ2hlY2tSdWxlcxIZLmdvbW9rdUJ1ZmZlci5TdG9u",
+            "ZVBsYXllZBogLmdvbW9rdUJ1ZmZlci5DaGVja1J1bGVzUmVzcG9uc2UiAGIG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Node), global::GomokuBuffer.Node.Parser, new[]{ "X", "Y", "Player", "Captered" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.InitGameRequest), global::GomokuBuffer.InitGameRequest.Parser, new[]{ "Board", "GameId" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.InitGameResponse), global::GomokuBuffer.InitGameResponse.Parser, new[]{ "Message" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.StonePlayed), global::GomokuBuffer.StonePlayed.Parser, new[]{ "Message", "CurrentPlayerMove" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameRequest), global::GomokuBuffer.CDGameRequest.Parser, new[]{ "GameID", "Delete" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CheckRulesResponse), global::GomokuBuffer.CheckRulesResponse.Parser, new[]{ "IsPossible" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameResponse), global::GomokuBuffer.CDGameResponse.Parser, new[]{ "IsSuccess", "Message" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.StonePlayed), global::GomokuBuffer.StonePlayed.Parser, new[]{ "CurrentPlayerMove", "GameID" }, null, null, null)
           }));
     }
     #endregion
@@ -260,11 +264,11 @@ namespace GomokuBuffer {
 
   }
 
-  public sealed partial class InitGameRequest : pb::IMessage<InitGameRequest> {
-    private static readonly pb::MessageParser<InitGameRequest> _parser = new pb::MessageParser<InitGameRequest>(() => new InitGameRequest());
+  public sealed partial class CDGameRequest : pb::IMessage<CDGameRequest> {
+    private static readonly pb::MessageParser<CDGameRequest> _parser = new pb::MessageParser<CDGameRequest>(() => new CDGameRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<InitGameRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<CDGameRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -277,68 +281,69 @@ namespace GomokuBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public InitGameRequest() {
+    public CDGameRequest() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public InitGameRequest(InitGameRequest other) : this() {
-      board_ = other.board_.Clone();
-      gameId_ = other.gameId_;
+    public CDGameRequest(CDGameRequest other) : this() {
+      gameID_ = other.gameID_;
+      delete_ = other.delete_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public InitGameRequest Clone() {
-      return new InitGameRequest(this);
+    public CDGameRequest Clone() {
+      return new CDGameRequest(this);
     }
 
-    /// <summary>Field number for the "Board" field.</summary>
-    public const int BoardFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::GomokuBuffer.Node> _repeated_board_codec
-        = pb::FieldCodec.ForMessage(10, global::GomokuBuffer.Node.Parser);
-    private readonly pbc::RepeatedField<global::GomokuBuffer.Node> board_ = new pbc::RepeatedField<global::GomokuBuffer.Node>();
+    /// <summary>Field number for the "GameID" field.</summary>
+    public const int GameIDFieldNumber = 1;
+    private string gameID_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::GomokuBuffer.Node> Board {
-      get { return board_; }
-    }
-
-    /// <summary>Field number for the "GameId" field.</summary>
-    public const int GameIdFieldNumber = 2;
-    private string gameId_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string GameId {
-      get { return gameId_; }
+    public string GameID {
+      get { return gameID_; }
       set {
-        gameId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        gameID_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "Delete" field.</summary>
+    public const int DeleteFieldNumber = 2;
+    private bool delete_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Delete {
+      get { return delete_; }
+      set {
+        delete_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as InitGameRequest);
+      return Equals(other as CDGameRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(InitGameRequest other) {
+    public bool Equals(CDGameRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if(!board_.Equals(other.board_)) return false;
-      if (GameId != other.GameId) return false;
+      if (GameID != other.GameID) return false;
+      if (Delete != other.Delete) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      hash ^= board_.GetHashCode();
-      if (GameId.Length != 0) hash ^= GameId.GetHashCode();
+      if (GameID.Length != 0) hash ^= GameID.GetHashCode();
+      if (Delete != false) hash ^= Delete.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -352,10 +357,13 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      board_.WriteTo(output, _repeated_board_codec);
-      if (GameId.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(GameId);
+      if (GameID.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(GameID);
+      }
+      if (Delete != false) {
+        output.WriteRawTag(16);
+        output.WriteBool(Delete);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -365,9 +373,11 @@ namespace GomokuBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      size += board_.CalculateSize(_repeated_board_codec);
-      if (GameId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(GameId);
+      if (GameID.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(GameID);
+      }
+      if (Delete != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -376,13 +386,15 @@ namespace GomokuBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(InitGameRequest other) {
+    public void MergeFrom(CDGameRequest other) {
       if (other == null) {
         return;
       }
-      board_.Add(other.board_);
-      if (other.GameId.Length != 0) {
-        GameId = other.GameId;
+      if (other.GameID.Length != 0) {
+        GameID = other.GameID;
+      }
+      if (other.Delete != false) {
+        Delete = other.Delete;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -396,11 +408,11 @@ namespace GomokuBuffer {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            board_.AddEntriesFrom(input, _repeated_board_codec);
+            GameID = input.ReadString();
             break;
           }
-          case 18: {
-            GameId = input.ReadString();
+          case 16: {
+            Delete = input.ReadBool();
             break;
           }
         }
@@ -409,11 +421,11 @@ namespace GomokuBuffer {
 
   }
 
-  public sealed partial class InitGameResponse : pb::IMessage<InitGameResponse> {
-    private static readonly pb::MessageParser<InitGameResponse> _parser = new pb::MessageParser<InitGameResponse>(() => new InitGameResponse());
+  public sealed partial class CheckRulesResponse : pb::IMessage<CheckRulesResponse> {
+    private static readonly pb::MessageParser<CheckRulesResponse> _parser = new pb::MessageParser<CheckRulesResponse>(() => new CheckRulesResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<InitGameResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<CheckRulesResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -426,25 +438,166 @@ namespace GomokuBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public InitGameResponse() {
+    public CheckRulesResponse() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public InitGameResponse(InitGameResponse other) : this() {
+    public CheckRulesResponse(CheckRulesResponse other) : this() {
+      isPossible_ = other.isPossible_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CheckRulesResponse Clone() {
+      return new CheckRulesResponse(this);
+    }
+
+    /// <summary>Field number for the "IsPossible" field.</summary>
+    public const int IsPossibleFieldNumber = 1;
+    private bool isPossible_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool IsPossible {
+      get { return isPossible_; }
+      set {
+        isPossible_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as CheckRulesResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(CheckRulesResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (IsPossible != other.IsPossible) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (IsPossible != false) hash ^= IsPossible.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (IsPossible != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(IsPossible);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (IsPossible != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(CheckRulesResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.IsPossible != false) {
+        IsPossible = other.IsPossible;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            IsPossible = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class CDGameResponse : pb::IMessage<CDGameResponse> {
+    private static readonly pb::MessageParser<CDGameResponse> _parser = new pb::MessageParser<CDGameResponse>(() => new CDGameResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<CDGameResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CDGameResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CDGameResponse(CDGameResponse other) : this() {
+      isSuccess_ = other.isSuccess_;
       message_ = other.message_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public InitGameResponse Clone() {
-      return new InitGameResponse(this);
+    public CDGameResponse Clone() {
+      return new CDGameResponse(this);
+    }
+
+    /// <summary>Field number for the "IsSuccess" field.</summary>
+    public const int IsSuccessFieldNumber = 1;
+    private bool isSuccess_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool IsSuccess {
+      get { return isSuccess_; }
+      set {
+        isSuccess_ = value;
+      }
     }
 
     /// <summary>Field number for the "Message" field.</summary>
-    public const int MessageFieldNumber = 1;
+    public const int MessageFieldNumber = 2;
     private string message_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Message {
@@ -456,17 +609,18 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as InitGameResponse);
+      return Equals(other as CDGameResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(InitGameResponse other) {
+    public bool Equals(CDGameResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (IsSuccess != other.IsSuccess) return false;
       if (Message != other.Message) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -474,6 +628,7 @@ namespace GomokuBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (IsSuccess != false) hash ^= IsSuccess.GetHashCode();
       if (Message.Length != 0) hash ^= Message.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -488,8 +643,12 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
+      if (IsSuccess != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(IsSuccess);
+      }
       if (Message.Length != 0) {
-        output.WriteRawTag(10);
+        output.WriteRawTag(18);
         output.WriteString(Message);
       }
       if (_unknownFields != null) {
@@ -500,6 +659,9 @@ namespace GomokuBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (IsSuccess != false) {
+        size += 1 + 1;
+      }
       if (Message.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
       }
@@ -510,9 +672,12 @@ namespace GomokuBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(InitGameResponse other) {
+    public void MergeFrom(CDGameResponse other) {
       if (other == null) {
         return;
+      }
+      if (other.IsSuccess != false) {
+        IsSuccess = other.IsSuccess;
       }
       if (other.Message.Length != 0) {
         Message = other.Message;
@@ -528,7 +693,11 @@ namespace GomokuBuffer {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
+          case 8: {
+            IsSuccess = input.ReadBool();
+            break;
+          }
+          case 18: {
             Message = input.ReadString();
             break;
           }
@@ -546,7 +715,7 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[3]; }
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -563,8 +732,8 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public StonePlayed(StonePlayed other) : this() {
-      message_ = other.message_;
       currentPlayerMove_ = other.currentPlayerMove_ != null ? other.currentPlayerMove_.Clone() : null;
+      gameID_ = other.gameID_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -573,25 +742,25 @@ namespace GomokuBuffer {
       return new StonePlayed(this);
     }
 
-    /// <summary>Field number for the "Message" field.</summary>
-    public const int MessageFieldNumber = 1;
-    private string message_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Message {
-      get { return message_; }
-      set {
-        message_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
     /// <summary>Field number for the "CurrentPlayerMove" field.</summary>
-    public const int CurrentPlayerMoveFieldNumber = 2;
+    public const int CurrentPlayerMoveFieldNumber = 1;
     private global::GomokuBuffer.Node currentPlayerMove_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::GomokuBuffer.Node CurrentPlayerMove {
       get { return currentPlayerMove_; }
       set {
         currentPlayerMove_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "GameID" field.</summary>
+    public const int GameIDFieldNumber = 2;
+    private string gameID_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string GameID {
+      get { return gameID_; }
+      set {
+        gameID_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -608,16 +777,16 @@ namespace GomokuBuffer {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Message != other.Message) return false;
       if (!object.Equals(CurrentPlayerMove, other.CurrentPlayerMove)) return false;
+      if (GameID != other.GameID) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Message.Length != 0) hash ^= Message.GetHashCode();
       if (currentPlayerMove_ != null) hash ^= CurrentPlayerMove.GetHashCode();
+      if (GameID.Length != 0) hash ^= GameID.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -631,13 +800,13 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Message.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Message);
-      }
       if (currentPlayerMove_ != null) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteMessage(CurrentPlayerMove);
+      }
+      if (GameID.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(GameID);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -647,11 +816,11 @@ namespace GomokuBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Message.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
-      }
       if (currentPlayerMove_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(CurrentPlayerMove);
+      }
+      if (GameID.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(GameID);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -664,14 +833,14 @@ namespace GomokuBuffer {
       if (other == null) {
         return;
       }
-      if (other.Message.Length != 0) {
-        Message = other.Message;
-      }
       if (other.currentPlayerMove_ != null) {
         if (currentPlayerMove_ == null) {
           currentPlayerMove_ = new global::GomokuBuffer.Node();
         }
         CurrentPlayerMove.MergeFrom(other.CurrentPlayerMove);
+      }
+      if (other.GameID.Length != 0) {
+        GameID = other.GameID;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -685,14 +854,14 @@ namespace GomokuBuffer {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Message = input.ReadString();
-            break;
-          }
-          case 18: {
             if (currentPlayerMove_ == null) {
               currentPlayerMove_ = new global::GomokuBuffer.Node();
             }
             input.ReadMessage(currentPlayerMove_);
+            break;
+          }
+          case 18: {
+            GameID = input.ReadString();
             break;
           }
         }

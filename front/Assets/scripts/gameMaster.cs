@@ -16,12 +16,12 @@ public class gameMaster : MonoBehaviour
     public Material player2;
 
     protected Channel channel;
-    protected string gameID;
+    protected string GameID;
     protected Game.GameClient Client;
     void Awake() {
         channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
         Client = new Game.GameClient(channel);
-        gameID = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+        GameID = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         playerTurn = 1;
         materialCurrentPlayer = player1;
     }
@@ -46,25 +46,23 @@ public class gameMaster : MonoBehaviour
         return channel;
     }
     public string GetGameID() {
-        return gameID;
+        return GameID;
     }
-    async public void GetInitGame(List<GomokuBuffer.Node> sentedBoard) {    
+    async public void GetCDGame() {    
         try {
-            GomokuBuffer.InitGameResponse reply = await Client.InitGameAsync(
-                new GomokuBuffer.InitGameRequest(){ Board= { sentedBoard.ToArray() }, GameId= gameID
-            });
-            Debug.Log(reply.Message);
+            GomokuBuffer.CDGameResponse reply = await Client.CDGameAsync( new GomokuBuffer.CDGameRequest(){ GameId= GameID });
+            if (reply.IsSuccess == false)
+                Debug.Log("NONONONO");
         } catch (Exception e) {
             Debug.Log("RPC failed" + e);
             throw;
         }
     }
 
-    async public void GetPlayed(GomokuBuffer.Node node, string message) {
+    async public void GetPlayed(GomokuBuffer.Node node) {
         try {
             GomokuBuffer.StonePlayed reply = await Client.PlayedAsync(
-                new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), Message=message
-            });
+                new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
             Transform stone = goban.GetStone(reply.CurrentPlayerMove);
             stone.transform.GetComponent<stone>().SetStone();
         } catch (Exception e) {

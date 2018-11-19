@@ -18,16 +18,14 @@ public class goban : MonoBehaviour
         Transform line = null;
         Transform lines = transform.Find("lines").transform;
         inter = transform.Find("stones");
-        List<GomokuBuffer.Node> sentedBoard = new List<GomokuBuffer.Node>();
         for (int i = 0; i < lines.childCount; i++)
         {
             line = lines.GetChild(i).transform;
             if (line.rotation.y == 0) {
                 board[i] = createStones(findIntersections(line), i);
-                sentedBoard.AddRange(board[i]);
             }
         }
-        GM.GetInitGame(sentedBoard);
+        GM.GetCDGame();
     }
 
     private GomokuBuffer.Node[] createStones(Vector3[] pos, int x) {
