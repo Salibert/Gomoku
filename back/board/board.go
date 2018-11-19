@@ -16,7 +16,7 @@ func (board Board) Captured(initialStone pb.StonePlayed) []pb.Node {
 	var stone *pb.Node
 	for axis := range axis.Axes {
 		if isFind := board.findStone(initialStone, axis.Multiply(2), stone) == true {
-			
+			if stone Player
 		}
 	}
 }
