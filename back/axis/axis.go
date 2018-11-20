@@ -18,11 +18,22 @@ var Axes = [8]Axis{
 }
 
 // Multiply multiply axis by multiplier
-func (axis Axis) Multiply(multiplier int32) Axis {
+func (axis *Axis) Multiply(multiplier int32) Axis {
 	return Axis{X: axis.X * multiplier, Y: axis.Y * multiplier}
 }
 
 // Divide divide axis by divisor
-func (axis Axis) Divide(divisor int32) Axis {
+func (axis *Axis) Divide(divisor int32) Axis {
 	return Axis{X: axis.X / divisor, Y: axis.Y / divisor}
+}
+
+// Add Addition axis by divisor
+func (axis *Axis) Add(add Axis) Axis {
+
+	return Axis{X: axis.X + add.X, Y: axis.Y + add.Y}
+}
+
+// Sub subtract axis by divisor
+func (axis *Axis) Sub(sub Axis) Axis {
+	return Axis{X: axis.X - sub.X, Y: axis.Y - sub.Y}
 }
