@@ -6,7 +6,6 @@ message Node {
     int32 X = 1;
     int32 Y = 2;
     int32 Player = 3;
-    bool Captered = 4;
 }
 
 service Game {
@@ -22,6 +21,8 @@ message CDGameRequest {
 
 message CheckRulesResponse {
     bool IsPossible = 1;
+    repeated Node Captered = 2;
+    int32 nbStoneCapturedPlayer = 3;
 }
 
 message CDGameResponse {

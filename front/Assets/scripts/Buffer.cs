@@ -24,25 +24,26 @@ namespace GomokuBuffer {
     static BufferReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgxidWZmZXIucHJvdG8SDGdvbW9rdUJ1ZmZlciI+CgROb2RlEgkKAVgYASAB",
-            "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUSEAoIQ2FwdGVyZWQYBCAB",
-            "KAgiLwoNQ0RHYW1lUmVxdWVzdBIOCgZHYW1lSUQYASABKAkSDgoGRGVsZXRl",
-            "GAIgASgIIigKEkNoZWNrUnVsZXNSZXNwb25zZRISCgpJc1Bvc3NpYmxlGAEg",
-            "ASgIIjQKDkNER2FtZVJlc3BvbnNlEhEKCUlzU3VjY2VzcxgBIAEoCBIPCgdN",
-            "ZXNzYWdlGAIgASgJIkwKC1N0b25lUGxheWVkEi0KEUN1cnJlbnRQbGF5ZXJN",
-            "b3ZlGAEgASgLMhIuZ29tb2t1QnVmZmVyLk5vZGUSDgoGR2FtZUlEGAIgASgJ",
-            "MtwBCgRHYW1lEkUKBkNER2FtZRIbLmdvbW9rdUJ1ZmZlci5DREdhbWVSZXF1",
-            "ZXN0GhwuZ29tb2t1QnVmZmVyLkNER2FtZVJlc3BvbnNlIgASQAoGUGxheWVk",
-            "EhkuZ29tb2t1QnVmZmVyLlN0b25lUGxheWVkGhkuZ29tb2t1QnVmZmVyLlN0",
-            "b25lUGxheWVkIgASSwoKQ2hlY2tSdWxlcxIZLmdvbW9rdUJ1ZmZlci5TdG9u",
-            "ZVBsYXllZBogLmdvbW9rdUJ1ZmZlci5DaGVja1J1bGVzUmVzcG9uc2UiAGIG",
-            "cHJvdG8z"));
+            "CgxidWZmZXIucHJvdG8SDGdvbW9rdUJ1ZmZlciIsCgROb2RlEgkKAVgYASAB",
+            "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUiLwoNQ0RHYW1lUmVxdWVz",
+            "dBIOCgZHYW1lSUQYASABKAkSDgoGRGVsZXRlGAIgASgIIm0KEkNoZWNrUnVs",
+            "ZXNSZXNwb25zZRISCgpJc1Bvc3NpYmxlGAEgASgIEiQKCENhcHRlcmVkGAIg",
+            "AygLMhIuZ29tb2t1QnVmZmVyLk5vZGUSHQoVbmJTdG9uZUNhcHR1cmVkUGxh",
+            "eWVyGAMgASgFIjQKDkNER2FtZVJlc3BvbnNlEhEKCUlzU3VjY2VzcxgBIAEo",
+            "CBIPCgdNZXNzYWdlGAIgASgJIkwKC1N0b25lUGxheWVkEi0KEUN1cnJlbnRQ",
+            "bGF5ZXJNb3ZlGAEgASgLMhIuZ29tb2t1QnVmZmVyLk5vZGUSDgoGR2FtZUlE",
+            "GAIgASgJMtwBCgRHYW1lEkUKBkNER2FtZRIbLmdvbW9rdUJ1ZmZlci5DREdh",
+            "bWVSZXF1ZXN0GhwuZ29tb2t1QnVmZmVyLkNER2FtZVJlc3BvbnNlIgASQAoG",
+            "UGxheWVkEhkuZ29tb2t1QnVmZmVyLlN0b25lUGxheWVkGhkuZ29tb2t1QnVm",
+            "ZmVyLlN0b25lUGxheWVkIgASSwoKQ2hlY2tSdWxlcxIZLmdvbW9rdUJ1ZmZl",
+            "ci5TdG9uZVBsYXllZBogLmdvbW9rdUJ1ZmZlci5DaGVja1J1bGVzUmVzcG9u",
+            "c2UiAGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Node), global::GomokuBuffer.Node.Parser, new[]{ "X", "Y", "Player", "Captered" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Node), global::GomokuBuffer.Node.Parser, new[]{ "X", "Y", "Player" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameRequest), global::GomokuBuffer.CDGameRequest.Parser, new[]{ "GameID", "Delete" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CheckRulesResponse), global::GomokuBuffer.CheckRulesResponse.Parser, new[]{ "IsPossible" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CheckRulesResponse), global::GomokuBuffer.CheckRulesResponse.Parser, new[]{ "IsPossible", "Captered", "NbStoneCapturedPlayer" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameResponse), global::GomokuBuffer.CDGameResponse.Parser, new[]{ "IsSuccess", "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.StonePlayed), global::GomokuBuffer.StonePlayed.Parser, new[]{ "CurrentPlayerMove", "GameID" }, null, null, null)
           }));
@@ -79,7 +80,6 @@ namespace GomokuBuffer {
       x_ = other.x_;
       y_ = other.y_;
       player_ = other.player_;
-      captered_ = other.captered_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -121,17 +121,6 @@ namespace GomokuBuffer {
       }
     }
 
-    /// <summary>Field number for the "Captered" field.</summary>
-    public const int CapteredFieldNumber = 4;
-    private bool captered_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Captered {
-      get { return captered_; }
-      set {
-        captered_ = value;
-      }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Node);
@@ -148,7 +137,6 @@ namespace GomokuBuffer {
       if (X != other.X) return false;
       if (Y != other.Y) return false;
       if (Player != other.Player) return false;
-      if (Captered != other.Captered) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -158,7 +146,6 @@ namespace GomokuBuffer {
       if (X != 0) hash ^= X.GetHashCode();
       if (Y != 0) hash ^= Y.GetHashCode();
       if (Player != 0) hash ^= Player.GetHashCode();
-      if (Captered != false) hash ^= Captered.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -184,10 +171,6 @@ namespace GomokuBuffer {
         output.WriteRawTag(24);
         output.WriteInt32(Player);
       }
-      if (Captered != false) {
-        output.WriteRawTag(32);
-        output.WriteBool(Captered);
-      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -204,9 +187,6 @@ namespace GomokuBuffer {
       }
       if (Player != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Player);
-      }
-      if (Captered != false) {
-        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -227,9 +207,6 @@ namespace GomokuBuffer {
       }
       if (other.Player != 0) {
         Player = other.Player;
-      }
-      if (other.Captered != false) {
-        Captered = other.Captered;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -252,10 +229,6 @@ namespace GomokuBuffer {
           }
           case 24: {
             Player = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            Captered = input.ReadBool();
             break;
           }
         }
@@ -447,6 +420,8 @@ namespace GomokuBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CheckRulesResponse(CheckRulesResponse other) : this() {
       isPossible_ = other.isPossible_;
+      captered_ = other.captered_.Clone();
+      nbStoneCapturedPlayer_ = other.nbStoneCapturedPlayer_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -466,6 +441,27 @@ namespace GomokuBuffer {
       }
     }
 
+    /// <summary>Field number for the "Captered" field.</summary>
+    public const int CapteredFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::GomokuBuffer.Node> _repeated_captered_codec
+        = pb::FieldCodec.ForMessage(18, global::GomokuBuffer.Node.Parser);
+    private readonly pbc::RepeatedField<global::GomokuBuffer.Node> captered_ = new pbc::RepeatedField<global::GomokuBuffer.Node>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::GomokuBuffer.Node> Captered {
+      get { return captered_; }
+    }
+
+    /// <summary>Field number for the "nbStoneCapturedPlayer" field.</summary>
+    public const int NbStoneCapturedPlayerFieldNumber = 3;
+    private int nbStoneCapturedPlayer_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int NbStoneCapturedPlayer {
+      get { return nbStoneCapturedPlayer_; }
+      set {
+        nbStoneCapturedPlayer_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as CheckRulesResponse);
@@ -480,6 +476,8 @@ namespace GomokuBuffer {
         return true;
       }
       if (IsPossible != other.IsPossible) return false;
+      if(!captered_.Equals(other.captered_)) return false;
+      if (NbStoneCapturedPlayer != other.NbStoneCapturedPlayer) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -487,6 +485,8 @@ namespace GomokuBuffer {
     public override int GetHashCode() {
       int hash = 1;
       if (IsPossible != false) hash ^= IsPossible.GetHashCode();
+      hash ^= captered_.GetHashCode();
+      if (NbStoneCapturedPlayer != 0) hash ^= NbStoneCapturedPlayer.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -504,6 +504,11 @@ namespace GomokuBuffer {
         output.WriteRawTag(8);
         output.WriteBool(IsPossible);
       }
+      captered_.WriteTo(output, _repeated_captered_codec);
+      if (NbStoneCapturedPlayer != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(NbStoneCapturedPlayer);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -514,6 +519,10 @@ namespace GomokuBuffer {
       int size = 0;
       if (IsPossible != false) {
         size += 1 + 1;
+      }
+      size += captered_.CalculateSize(_repeated_captered_codec);
+      if (NbStoneCapturedPlayer != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(NbStoneCapturedPlayer);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -529,6 +538,10 @@ namespace GomokuBuffer {
       if (other.IsPossible != false) {
         IsPossible = other.IsPossible;
       }
+      captered_.Add(other.captered_);
+      if (other.NbStoneCapturedPlayer != 0) {
+        NbStoneCapturedPlayer = other.NbStoneCapturedPlayer;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -542,6 +555,14 @@ namespace GomokuBuffer {
             break;
           case 8: {
             IsPossible = input.ReadBool();
+            break;
+          }
+          case 18: {
+            captered_.AddEntriesFrom(input, _repeated_captered_codec);
+            break;
+          }
+          case 24: {
+            NbStoneCapturedPlayer = input.ReadInt32();
             break;
           }
         }

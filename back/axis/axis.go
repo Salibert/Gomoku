@@ -17,6 +17,23 @@ var Axes = [8]Axis{
 	Axis{X: 1, Y: -1},  // ↗
 }
 
+func inverse(nb int32) int32 {
+	switch nb {
+	case -1:
+		return 1
+	case 1:
+		return -1
+	default:
+		return 0
+	}
+}
+
+// Inverse ...
+func (axis *Axis) Inverse() Axis {
+	return Axis{X: inverse(axis.X), Y: inverse(axis.Y)}
+
+}
+
 // Multiply multiply axis by multiplier
 func (axis *Axis) Multiply(multiplier int32) Axis {
 	return Axis{X: axis.X * multiplier, Y: axis.Y * multiplier}

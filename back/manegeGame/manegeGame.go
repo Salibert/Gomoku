@@ -13,10 +13,10 @@ type BannedStone []pb.Node
 
 // Game contains all the meta data of a part
 type Game struct {
-	rwmux                sync.RWMutex
-	board                board.Board
-	forbiddenMovePlayer1 BannedStone
-	forbiddenMovePlayer2 BannedStone
+	rwmux                  sync.RWMutex
+	board                  board.Board
+	nbStoneCapturedPlayer1 int32
+	nbStoneCapturedPlayer2 int32
 }
 
 // Games contains all current games
@@ -41,11 +41,7 @@ func (CurrentGames *Games) AddNewGame(gameID string) (*pb.CDGameResponse, error)
 		return &pb.CDGameResponse{IsSuccess: false, Message: "GameID Already exists"}, nil
 	}
 	board := make(Board, 19, 19)
-	CurrentGames.game[gameID] = &Game{
-		board:                board,
-		forbiddenMovePlayer1: make([]pb.Node, 0, 0),
-		forbiddenMovePlayer2: make([]pb.Node, 0, 0),
-	}
+	CurrentGames.game[gameID] = &Game{board: board}
 	for i := 0; i < 19; i++ {
 		board[i] = make([]pb.Node, 19, 19)
 	}
