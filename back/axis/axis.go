@@ -5,16 +5,20 @@ type Axis struct {
 	X, Y int32
 }
 
-// Axes is the list Axis
-var Axes = [8]Axis{
-	Axis{X: 1, Y: 0},   // →
-	Axis{X: 1, Y: 1},   // ↘
+// DialRightAxes ...
+var DialRightAxes = [4]Axis{
+	Axis{X: 1, Y: -1}, // ↑
+	Axis{X: 1, Y: -1}, // ↗
+	Axis{X: 1, Y: 0},  // →
+	Axis{X: 1, Y: 1},  // ↘
+}
+
+// DialLeftAxes ...
+var DialLeftAxes = [4]Axis{
 	Axis{X: 0, Y: 1},   // ↓
 	Axis{X: -1, Y: 1},  // ↙
 	Axis{X: -1, Y: 0},  // ←
 	Axis{X: -1, Y: -1}, // ↖
-	Axis{X: 1, Y: -1},  // ↑
-	Axis{X: 1, Y: -1},  // ↗
 }
 
 func inverse(nb int32) int32 {

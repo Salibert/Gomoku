@@ -8,9 +8,6 @@ import (
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
-// BannedStone ...
-type BannedStone []pb.Node
-
 // Game contains all the meta data of a part
 type Game struct {
 	rwmux                  sync.RWMutex
@@ -68,6 +65,6 @@ func (CurrentGames *Games) ProccessRules(context context.Context, in *pb.StonePl
 // PlayedAI choose the best move for win
 func (CurrentGames *Games) PlayedAI(context context.Context, in *pb.StonePlayed) (*pb.StonePlayed, error) {
 	game := CurrentGames.game[in.GameID]
-	game.board[in.CurrentPlayerMove.X][in.CurrentPlayerMove.Y] = *in.CurrentPlayerMove
+	game.board[in.CurrentPlayerMove.X][in.CurrentPlayerMove.Y] = *in.CurrentPlayerMove.Player
 	return &pb.StonePlayed{CurrentPlayerMove: &pb.Node{X: in.CurrentPlayerMove.X, Y: in.CurrentPlayerMove.Y + 1, Player: 2}}, nil
 }
