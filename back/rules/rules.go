@@ -53,6 +53,14 @@ func New(player int) Schema {
 	return checker
 }
 
+func compareNodesSchema(list []pb.Node, schema []int) {
+
+}
+
+func (schema Schema) checkCapture(list []pb.Node, index int) []int {
+
+}
+
 // ProccessCheckRules ...
 func (schema Schema) ProccessCheckRules(list []pb.Node, index int) {
 
