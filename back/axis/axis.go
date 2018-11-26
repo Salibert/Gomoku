@@ -7,7 +7,7 @@ type Axis struct {
 
 // DialRightAxes ...
 var DialRightAxes = [4]Axis{
-	Axis{X: 1, Y: -1}, // ↑
+	Axis{X: 0, Y: -1}, // ↑
 	Axis{X: 1, Y: -1}, // ↗
 	Axis{X: 1, Y: 0},  // →
 	Axis{X: 1, Y: 1},  // ↘

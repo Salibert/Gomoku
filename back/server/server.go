@@ -37,10 +37,10 @@ func (s *Server) CDGame(context context.Context, in *pb.CDGameRequest) (*pb.CDGa
 
 // Played ...
 func (s *Server) Played(context context.Context, in *pb.StonePlayed) (*pb.StonePlayed, error) {
-	return manegeGame.CurrentGames.PlayedAI(context, in), nil
+	return manegeGame.CurrentGames.PlayedAI(in)
 }
 
 // CheckRules ...
 func (s *Server) CheckRules(context context.Context, in *pb.StonePlayed) (*pb.CheckRulesResponse, error) {
-	return manegeGame.CurrentGames.ProccessRules(context, in), nil
+	return manegeGame.CurrentGames.ProccessRules(in)
 }

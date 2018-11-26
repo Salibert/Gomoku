@@ -1,7 +1,6 @@
 package manegeGame
 
 import (
-	"context"
 	"sync"
 
 	"github.com/Salibert/Gomoku/back/board"
@@ -34,37 +33,41 @@ func init() {
 // AddNewGame method for create a game after a call front
 func (CurrentGames *Games) AddNewGame(gameID string) (*pb.CDGameResponse, error) {
 	CurrentGames.rwmux.Lock()
+	defer CurrentGames.rwmux.Unlock()
 	if _, ok := CurrentGames.game[gameID]; ok == true {
 		return &pb.CDGameResponse{IsSuccess: false, Message: "GameID Already exists"}, nil
 	}
-	board := make(Board, 19, 19)
-	CurrentGames.game[gameID] = &Game{board: board}
-	for i := 0; i < 19; i++ {
-		board[i] = make([]pb.Node, 19, 19)
-	}
-	CurrentGames.rwmux.Unlock()
+	CurrentGames.game[gameID] = &Game{board: board.New()}
 	return &pb.CDGameResponse{IsSuccess: true}, nil
 }
 
 // DeleteGame method for delete a game in the map
-func (CurrentGames *Games) DeleteGame(gameID string) (*pb.CDGameResponse, error) {
+func (CurrentGames *Games) DeleteGame(gameID string) (res *pb.CDGameResponse, err error) {
 	CurrentGames.rwmux.Lock()
 	defer CurrentGames.rwmux.Unlock()
 	delete(CurrentGames.game, gameID)
 	if _, ok := CurrentGames.game[gameID]; ok == false {
-		return &pb.CDGameResponse{IsSuccess: true}, nil
+		res.IsSuccess = true
 	}
-	return &pb.CDGameResponse{IsSuccess: false}, nil
+	return res, err
 }
 
 // ProccessRules ...
-func (CurrentGames *Games) ProccessRules(context context.Context, in *pb.StonePlayed) (checkRules *pb.CheckRulesResponse, err error) {
-
+func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (checkRules *pb.CheckRulesResponse, err error) {
+	err = nil
+	CurrentGames.rwmux.Lock()
+	defer CurrentGames.rwmux.Unlock()
+	checkRules = CurrentGames.game[in.GameID].board.CheckRulesAndCaptured(*in.CurrentPlayerMove)
+	len := len(checkRules.Captered)
+	if len != 0 {
+		checkRules
+	}
+	return checkRules, err
 }
 
 // PlayedAI choose the best move for win
-func (CurrentGames *Games) PlayedAI(context context.Context, in *pb.StonePlayed) (*pb.StonePlayed, error) {
+func (CurrentGames *Games) PlayedAI(in *pb.StonePlayed) (*pb.StonePlayed, error) {
 	game := CurrentGames.game[in.GameID]
-	game.board[in.CurrentPlayerMove.X][in.CurrentPlayerMove.Y] = *in.CurrentPlayerMove.Player
+	game.board[in.CurrentPlayerMove.X][in.CurrentPlayerMove.Y] = in.CurrentPlayerMove.Player
 	return &pb.StonePlayed{CurrentPlayerMove: &pb.Node{X: in.CurrentPlayerMove.X, Y: in.CurrentPlayerMove.Y + 1, Player: 2}}, nil
 }
