@@ -45,7 +45,7 @@ func (board Board) CheckRulesAndCaptured(initialStone pb.Node) *pb.CheckRulesRes
 	}
 	board[initialStone.X][initialStone.Y] = initialStone.Player
 	res.IsPossible = true
-	res.Captered = report.Report.ListCapturedStone
+	res.Captured = report.Report.ListCapturedStone
 	return res
 }
 

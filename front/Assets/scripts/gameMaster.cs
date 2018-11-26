@@ -50,7 +50,7 @@ public class gameMaster : MonoBehaviour
     }
     async public void GetCDGame() {    
         try {
-            GomokuBuffer.CDGameResponse reply = await Client.CDGameAsync( new GomokuBuffer.CDGameRequest(){ GameId= GameID });
+            GomokuBuffer.CDGameResponse reply = await Client.CDGameAsync( new GomokuBuffer.CDGameRequest(){ GameID= GameID });
             if (reply.IsSuccess == false)
                 Debug.Log("NONONONO");
         } catch (Exception e) {
@@ -65,6 +65,31 @@ public class gameMaster : MonoBehaviour
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
             Transform stone = goban.GetStone(reply.CurrentPlayerMove);
             stone.transform.GetComponent<stone>().SetStone();
+        } catch (Exception e) {
+            Debug.Log("RPC failed" + e);
+            throw;
+        }
+    }
+
+    async public Task<bool> GetCheckRules(GomokuBuffer.Node node, int player) {
+        try {
+            node.Player = player;
+            GomokuBuffer.CheckRulesResponse reply = await Client.CheckRulesAsync(
+                new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
+            if (reply.Captured) {
+                int indexElementDelete;
+                foreach(GomokuBuffer.Node capturedStone in reply.Captured) {
+                    goban.board.ForEach((index, el) => {
+                        if (el.transform.node.X == capturedStone.X && el.transform.node.Y == capturedStone.Y) {
+                            el.transform.GetComponent<stone>().Reset();
+                            indexElementDelete = index;
+                            break;
+                        }
+                    });
+                    goban.board.Remove(indexElementDelete);
+                }
+            }
+            return reply.IsPossible;
         } catch (Exception e) {
             Debug.Log("RPC failed" + e);
             throw;

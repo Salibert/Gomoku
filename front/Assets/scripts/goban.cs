@@ -8,13 +8,12 @@ using GomokuBuffer;
 public class goban : MonoBehaviour
 {
     public Transform stonePrefab;
-    public static GomokuBuffer.Node[][] board;
+    public static List<Transform> board;
     private static Transform inter;
     public static gameMaster GM;
     void Start()
     {
         GM = GameObject.Find("gameMaster").GetComponent<gameMaster>();
-        board = new GomokuBuffer.Node[19][];
         Transform line = null;
         Transform lines = transform.Find("lines").transform;
         inter = transform.Find("stones");
@@ -22,30 +21,26 @@ public class goban : MonoBehaviour
         {
             line = lines.GetChild(i).transform;
             if (line.rotation.y == 0) {
-                board[i] = createStones(findIntersections(line), i);
+                createStones(findIntersections(line), i);
             }
         }
         GM.GetCDGame();
     }
 
-    private GomokuBuffer.Node[] createStones(Vector3[] pos, int x) {
+    private void createStones(Vector3[] pos, int x) {
         Transform newInstance;
-        GomokuBuffer.Node[] lines = new GomokuBuffer.Node[19];
         for (int i = 0; i < pos.Length; i++){
             GomokuBuffer.Node node = new GomokuBuffer.Node() { X=x, Y=i };
             newInstance = Instantiate(stonePrefab, pos[i], new Quaternion() { x=0, y=0, z=0 }, inter);
             newInstance.GetComponent<MeshRenderer>().enabled = false;
             newInstance.GetComponent<stone>().initNode(ref node);
-            lines[i] = node;
         };
-        return lines;
     }
     private Vector3[] findIntersections(Transform line) {
 
         Vector3 fwd = transform.TransformDirection(transform.forward);
         List<Vector3> pos = new List<Vector3>();
         List<RaycastHit> hitsAll = new List<RaycastHit>();
-
         hitsAll.AddRange(Physics.RaycastAll(line.position, fwd, 1000));
         hitsAll.AddRange(Physics.RaycastAll(line.position, fwd * -1, 1000));
         hitsAll.ForEach(el => {

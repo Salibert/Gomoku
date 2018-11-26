@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
 using GomokuBuffer;
 
 public class stone : MonoBehaviour
@@ -18,10 +19,14 @@ public class stone : MonoBehaviour
         gravity = GetComponent<Collider>();
     }
 
-    void OnMouseDown() {
-        if (!isCreate && goban.GM.GetplayerTurn() == 1) {
-            SetStone();
-            goban.GM.GetPlayed(node);
+    async void OnMouseDown() {
+        if (!isCreate) {
+            if (await goban.GM.GetCheckRules(node, goban.GM.GetplayerTurn())) {
+                SetStone();
+                goban.board.Add(transform);
+            } else {
+                Debug.Log("IMPOSSIBLE");
+            }
         }
     }
     void OnMouseEnter() {
@@ -37,6 +42,12 @@ public class stone : MonoBehaviour
         }
     }
 
+    public void Reset() {
+        meshRend.enabled = false;
+        node.Player = 0;
+        isCreate = false;
+        gravity.attachedRigidbody.useGravity = false;
+    }
     public void SetStone() {
         rend.material = goban.GM.GetCurrentMaterial();
         node.Player = goban.GM.GetplayerTurn();
