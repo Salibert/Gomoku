@@ -23,7 +23,7 @@ public class stone : MonoBehaviour
         if (!isCreate) {
             if (await goban.GM.GetCheckRules(node, goban.GM.GetplayerTurn())) {
                 SetStone();
-                goban.board.Add(transform);
+                goban.board.Add(transform.GetComponent<stone>());
             } else {
                 Debug.Log("IMPOSSIBLE");
             }
@@ -46,6 +46,9 @@ public class stone : MonoBehaviour
         meshRend.enabled = false;
         node.Player = 0;
         isCreate = false;
+        Vector3 up = transform.position;
+        up.y += 0.8f;
+        transform.position = up;
         gravity.attachedRigidbody.useGravity = false;
     }
     public void SetStone() {
@@ -55,5 +58,9 @@ public class stone : MonoBehaviour
         isCreate = true;
         gravity.attachedRigidbody.useGravity = true;
         meshRend.enabled = true;
+    }
+
+    public GomokuBuffer.Node GetNode() {
+        return node;
     }
 }

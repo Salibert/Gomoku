@@ -76,17 +76,20 @@ public class gameMaster : MonoBehaviour
             node.Player = player;
             GomokuBuffer.CheckRulesResponse reply = await Client.CheckRulesAsync(
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
-            if (reply.Captured) {
-                int indexElementDelete;
+            if (reply.Captured.Count != 0) {
+                int index;
+                GomokuBuffer.Node elementNode;
                 foreach(GomokuBuffer.Node capturedStone in reply.Captured) {
-                    goban.board.ForEach((index, el) => {
-                        if (el.transform.node.X == capturedStone.X && el.transform.node.Y == capturedStone.Y) {
-                            el.transform.GetComponent<stone>().Reset();
-                            indexElementDelete = index;
+                    index = 0;
+                    foreach(stone el in goban.board) {
+                        elementNode = el.GetNode();
+                        if (elementNode.X == capturedStone.X && elementNode.Y == capturedStone.Y) {
+                            el.Reset();
                             break;
                         }
-                    });
-                    goban.board.Remove(indexElementDelete);
+                        index++;
+                    }
+                    goban.board.RemoveAt(index);
                 }
             }
             return reply.IsPossible;

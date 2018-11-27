@@ -8,12 +8,13 @@ using GomokuBuffer;
 public class goban : MonoBehaviour
 {
     public Transform stonePrefab;
-    public static List<Transform> board;
+    public static List<stone> board;
     private static Transform inter;
     public static gameMaster GM;
     void Start()
     {
         GM = GameObject.Find("gameMaster").GetComponent<gameMaster>();
+        board = new List<stone>();
         Transform line = null;
         Transform lines = transform.Find("lines").transform;
         inter = transform.Find("stones");
