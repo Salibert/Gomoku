@@ -10,10 +10,9 @@ using System.Threading.Tasks;
 
 public class gameMaster : MonoBehaviour
 {
-    private int playerTurn;
-    private Material materialCurrentPlayer;
-    public Material player1;
-    public Material player2;
+    private player CurrentPlayer;
+    public player player1;
+    public player player2;
 
     protected Channel channel;
     protected string GameID;
@@ -22,22 +21,19 @@ public class gameMaster : MonoBehaviour
         channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
         Client = new Game.GameClient(channel);
         GameID = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-        playerTurn = 1;
-        materialCurrentPlayer = player1;
+        CurrentPlayer = player1;
     }
 
     public void NextPlayer() {
-        if (playerTurn == 1) {
-            playerTurn = 2;
-            materialCurrentPlayer = player2;
+        if (CurrentPlayer.index == player1.index) {
+            CurrentPlayer = player2;
         } else {
-            playerTurn = 1;
-            materialCurrentPlayer = player1;
+            CurrentPlayer = player1;
         }
     }
 
-    public int GetplayerTurn() { return playerTurn; }
-    public Material GetCurrentMaterial() { return materialCurrentPlayer; }
+    public int GetplayerTurn() { return CurrentPlayer.index; }
+    public Material GetCurrentMaterial() { return CurrentPlayer.material; }
 
     public Game.GameClient GetClient() {
         return Client;
@@ -76,7 +72,8 @@ public class gameMaster : MonoBehaviour
             node.Player = player;
             GomokuBuffer.CheckRulesResponse reply = await Client.CheckRulesAsync(
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
-            if (reply.Captured.Count != 0) {
+            if (reply.NbStonedCaptured != 0) {
+                CurrentPlayer.SetScore(CurrentPlayer.GetScore() + reply.NbStonedCaptured);
                 int index;
                 GomokuBuffer.Node elementNode;
                 foreach(GomokuBuffer.Node capturedStone in reply.Captured) {

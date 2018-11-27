@@ -22,26 +22,22 @@ func New() Board {
 }
 
 // CheckRulesAndCaptured ...
-func (board Board) CheckRulesAndCaptured(initialStone pb.Node) *pb.CheckRulesResponse {
+func (board Board) CheckRulesAndCaptured(initialStone pb.Node) *pb.CheckRulesResponse, []*pb.Node {
 	res := &pb.CheckRulesResponse{}
 	report := rules.New(initialStone.Player)
-	defer func() {
-		if len := len(report.Report.ListCapturedStone); len != 0 {
-			go func(list []*pb.Node, len int) {
-				var node *pb.Node
-				for len > 0 {
-					node = list[len-1]
-					board[node.X][node.Y] = node.Player
-					len--
-				}
-			}(report.Report.ListCapturedStone, len)
-		}
-	}()
-	for index := 0; index < 4; index++ {
-		report.ProccessCheckRules(board.createListCheckStone(index, initialStone))
-	}
+	defer board.updateBoardAfterCapture(&report)
+	board.proccessRulesByAxes(report.ProccessCheckRules, initialStone)
 	if report.Report.NbFreeThree > 1 {
 		return res
+	} else if len := len(report.Report.ListWin); len != 0 {
+		for i := 0; i < len; i++ {
+			for _, checkedStone := range report.Report.ListWin[i] {
+				board.proccessRulesByAxes(report.CheckIfPartyIsFinish, *checkedStone)
+			}
+		}
+		if len(report.Report.NextMovesOrWin) == 0 {
+			res.PartyFinish = true
+		}
 	}
 	board[initialStone.X][initialStone.Y] = initialStone.Player
 	res.IsPossible = true
@@ -73,4 +69,23 @@ func (board Board) createListCheckStone(index int, initialStone pb.Node) ([]*pb.
 		X += axisCheck.X
 	}
 	return listCheckStone, indexStone
+}
+
+func (board Board) proccessRulesByAxes(m func(list []*pb.Node, index int), initialStone pb.Node) {
+	for index := 0; index < 4; index++ {
+		m(board.createListCheckStone(index, initialStone))
+	}
+}
+
+func (board Board) updateBoardAfterCapture(report *rules.Schema) {
+	if len := len(report.Report.ListCapturedStone); len != 0 {
+		go func(list []*pb.Node, len int) {
+			var node *pb.Node
+			for len > 0 {
+				node = list[len-1]
+				board[node.X][node.Y] = node.Player
+				len--
+			}
+		}(report.Report.ListCapturedStone, len)
+	}
 }

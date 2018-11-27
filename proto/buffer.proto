@@ -22,6 +22,8 @@ message CDGameRequest {
 message CheckRulesResponse {
     bool IsPossible = 1;
     repeated Node Captured = 2;
+    int32 NbStonedCaptured = 3;
+    bool PartyFinish = 4;
 }
 
 message CDGameResponse {

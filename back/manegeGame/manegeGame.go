@@ -56,7 +56,18 @@ func (CurrentGames *Games) DeleteGame(gameID string) (res *pb.CDGameResponse, er
 func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (*pb.CheckRulesResponse, error) {
 	CurrentGames.rwmux.Lock()
 	defer CurrentGames.rwmux.Unlock()
-	return CurrentGames.game[in.GameID].board.CheckRulesAndCaptured(*in.CurrentPlayerMove), nil
+	game := CurrentGames.game[in.GameID]
+	res := game.board.CheckRulesAndCaptured(*in.CurrentPlayerMove)
+	len := int32(len(res.Captured))
+	if len != 0 {
+		res.NbStonedCaptured = len
+		if in.CurrentPlayerMove.Player == 1 {
+			game.nbStoneCapturedPlayer1 += len
+		} else {
+			game.nbStoneCapturedPlayer2 += len
+		}
+	}
+	return res, nil
 }
 
 // PlayedAI choose the best move for win

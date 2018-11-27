@@ -26,23 +26,24 @@ namespace GomokuBuffer {
           string.Concat(
             "CgxidWZmZXIucHJvdG8SDGdvbW9rdUJ1ZmZlciIsCgROb2RlEgkKAVgYASAB",
             "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUiLwoNQ0RHYW1lUmVxdWVz",
-            "dBIOCgZHYW1lSUQYASABKAkSDgoGRGVsZXRlGAIgASgIIk4KEkNoZWNrUnVs",
+            "dBIOCgZHYW1lSUQYASABKAkSDgoGRGVsZXRlGAIgASgIIn0KEkNoZWNrUnVs",
             "ZXNSZXNwb25zZRISCgpJc1Bvc3NpYmxlGAEgASgIEiQKCENhcHR1cmVkGAIg",
-            "AygLMhIuZ29tb2t1QnVmZmVyLk5vZGUiNAoOQ0RHYW1lUmVzcG9uc2USEQoJ",
-            "SXNTdWNjZXNzGAEgASgIEg8KB01lc3NhZ2UYAiABKAkiTAoLU3RvbmVQbGF5",
-            "ZWQSLQoRQ3VycmVudFBsYXllck1vdmUYASABKAsyEi5nb21va3VCdWZmZXIu",
-            "Tm9kZRIOCgZHYW1lSUQYAiABKAky3AEKBEdhbWUSRQoGQ0RHYW1lEhsuZ29t",
-            "b2t1QnVmZmVyLkNER2FtZVJlcXVlc3QaHC5nb21va3VCdWZmZXIuQ0RHYW1l",
-            "UmVzcG9uc2UiABJACgZQbGF5ZWQSGS5nb21va3VCdWZmZXIuU3RvbmVQbGF5",
-            "ZWQaGS5nb21va3VCdWZmZXIuU3RvbmVQbGF5ZWQiABJLCgpDaGVja1J1bGVz",
-            "EhkuZ29tb2t1QnVmZmVyLlN0b25lUGxheWVkGiAuZ29tb2t1QnVmZmVyLkNo",
-            "ZWNrUnVsZXNSZXNwb25zZSIAYgZwcm90bzM="));
+            "AygLMhIuZ29tb2t1QnVmZmVyLk5vZGUSGAoQTmJTdG9uZWRDYXB0dXJlZBgD",
+            "IAEoBRITCgtQYXJ0eUZpbmlzaBgEIAEoCCI0Cg5DREdhbWVSZXNwb25zZRIR",
+            "CglJc1N1Y2Nlc3MYASABKAgSDwoHTWVzc2FnZRgCIAEoCSJMCgtTdG9uZVBs",
+            "YXllZBItChFDdXJyZW50UGxheWVyTW92ZRgBIAEoCzISLmdvbW9rdUJ1ZmZl",
+            "ci5Ob2RlEg4KBkdhbWVJRBgCIAEoCTLcAQoER2FtZRJFCgZDREdhbWUSGy5n",
+            "b21va3VCdWZmZXIuQ0RHYW1lUmVxdWVzdBocLmdvbW9rdUJ1ZmZlci5DREdh",
+            "bWVSZXNwb25zZSIAEkAKBlBsYXllZBIZLmdvbW9rdUJ1ZmZlci5TdG9uZVBs",
+            "YXllZBoZLmdvbW9rdUJ1ZmZlci5TdG9uZVBsYXllZCIAEksKCkNoZWNrUnVs",
+            "ZXMSGS5nb21va3VCdWZmZXIuU3RvbmVQbGF5ZWQaIC5nb21va3VCdWZmZXIu",
+            "Q2hlY2tSdWxlc1Jlc3BvbnNlIgBiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Node), global::GomokuBuffer.Node.Parser, new[]{ "X", "Y", "Player" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameRequest), global::GomokuBuffer.CDGameRequest.Parser, new[]{ "GameID", "Delete" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CheckRulesResponse), global::GomokuBuffer.CheckRulesResponse.Parser, new[]{ "IsPossible", "Captured" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CheckRulesResponse), global::GomokuBuffer.CheckRulesResponse.Parser, new[]{ "IsPossible", "Captured", "NbStonedCaptured", "PartyFinish" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameResponse), global::GomokuBuffer.CDGameResponse.Parser, new[]{ "IsSuccess", "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.StonePlayed), global::GomokuBuffer.StonePlayed.Parser, new[]{ "CurrentPlayerMove", "GameID" }, null, null, null)
           }));
@@ -420,6 +421,8 @@ namespace GomokuBuffer {
     public CheckRulesResponse(CheckRulesResponse other) : this() {
       isPossible_ = other.isPossible_;
       captured_ = other.captured_.Clone();
+      nbStonedCaptured_ = other.nbStonedCaptured_;
+      partyFinish_ = other.partyFinish_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -449,6 +452,28 @@ namespace GomokuBuffer {
       get { return captured_; }
     }
 
+    /// <summary>Field number for the "NbStonedCaptured" field.</summary>
+    public const int NbStonedCapturedFieldNumber = 3;
+    private int nbStonedCaptured_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int NbStonedCaptured {
+      get { return nbStonedCaptured_; }
+      set {
+        nbStonedCaptured_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "PartyFinish" field.</summary>
+    public const int PartyFinishFieldNumber = 4;
+    private bool partyFinish_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool PartyFinish {
+      get { return partyFinish_; }
+      set {
+        partyFinish_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as CheckRulesResponse);
@@ -464,6 +489,8 @@ namespace GomokuBuffer {
       }
       if (IsPossible != other.IsPossible) return false;
       if(!captured_.Equals(other.captured_)) return false;
+      if (NbStonedCaptured != other.NbStonedCaptured) return false;
+      if (PartyFinish != other.PartyFinish) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -472,6 +499,8 @@ namespace GomokuBuffer {
       int hash = 1;
       if (IsPossible != false) hash ^= IsPossible.GetHashCode();
       hash ^= captured_.GetHashCode();
+      if (NbStonedCaptured != 0) hash ^= NbStonedCaptured.GetHashCode();
+      if (PartyFinish != false) hash ^= PartyFinish.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -490,6 +519,14 @@ namespace GomokuBuffer {
         output.WriteBool(IsPossible);
       }
       captured_.WriteTo(output, _repeated_captured_codec);
+      if (NbStonedCaptured != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(NbStonedCaptured);
+      }
+      if (PartyFinish != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(PartyFinish);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -502,6 +539,12 @@ namespace GomokuBuffer {
         size += 1 + 1;
       }
       size += captured_.CalculateSize(_repeated_captured_codec);
+      if (NbStonedCaptured != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(NbStonedCaptured);
+      }
+      if (PartyFinish != false) {
+        size += 1 + 1;
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -517,6 +560,12 @@ namespace GomokuBuffer {
         IsPossible = other.IsPossible;
       }
       captured_.Add(other.captured_);
+      if (other.NbStonedCaptured != 0) {
+        NbStonedCaptured = other.NbStonedCaptured;
+      }
+      if (other.PartyFinish != false) {
+        PartyFinish = other.PartyFinish;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -534,6 +583,14 @@ namespace GomokuBuffer {
           }
           case 18: {
             captured_.AddEntriesFrom(input, _repeated_captured_codec);
+            break;
+          }
+          case 24: {
+            NbStonedCaptured = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            PartyFinish = input.ReadBool();
             break;
           }
         }

@@ -10,6 +10,7 @@ public class goban : MonoBehaviour
     public Transform stonePrefab;
     public static List<stone> board;
     private static Transform inter;
+
     public static gameMaster GM;
     void Start()
     {
