@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 public class gameMaster : MonoBehaviour
 {
     private player CurrentPlayer;
-    public player player1;
-    public player player2;
+    public Transform Player1;
+    public Transform Player2;
+    private player player1;
+    private player player2;
 
     protected Channel channel;
     protected string GameID;
@@ -21,19 +23,21 @@ public class gameMaster : MonoBehaviour
         channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
         Client = new Game.GameClient(channel);
         GameID = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-        CurrentPlayer = player1;
+        CurrentPlayer = Player1.GetComponent<player>();
+        player1 = CurrentPlayer;
+        player2 = Player2.GetComponent<player>();
     }
 
     public void NextPlayer() {
-        if (CurrentPlayer.index == player1.index) {
+        if (CurrentPlayer.GetIndex() == player1.GetIndex()) {
             CurrentPlayer = player2;
         } else {
             CurrentPlayer = player1;
         }
     }
 
-    public int GetplayerTurn() { return CurrentPlayer.index; }
-    public Material GetCurrentMaterial() { return CurrentPlayer.material; }
+    public int GetPlayerTurn() { return CurrentPlayer.GetIndex(); }
+    public Material GetCurrentMaterial() { return CurrentPlayer.GetMaterial(); }
 
     public Game.GameClient GetClient() {
         return Client;
@@ -71,7 +75,7 @@ public class gameMaster : MonoBehaviour
         try {
             node.Player = player;
             GomokuBuffer.CheckRulesResponse reply = await Client.CheckRulesAsync(
-                new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
+                new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID });
             if (reply.NbStonedCaptured != 0) {
                 CurrentPlayer.SetScore(CurrentPlayer.GetScore() + reply.NbStonedCaptured);
                 int index;
@@ -88,6 +92,10 @@ public class gameMaster : MonoBehaviour
                     }
                     goban.board.RemoveAt(index);
                 }
+            }
+            if (reply.PartyFinish == true) {
+                Debug.Log("GG SALE PUTE !!!" + reply.WinIs);
+
             }
             return reply.IsPossible;
         } catch (Exception e) {

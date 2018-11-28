@@ -14,4 +14,12 @@ public class player : MonoBehaviour {
 	public int GetScore() {
 		return score;
 	}
+
+	public Material GetMaterial() {
+		return material;
+	}
+
+	public int GetIndex() {
+		return index;
+	}
 }

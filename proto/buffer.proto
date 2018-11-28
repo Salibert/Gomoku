@@ -8,6 +8,10 @@ message Node {
     int32 Player = 3;
 }
 
+message Win {
+    int32 player = 1;
+}
+
 service Game {
     rpc CDGame(CDGameRequest) returns (CDGameResponse) {} /* simple RPC */
     rpc Played(StonePlayed) returns (StonePlayed) {} /* simple RPC */
@@ -24,6 +28,7 @@ message CheckRulesResponse {
     repeated Node Captured = 2;
     int32 NbStonedCaptured = 3;
     bool PartyFinish = 4;
+    int32 WinIs = 5;
 }
 
 message CDGameResponse {

@@ -25,25 +25,27 @@ namespace GomokuBuffer {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgxidWZmZXIucHJvdG8SDGdvbW9rdUJ1ZmZlciIsCgROb2RlEgkKAVgYASAB",
-            "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUiLwoNQ0RHYW1lUmVxdWVz",
-            "dBIOCgZHYW1lSUQYASABKAkSDgoGRGVsZXRlGAIgASgIIn0KEkNoZWNrUnVs",
-            "ZXNSZXNwb25zZRISCgpJc1Bvc3NpYmxlGAEgASgIEiQKCENhcHR1cmVkGAIg",
-            "AygLMhIuZ29tb2t1QnVmZmVyLk5vZGUSGAoQTmJTdG9uZWRDYXB0dXJlZBgD",
-            "IAEoBRITCgtQYXJ0eUZpbmlzaBgEIAEoCCI0Cg5DREdhbWVSZXNwb25zZRIR",
-            "CglJc1N1Y2Nlc3MYASABKAgSDwoHTWVzc2FnZRgCIAEoCSJMCgtTdG9uZVBs",
-            "YXllZBItChFDdXJyZW50UGxheWVyTW92ZRgBIAEoCzISLmdvbW9rdUJ1ZmZl",
-            "ci5Ob2RlEg4KBkdhbWVJRBgCIAEoCTLcAQoER2FtZRJFCgZDREdhbWUSGy5n",
-            "b21va3VCdWZmZXIuQ0RHYW1lUmVxdWVzdBocLmdvbW9rdUJ1ZmZlci5DREdh",
-            "bWVSZXNwb25zZSIAEkAKBlBsYXllZBIZLmdvbW9rdUJ1ZmZlci5TdG9uZVBs",
-            "YXllZBoZLmdvbW9rdUJ1ZmZlci5TdG9uZVBsYXllZCIAEksKCkNoZWNrUnVs",
-            "ZXMSGS5nb21va3VCdWZmZXIuU3RvbmVQbGF5ZWQaIC5nb21va3VCdWZmZXIu",
-            "Q2hlY2tSdWxlc1Jlc3BvbnNlIgBiBnByb3RvMw=="));
+            "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUiFQoDV2luEg4KBnBsYXll",
+            "chgBIAEoBSIvCg1DREdhbWVSZXF1ZXN0Eg4KBkdhbWVJRBgBIAEoCRIOCgZE",
+            "ZWxldGUYAiABKAgijAEKEkNoZWNrUnVsZXNSZXNwb25zZRISCgpJc1Bvc3Np",
+            "YmxlGAEgASgIEiQKCENhcHR1cmVkGAIgAygLMhIuZ29tb2t1QnVmZmVyLk5v",
+            "ZGUSGAoQTmJTdG9uZWRDYXB0dXJlZBgDIAEoBRITCgtQYXJ0eUZpbmlzaBgE",
+            "IAEoCBINCgVXaW5JcxgFIAEoBSI0Cg5DREdhbWVSZXNwb25zZRIRCglJc1N1",
+            "Y2Nlc3MYASABKAgSDwoHTWVzc2FnZRgCIAEoCSJMCgtTdG9uZVBsYXllZBIt",
+            "ChFDdXJyZW50UGxheWVyTW92ZRgBIAEoCzISLmdvbW9rdUJ1ZmZlci5Ob2Rl",
+            "Eg4KBkdhbWVJRBgCIAEoCTLcAQoER2FtZRJFCgZDREdhbWUSGy5nb21va3VC",
+            "dWZmZXIuQ0RHYW1lUmVxdWVzdBocLmdvbW9rdUJ1ZmZlci5DREdhbWVSZXNw",
+            "b25zZSIAEkAKBlBsYXllZBIZLmdvbW9rdUJ1ZmZlci5TdG9uZVBsYXllZBoZ",
+            "LmdvbW9rdUJ1ZmZlci5TdG9uZVBsYXllZCIAEksKCkNoZWNrUnVsZXMSGS5n",
+            "b21va3VCdWZmZXIuU3RvbmVQbGF5ZWQaIC5nb21va3VCdWZmZXIuQ2hlY2tS",
+            "dWxlc1Jlc3BvbnNlIgBiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Node), global::GomokuBuffer.Node.Parser, new[]{ "X", "Y", "Player" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Win), global::GomokuBuffer.Win.Parser, new[]{ "Player" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameRequest), global::GomokuBuffer.CDGameRequest.Parser, new[]{ "GameID", "Delete" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CheckRulesResponse), global::GomokuBuffer.CheckRulesResponse.Parser, new[]{ "IsPossible", "Captured", "NbStonedCaptured", "PartyFinish" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CheckRulesResponse), global::GomokuBuffer.CheckRulesResponse.Parser, new[]{ "IsPossible", "Captured", "NbStonedCaptured", "PartyFinish", "WinIs" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameResponse), global::GomokuBuffer.CDGameResponse.Parser, new[]{ "IsSuccess", "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.StonePlayed), global::GomokuBuffer.StonePlayed.Parser, new[]{ "CurrentPlayerMove", "GameID" }, null, null, null)
           }));
@@ -237,6 +239,135 @@ namespace GomokuBuffer {
 
   }
 
+  public sealed partial class Win : pb::IMessage<Win> {
+    private static readonly pb::MessageParser<Win> _parser = new pb::MessageParser<Win>(() => new Win());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Win> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Win() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Win(Win other) : this() {
+      player_ = other.player_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Win Clone() {
+      return new Win(this);
+    }
+
+    /// <summary>Field number for the "player" field.</summary>
+    public const int PlayerFieldNumber = 1;
+    private int player_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int Player {
+      get { return player_; }
+      set {
+        player_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Win);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Win other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Player != other.Player) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Player != 0) hash ^= Player.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Player != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Player);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Player != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Player);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Win other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Player != 0) {
+        Player = other.Player;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Player = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class CDGameRequest : pb::IMessage<CDGameRequest> {
     private static readonly pb::MessageParser<CDGameRequest> _parser = new pb::MessageParser<CDGameRequest>(() => new CDGameRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -245,7 +376,7 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[1]; }
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -402,7 +533,7 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[2]; }
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -423,6 +554,7 @@ namespace GomokuBuffer {
       captured_ = other.captured_.Clone();
       nbStonedCaptured_ = other.nbStonedCaptured_;
       partyFinish_ = other.partyFinish_;
+      winIs_ = other.winIs_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -474,6 +606,17 @@ namespace GomokuBuffer {
       }
     }
 
+    /// <summary>Field number for the "WinIs" field.</summary>
+    public const int WinIsFieldNumber = 5;
+    private int winIs_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int WinIs {
+      get { return winIs_; }
+      set {
+        winIs_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as CheckRulesResponse);
@@ -491,6 +634,7 @@ namespace GomokuBuffer {
       if(!captured_.Equals(other.captured_)) return false;
       if (NbStonedCaptured != other.NbStonedCaptured) return false;
       if (PartyFinish != other.PartyFinish) return false;
+      if (WinIs != other.WinIs) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -501,6 +645,7 @@ namespace GomokuBuffer {
       hash ^= captured_.GetHashCode();
       if (NbStonedCaptured != 0) hash ^= NbStonedCaptured.GetHashCode();
       if (PartyFinish != false) hash ^= PartyFinish.GetHashCode();
+      if (WinIs != 0) hash ^= WinIs.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -527,6 +672,10 @@ namespace GomokuBuffer {
         output.WriteRawTag(32);
         output.WriteBool(PartyFinish);
       }
+      if (WinIs != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(WinIs);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -544,6 +693,9 @@ namespace GomokuBuffer {
       }
       if (PartyFinish != false) {
         size += 1 + 1;
+      }
+      if (WinIs != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(WinIs);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -565,6 +717,9 @@ namespace GomokuBuffer {
       }
       if (other.PartyFinish != false) {
         PartyFinish = other.PartyFinish;
+      }
+      if (other.WinIs != 0) {
+        WinIs = other.WinIs;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -593,6 +748,10 @@ namespace GomokuBuffer {
             PartyFinish = input.ReadBool();
             break;
           }
+          case 40: {
+            WinIs = input.ReadInt32();
+            break;
+          }
         }
       }
     }
@@ -607,7 +766,7 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[3]; }
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -764,7 +923,7 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[4]; }
+      get { return global::GomokuBuffer.BufferReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

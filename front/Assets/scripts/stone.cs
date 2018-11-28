@@ -21,7 +21,7 @@ public class stone : MonoBehaviour
 
     async void OnMouseDown() {
         if (!isCreate) {
-            if (await goban.GM.GetCheckRules(node, goban.GM.GetplayerTurn())) {
+            if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
                 SetStone();
                 goban.board.Add(transform.GetComponent<stone>());
             } else {
@@ -53,7 +53,7 @@ public class stone : MonoBehaviour
     }
     public void SetStone() {
         rend.material = goban.GM.GetCurrentMaterial();
-        node.Player = goban.GM.GetplayerTurn();
+        node.Player = goban.GM.GetPlayerTurn();
         goban.GM.NextPlayer();
         isCreate = true;
         gravity.attachedRigidbody.useGravity = true;
