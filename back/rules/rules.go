@@ -1,6 +1,9 @@
 package rules
 
 import (
+	"fmt"
+
+	"github.com/Salibert/Gomoku/back/player"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
@@ -14,8 +17,8 @@ type Schema struct {
 type ReportCheckRules struct {
 	ListCapturedStone []*pb.Node
 	PartyFinish       bool
-	ListWin           [][]*pb.Node
-	NextMovesOrWin    []*pb.Node
+	WinOrLose         [][]*pb.Node
+	NextMovesOrLose   []*pb.Node
 	NbFreeThree       int
 }
 
@@ -43,23 +46,18 @@ const (
 )
 
 // New create a instance of Schema
-func New(player int32) Schema {
-	var opposent int32
-	switch player {
-	case 1:
-		opposent = 2
-	default:
-		opposent = 1
-	}
+func New(playerIndex int32) Schema {
+	opposent := player.GetOpposentPlayer(playerIndex)
 	checker := Schema{
-		Schema: make([][]int32, 4, 4),
+		Schema: make([][]int32, 5, 5),
 		Report: &ReportCheckRules{
 			ListCapturedStone: make([]*pb.Node, 0, 16),
-			ListWin:           make([][]*pb.Node, 0, 8),
+			WinOrLose:         make([][]*pb.Node, 0, 8),
+			NextMovesOrLose:   make([]*pb.Node, 0, 0),
 		},
 	}
 	for i, f := range rulesFuncArray {
-		checker.Schema[i] = f(player, opposent)
+		checker.Schema[i] = f(playerIndex, opposent)
 	}
 	return checker
 }
@@ -118,12 +116,13 @@ func (schema Schema) checkWin(list []*pb.Node, index int) bool {
 	lenList := len(list)
 loop:
 	for i := 0; i+lenSchema <= lenList; i++ {
-		for index := 0; i < lenSchema; index++ {
+		for index := 0; index < lenSchema; index++ {
 			if list[i+index].Player != schemaWin[index] {
 				continue loop
 			}
 		}
-		schema.Report.ListWin = append(schema.Report.ListWin, list[i:lenSchema])
+		fmt.Println("OKOK")
+		schema.Report.WinOrLose = append(schema.Report.WinOrLose, list[i:lenSchema])
 		return true
 	}
 	return false
@@ -139,11 +138,13 @@ func (schema Schema) ProccessCheckRules(list []*pb.Node, index int) {
 	} else if isSuccessChecked = schema.checkFreeThreeNoSpace(list, index); isSuccessChecked == true {
 		return
 	} else if isSuccessChecked = schema.checkWin(list, index); isSuccessChecked == true {
+		fmt.Println("LOL")
 		return
 	}
 	return
 }
 
+// CheckIfPartyIsFinish ...
 func (schema Schema) CheckIfPartyIsFinish(list []*pb.Node, index int) {
 	var isSuccessChecked bool
 	schemaProbableCapture := schema.Schema[ProbableCapture]
@@ -152,17 +153,17 @@ func (schema Schema) CheckIfPartyIsFinish(list []*pb.Node, index int) {
 		switch list[index+1].Player {
 		case list[index].Player:
 			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-1, 1); isSuccessChecked == true {
-				schema.Report.NextMovesOrWin = append(schema.Report.NextMovesOrWin, list[index+2])
+				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, list[index+2])
 			} else if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+2, -1); isSuccessChecked == true {
-				schema.Report.NextMovesOrWin = append(schema.Report.NextMovesOrWin, list[index-2])
+				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, list[index-2])
 			}
 		case 0:
 			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-2, 1); isSuccessChecked == true {
-				schema.Report.NextMovesOrWin = append(schema.Report.NextMovesOrWin, list[index+1])
+				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, list[index+1])
 			}
 		default:
 			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+1, -1); isSuccessChecked == true {
-				schema.Report.NextMovesOrWin = append(schema.Report.NextMovesOrWin, list[index-2])
+				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, list[index-2])
 			}
 		}
 	}
