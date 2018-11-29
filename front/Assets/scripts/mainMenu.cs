@@ -7,13 +7,11 @@ public class mainMenu : MonoBehaviour {
 	static public int modeGame;
 	public void PlayGame1VS1() {
 		modeGame = 2;
-		// DontDestroyOnLoad(transform.gameObject);
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 	}
 
 	public void PlayGameAI() {
 		modeGame = 1;
-		// DontDestroyOnLoad(transform.gameObject);
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 	}
 
