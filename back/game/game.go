@@ -31,6 +31,10 @@ func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, 
 	game.rwmux.Lock()
 	defer game.rwmux.Unlock()
 	res := &pb.CheckRulesResponse{}
+	if game.board[initialStone.X][initialStone.Y] != 0 {
+		res.IsPossible = false
+		return res, nil
+	}
 	if report := game.board.CheckRulesAndCaptured(*initialStone); report != nil {
 		currentPlayer := game.players[initialStone.Player]
 		lenListCapture := int32(len(report.ListCapturedStone))
