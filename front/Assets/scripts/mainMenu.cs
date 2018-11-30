@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class mainMenu : MonoBehaviour {
 
 	static public int modeGame;
+	
 	public void PlayGame1VS1() {
 		modeGame = 2;
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

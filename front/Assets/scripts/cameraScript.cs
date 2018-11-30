@@ -6,6 +6,7 @@ public class cameraScript : MonoBehaviour {
 	public float RotationSpeedX = 2.0f;
 	public float RotationSpeedY = 0.5f;
 	public float SmootherFactor = 0.5f;
+	private Vector3 initialPosition;
 	private Transform target;
 	private Vector3 _cameraOfflset;
 	public float minFov = 30f;
@@ -16,6 +17,7 @@ public class cameraScript : MonoBehaviour {
 	void Start() {
 		target = GameObject.Find("goban").transform;
 		transform.LookAt(target.position);
+		initialPosition = transform.position;
 		_cameraOfflset = transform.position - target.position;
 	}
 
@@ -46,6 +48,13 @@ public class cameraScript : MonoBehaviour {
 		}
 	}
 
+	private void HandlePressR() {
+		if (Input.GetKey(KeyCode.R)) {
+			transform.position = initialPosition;
+			transform.LookAt(target.position);
+			_cameraOfflset = transform.position - target.position;
+		}
+	}
 	private void HandleScrollWhell() {
 		if (Input.GetAxis("Mouse ScrollWheel") != 0f ) {
 			transform.LookAt(target);
@@ -59,5 +68,6 @@ public class cameraScript : MonoBehaviour {
 		HandleMouseButton();
 		HandleKeyBoard();
 		HandleScrollWhell();
+		HandlePressR();
 	}
 }

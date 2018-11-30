@@ -26,6 +26,7 @@ public class gameMaster : MonoBehaviour
         CurrentPlayer = Player1.GetComponent<player>();
         player1 = CurrentPlayer;
         player2 = Player2.GetComponent<player>();
+        Debug.Log("GAMEMASTER +> " + " GameID "+ GameID);
     }
 
     public void NextPlayer() {
@@ -74,6 +75,7 @@ public class gameMaster : MonoBehaviour
     async public Task<bool> GetCheckRules(GomokuBuffer.Node node, int player) {
         try {
             node.Player = player;
+            Debug.Log("BEFORE REPLY"+ node.Y+node.X+node.Y);
             GomokuBuffer.CheckRulesResponse reply = await Client.CheckRulesAsync(
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID });
             if (reply.NbStonedCaptured != 0) {

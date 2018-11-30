@@ -9,6 +9,8 @@ public class pauseMenu : MonoBehaviour {
 
 	void Awake() {
 		pauseMenuUI.SetActive(false);
+		Time.timeScale = 1f;
+		GameIsPaused = false;
 	}
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Escape)) {

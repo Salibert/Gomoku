@@ -13,19 +13,31 @@ public class stone : MonoBehaviour
     private bool isCreate;
 
     public void initNode(ref GomokuBuffer.Node n) { node = n; }
+
     void Start() {
         rend = GetComponent<Renderer>();
         meshRend = GetComponent<MeshRenderer>();
         gravity = GetComponent<Collider>();
     }
-
     async void OnMouseDown() {
         if (!isCreate) {
-            if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
-                SetStone();
-                goban.board.Add(transform.GetComponent<stone>());
+            if (mainMenu.modeGame == 1) {
+                if (goban.GM.GetPlayerTurn() == 1) {
+                    if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
+                        SetStone();
+                        goban.board.Add(transform.GetComponent<stone>());
+                        goban.GM.GetPlayed(node);
+                    } else {
+                        Debug.Log("IMPOSSIBLE");
+                    }
+                }
             } else {
-                Debug.Log("IMPOSSIBLE");
+                if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
+                    SetStone();
+                    goban.board.Add(transform.GetComponent<stone>());
+                } else {
+                    Debug.Log("IMPOSSIBLE");
+                }
             }
         }
     }
