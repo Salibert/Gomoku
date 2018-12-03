@@ -25,26 +25,28 @@ namespace GomokuBuffer {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgxidWZmZXIucHJvdG8SDGdvbW9rdUJ1ZmZlciIsCgROb2RlEgkKAVgYASAB",
-            "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUiFQoDV2luEg4KBnBsYXll",
-            "chgBIAEoBSIvCg1DREdhbWVSZXF1ZXN0Eg4KBkdhbWVJRBgBIAEoCRIOCgZE",
-            "ZWxldGUYAiABKAgijAEKEkNoZWNrUnVsZXNSZXNwb25zZRISCgpJc1Bvc3Np",
-            "YmxlGAEgASgIEiQKCENhcHR1cmVkGAIgAygLMhIuZ29tb2t1QnVmZmVyLk5v",
-            "ZGUSGAoQTmJTdG9uZWRDYXB0dXJlZBgDIAEoBRITCgtQYXJ0eUZpbmlzaBgE",
-            "IAEoCBINCgVXaW5JcxgFIAEoBSI0Cg5DREdhbWVSZXNwb25zZRIRCglJc1N1",
-            "Y2Nlc3MYASABKAgSDwoHTWVzc2FnZRgCIAEoCSJMCgtTdG9uZVBsYXllZBIt",
-            "ChFDdXJyZW50UGxheWVyTW92ZRgBIAEoCzISLmdvbW9rdUJ1ZmZlci5Ob2Rl",
-            "Eg4KBkdhbWVJRBgCIAEoCTLcAQoER2FtZRJFCgZDREdhbWUSGy5nb21va3VC",
-            "dWZmZXIuQ0RHYW1lUmVxdWVzdBocLmdvbW9rdUJ1ZmZlci5DREdhbWVSZXNw",
-            "b25zZSIAEkAKBlBsYXllZBIZLmdvbW9rdUJ1ZmZlci5TdG9uZVBsYXllZBoZ",
-            "LmdvbW9rdUJ1ZmZlci5TdG9uZVBsYXllZCIAEksKCkNoZWNrUnVsZXMSGS5n",
-            "b21va3VCdWZmZXIuU3RvbmVQbGF5ZWQaIC5nb21va3VCdWZmZXIuQ2hlY2tS",
-            "dWxlc1Jlc3BvbnNlIgBiBnByb3RvMw=="));
+            "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUiOQoLQ29uZmlnUnVsZXMS",
+            "EQoJRnJlZVRocmVlGAEgASgIEhcKD05iQ2FwdHVyZUZvcldpbhgCIAEoBSJZ",
+            "Cg1DREdhbWVSZXF1ZXN0Eg4KBkdhbWVJRBgBIAEoCRIoCgVSdWxlcxgCIAEo",
+            "CzIZLmdvbW9rdUJ1ZmZlci5Db25maWdSdWxlcxIOCgZEZWxldGUYAyABKAgi",
+            "jAEKEkNoZWNrUnVsZXNSZXNwb25zZRISCgpJc1Bvc3NpYmxlGAEgASgIEiQK",
+            "CENhcHR1cmVkGAIgAygLMhIuZ29tb2t1QnVmZmVyLk5vZGUSGAoQTmJTdG9u",
+            "ZWRDYXB0dXJlZBgDIAEoBRITCgtQYXJ0eUZpbmlzaBgEIAEoCBINCgVXaW5J",
+            "cxgFIAEoBSI0Cg5DREdhbWVSZXNwb25zZRIRCglJc1N1Y2Nlc3MYASABKAgS",
+            "DwoHTWVzc2FnZRgCIAEoCSJMCgtTdG9uZVBsYXllZBItChFDdXJyZW50UGxh",
+            "eWVyTW92ZRgBIAEoCzISLmdvbW9rdUJ1ZmZlci5Ob2RlEg4KBkdhbWVJRBgC",
+            "IAEoCTLcAQoER2FtZRJFCgZDREdhbWUSGy5nb21va3VCdWZmZXIuQ0RHYW1l",
+            "UmVxdWVzdBocLmdvbW9rdUJ1ZmZlci5DREdhbWVSZXNwb25zZSIAEkAKBlBs",
+            "YXllZBIZLmdvbW9rdUJ1ZmZlci5TdG9uZVBsYXllZBoZLmdvbW9rdUJ1ZmZl",
+            "ci5TdG9uZVBsYXllZCIAEksKCkNoZWNrUnVsZXMSGS5nb21va3VCdWZmZXIu",
+            "U3RvbmVQbGF5ZWQaIC5nb21va3VCdWZmZXIuQ2hlY2tSdWxlc1Jlc3BvbnNl",
+            "IgBiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Node), global::GomokuBuffer.Node.Parser, new[]{ "X", "Y", "Player" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Win), global::GomokuBuffer.Win.Parser, new[]{ "Player" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameRequest), global::GomokuBuffer.CDGameRequest.Parser, new[]{ "GameID", "Delete" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.ConfigRules), global::GomokuBuffer.ConfigRules.Parser, new[]{ "FreeThree", "NbCaptureForWin" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameRequest), global::GomokuBuffer.CDGameRequest.Parser, new[]{ "GameID", "Rules", "Delete" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CheckRulesResponse), global::GomokuBuffer.CheckRulesResponse.Parser, new[]{ "IsPossible", "Captured", "NbStonedCaptured", "PartyFinish", "WinIs" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameResponse), global::GomokuBuffer.CDGameResponse.Parser, new[]{ "IsSuccess", "Message" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.StonePlayed), global::GomokuBuffer.StonePlayed.Parser, new[]{ "CurrentPlayerMove", "GameID" }, null, null, null)
@@ -239,11 +241,11 @@ namespace GomokuBuffer {
 
   }
 
-  public sealed partial class Win : pb::IMessage<Win> {
-    private static readonly pb::MessageParser<Win> _parser = new pb::MessageParser<Win>(() => new Win());
+  public sealed partial class ConfigRules : pb::IMessage<ConfigRules> {
+    private static readonly pb::MessageParser<ConfigRules> _parser = new pb::MessageParser<ConfigRules>(() => new ConfigRules());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Win> Parser { get { return _parser; } }
+    public static pb::MessageParser<ConfigRules> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -256,55 +258,69 @@ namespace GomokuBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Win() {
+    public ConfigRules() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Win(Win other) : this() {
-      player_ = other.player_;
+    public ConfigRules(ConfigRules other) : this() {
+      freeThree_ = other.freeThree_;
+      nbCaptureForWin_ = other.nbCaptureForWin_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Win Clone() {
-      return new Win(this);
+    public ConfigRules Clone() {
+      return new ConfigRules(this);
     }
 
-    /// <summary>Field number for the "player" field.</summary>
-    public const int PlayerFieldNumber = 1;
-    private int player_;
+    /// <summary>Field number for the "FreeThree" field.</summary>
+    public const int FreeThreeFieldNumber = 1;
+    private bool freeThree_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Player {
-      get { return player_; }
+    public bool FreeThree {
+      get { return freeThree_; }
       set {
-        player_ = value;
+        freeThree_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "NbCaptureForWin" field.</summary>
+    public const int NbCaptureForWinFieldNumber = 2;
+    private int nbCaptureForWin_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int NbCaptureForWin {
+      get { return nbCaptureForWin_; }
+      set {
+        nbCaptureForWin_ = value;
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as Win);
+      return Equals(other as ConfigRules);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Win other) {
+    public bool Equals(ConfigRules other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Player != other.Player) return false;
+      if (FreeThree != other.FreeThree) return false;
+      if (NbCaptureForWin != other.NbCaptureForWin) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Player != 0) hash ^= Player.GetHashCode();
+      if (FreeThree != false) hash ^= FreeThree.GetHashCode();
+      if (NbCaptureForWin != 0) hash ^= NbCaptureForWin.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -318,9 +334,13 @@ namespace GomokuBuffer {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (Player != 0) {
+      if (FreeThree != false) {
         output.WriteRawTag(8);
-        output.WriteInt32(Player);
+        output.WriteBool(FreeThree);
+      }
+      if (NbCaptureForWin != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(NbCaptureForWin);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -330,8 +350,11 @@ namespace GomokuBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Player != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Player);
+      if (FreeThree != false) {
+        size += 1 + 1;
+      }
+      if (NbCaptureForWin != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(NbCaptureForWin);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -340,12 +363,15 @@ namespace GomokuBuffer {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Win other) {
+    public void MergeFrom(ConfigRules other) {
       if (other == null) {
         return;
       }
-      if (other.Player != 0) {
-        Player = other.Player;
+      if (other.FreeThree != false) {
+        FreeThree = other.FreeThree;
+      }
+      if (other.NbCaptureForWin != 0) {
+        NbCaptureForWin = other.NbCaptureForWin;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -359,7 +385,11 @@ namespace GomokuBuffer {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Player = input.ReadInt32();
+            FreeThree = input.ReadBool();
+            break;
+          }
+          case 16: {
+            NbCaptureForWin = input.ReadInt32();
             break;
           }
         }
@@ -394,6 +424,7 @@ namespace GomokuBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CDGameRequest(CDGameRequest other) : this() {
       gameID_ = other.gameID_;
+      rules_ = other.rules_ != null ? other.rules_.Clone() : null;
       delete_ = other.delete_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -414,8 +445,19 @@ namespace GomokuBuffer {
       }
     }
 
+    /// <summary>Field number for the "Rules" field.</summary>
+    public const int RulesFieldNumber = 2;
+    private global::GomokuBuffer.ConfigRules rules_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::GomokuBuffer.ConfigRules Rules {
+      get { return rules_; }
+      set {
+        rules_ = value;
+      }
+    }
+
     /// <summary>Field number for the "Delete" field.</summary>
-    public const int DeleteFieldNumber = 2;
+    public const int DeleteFieldNumber = 3;
     private bool delete_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool Delete {
@@ -439,6 +481,7 @@ namespace GomokuBuffer {
         return true;
       }
       if (GameID != other.GameID) return false;
+      if (!object.Equals(Rules, other.Rules)) return false;
       if (Delete != other.Delete) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -447,6 +490,7 @@ namespace GomokuBuffer {
     public override int GetHashCode() {
       int hash = 1;
       if (GameID.Length != 0) hash ^= GameID.GetHashCode();
+      if (rules_ != null) hash ^= Rules.GetHashCode();
       if (Delete != false) hash ^= Delete.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -465,8 +509,12 @@ namespace GomokuBuffer {
         output.WriteRawTag(10);
         output.WriteString(GameID);
       }
+      if (rules_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Rules);
+      }
       if (Delete != false) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteBool(Delete);
       }
       if (_unknownFields != null) {
@@ -479,6 +527,9 @@ namespace GomokuBuffer {
       int size = 0;
       if (GameID.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(GameID);
+      }
+      if (rules_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Rules);
       }
       if (Delete != false) {
         size += 1 + 1;
@@ -496,6 +547,12 @@ namespace GomokuBuffer {
       }
       if (other.GameID.Length != 0) {
         GameID = other.GameID;
+      }
+      if (other.rules_ != null) {
+        if (rules_ == null) {
+          rules_ = new global::GomokuBuffer.ConfigRules();
+        }
+        Rules.MergeFrom(other.Rules);
       }
       if (other.Delete != false) {
         Delete = other.Delete;
@@ -515,7 +572,14 @@ namespace GomokuBuffer {
             GameID = input.ReadString();
             break;
           }
-          case 16: {
+          case 18: {
+            if (rules_ == null) {
+              rules_ = new global::GomokuBuffer.ConfigRules();
+            }
+            input.ReadMessage(rules_);
+            break;
+          }
+          case 24: {
             Delete = input.ReadBool();
             break;
           }

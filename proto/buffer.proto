@@ -8,8 +8,9 @@ message Node {
     int32 Player = 3;
 }
 
-message Win {
-    int32 player = 1;
+message ConfigRules {
+    bool FreeThree = 1;
+    int32 NbCaptureForWin = 2;
 }
 
 service Game {
@@ -20,7 +21,8 @@ service Game {
 
 message CDGameRequest {
     string GameID = 1;
-    bool Delete = 2;
+    ConfigRules Rules = 2;
+    bool Delete = 3;
 }
 
 message CheckRulesResponse {
