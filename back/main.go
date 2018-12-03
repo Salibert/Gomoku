@@ -14,6 +14,7 @@ func main() {
 		fmt.Printf("failed to listen: %v\n", err)
 		return
 	}
+	fmt.Println("Server listening Port:", server.GrpcPort)
 	if err := server.GrpcServer.Serve(listen); err != nil {
 		log.Fatalf("failed to serve: %s", err)
 	}

@@ -1,6 +1,7 @@
 package manegeGame
 
 import (
+	"errors"
 	"sync"
 
 	"github.com/Salibert/Gomoku/back/game"
@@ -46,14 +47,15 @@ func (CurrentGames *Games) DeleteGame(gameID string) (res *pb.CDGameResponse, er
 
 // ProccessRules ...
 func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (*pb.CheckRulesResponse, error) {
-	CurrentGames.rwmux.RLock()
-	defer CurrentGames.rwmux.RUnlock()
-	return CurrentGames.game[in.GameID].ProccessRules(in.CurrentPlayerMove)
+	CurrentGames.rwmux.Lock()
+	defer CurrentGames.rwmux.Unlock()
+	if game, ok := CurrentGames.game[in.GameID]; ok == true {
+		return game.ProccessRules(in.CurrentPlayerMove)
+	}
+	return nil, errors.New("partie not found")
 }
 
 // PlayedAI choose the best move for win
 func (CurrentGames *Games) PlayedAI(in *pb.StonePlayed) (*pb.StonePlayed, error) {
-	// game := CurrentGames.game[in.GameID]
-	// game.board[in.CurrentPlayerMove.X][in.CurrentPlayerMove.Y] = in.CurrentPlayerMove.Player
 	return &pb.StonePlayed{CurrentPlayerMove: &pb.Node{X: in.CurrentPlayerMove.X, Y: in.CurrentPlayerMove.Y + 1, Player: 2}}, nil
 }

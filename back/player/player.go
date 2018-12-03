@@ -1,6 +1,7 @@
 package player
 
 import (
+	"github.com/Salibert/Gomoku/back/rules"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
@@ -9,6 +10,7 @@ type Player struct {
 	Index           int32
 	NextMovesOrLose [][]*pb.Node
 	Score           int32
+	Rules           rules.Schema
 }
 
 // GetOpposentPlayer return index to opposent player
