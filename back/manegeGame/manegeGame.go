@@ -56,7 +56,7 @@ func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (*pb.CheckRulesResp
 }
 
 // PlayedAI choose the best move for win
-func (CurrentGames *Games) PlayedAI(in *pb.StonePlayed) (*pb.StonePlayed, error) {
+func (CurrentGames *Games) PlayedIA(in *pb.StonePlayed) (*pb.StonePlayed, error) {
 	game := CurrentGames.game[in.GameID]
 	return &pb.StonePlayed{CurrentPlayerMove: game.PlayIA(in.CurrentPlayerMove)}, nil
 }

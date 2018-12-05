@@ -4,21 +4,19 @@ import (
 	"fmt"
 
 	"github.com/Salibert/Gomoku/back/board"
+	"github.com/Salibert/Gomoku/back/rules"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
-// Struct to store attempt for the search algorithm
-type Tentatives struct {
-	poid  int
-	board board.Board
+type Algo struct {
+	Report *rules.Schema
 }
 
-//TODO: Reprendre le tuto de openclassroom !
-
-func IA_jouer(jeu board.Board, profondeur int) *pb.Node {
+func IA_jouer(jeu board.Board, profondeur int, schema rules.Schema) *pb.Node {
 	var max int = -10000
 	var tmp, maxi, maxj int
 	var i, j int
+	algo := Algo{Report: &schema}
 
 	fmt.Println("jeu = ", jeu)
 	for i = 0; i < len(jeu); i++ {
@@ -26,8 +24,8 @@ func IA_jouer(jeu board.Board, profondeur int) *pb.Node {
 			if jeu[i][j] == 0 {
 				fmt.Println("[x] = ", i, " && [y] = ", j, " == [x][y] = ", jeu[i][j])
 				jeu[i][j] = 2
-				tmp = Minimax(jeu, profondeur, 2, -10000, 10000, i, j)
-				if tmp > max {
+				tmp = algo.Minimax(jeu, profondeur, 2, -10000, 10000, i, j)
+				if tmp >= max {
 					max = tmp
 					maxi = i
 					maxj = j
@@ -39,9 +37,9 @@ func IA_jouer(jeu board.Board, profondeur int) *pb.Node {
 	return &pb.Node{X: int32(maxi), Y: int32(maxj), Player: int32(2)}
 }
 
-func Minimax(jeu board.Board, profondeur int, maximizingPlayer int, alpha int, beta int, x int, y int) int {
-	if profondeur == 0 || gagnant(jeu, x, y, maximizingPlayer) != 0 {
-		return eval(jeu, x, y, maximizingPlayer)
+func (algo *Algo) Minimax(jeu board.Board, profondeur int, maximizingPlayer int, alpha int, beta int, x int, y int) int {
+	if profondeur == 0 || algo.gagnant(jeu, x, y, maximizingPlayer) != 0 {
+		return algo.eval(jeu, x, y, maximizingPlayer)
 	}
 	if maximizingPlayer == 2 {
 		value := -10000
@@ -49,7 +47,7 @@ func Minimax(jeu board.Board, profondeur int, maximizingPlayer int, alpha int, b
 			for j := 0; j < len(jeu); j++ {
 				if jeu[i][j] == 0 {
 					jeu[i][j] = 2
-					value = Max(value, Minimax(jeu, profondeur-1, 1, alpha, beta, i, j))
+					value = Max(value, algo.Minimax(jeu, profondeur-1, 1, alpha, beta, i, j))
 					if alpha >= value {
 						return value
 					}
@@ -65,7 +63,7 @@ func Minimax(jeu board.Board, profondeur int, maximizingPlayer int, alpha int, b
 			for j := 0; j < len(jeu); j++ {
 				if jeu[i][j] == 0 {
 					jeu[i][j] = 1
-					value = Min(value, Minimax(jeu, profondeur-1, 2, alpha, beta, i, j))
+					value = Min(value, algo.Minimax(jeu, profondeur-1, 2, alpha, beta, i, j))
 					if value >= beta {
 						return value
 					}
@@ -186,10 +184,10 @@ func nb_series(jeu board.Board, series_j1 *int, series_j2 *int, n int) int { //C
 	return 0
 }
 
-func eval(jeu board.Board, x int, y int, player int) int {
+func (algo *Algo) eval(jeu board.Board, x int, y int, player int) int {
 	nb_de_pions := 0
 
-	if vainqueur := gagnant(jeu, x, y, player); vainqueur != 0 {
+	if vainqueur := algo.gagnant(jeu, x, y, player); vainqueur != 0 {
 		//On compte le nombre de pions présents sur le plateau
 		for i := 0; i < len(jeu); i++ {
 			for j := 0; j < len(jeu); j++ {
@@ -212,15 +210,16 @@ func eval(jeu board.Board, x int, y int, player int) int {
 	return series_j1 - series_j2
 }
 
-func gagnant(jeu board.Board, x int, y int, player int) int {
-	res := jeu.CheckRulesAndCaptured(pb.Node{X: int32(x), Y: int32(y), Player: int32(player)})
+func (algo *Algo) gagnant(jeu board.Board, x int, y int, player int) int {
+
+	jeu.CheckRules(pb.Node{X: int32(x), Y: int32(y), Player: int32(player)}, *algo.Report)
 	jeu[x][y] = int32(0)
-	if res.PartyFinish == true && len(res.WinOrLose) == 0 {
+	if algo.Report.Report.PartyFinish == true && len(algo.Report.Report.WinOrLose) == 0 {
 		if player == 1 {
 			return 1
 		}
 		return 2
-	} else if res.PartyFinish == true && len(res.WinOrLose) != 0 {
+	} else if algo.Report.Report.PartyFinish == true && len(algo.Report.Report.WinOrLose) != 0 {
 		if player == 1 {
 			return 2
 		}
