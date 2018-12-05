@@ -1,6 +1,8 @@
 package rules
 
 import (
+	"fmt"
+
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
@@ -97,6 +99,7 @@ func compareNodesSchema(list []*pb.Node, schema []int32, index int, direction in
 			return false
 		}
 	}
+	fmt.Println("== ", list, " == ", index, " == ", schema, " == ", direction)
 	return true
 }
 
@@ -168,6 +171,7 @@ func (schema Schema) CheckIfPartyIsFinish(list []*pb.Node, index int) {
 	var isSuccessChecked bool
 	schemaProbableCapture := schema.Schema[ProbableCapture]
 	len := len(list)
+	fmt.Println("INDEX == ", index)
 	if index != 0 && index != len-1 {
 		switch list[index+1].Player {
 		case list[index].Player:

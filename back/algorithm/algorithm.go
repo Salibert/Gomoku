@@ -22,7 +22,7 @@ func IA_jouer(jeu board.Board, profondeur int) *pb.Node {
 		for j = 0; j < len(jeu); j++ {
 			if jeu[i][j] == 0 {
 				jeu[i][j] = 1
-				tmp = Minimax(jeu, profondeur, 2, -10000, 10000)
+				tmp = Minimax(jeu, profondeur, 2, -10000, 10000, i, j)
 				if tmp > max {
 					max = tmp
 					maxi = i
@@ -35,9 +35,9 @@ func IA_jouer(jeu board.Board, profondeur int) *pb.Node {
 	return &pb.Node{X: int32(maxi), Y: int32(maxj), Player: int32(2)}
 }
 
-func Minimax(jeu board.Board, profondeur int, maximizingPlayer int, alpha int, beta int) int {
-	if profondeur == 0 || gagnant(jeu) != 0 {
-		return eval(jeu)
+func Minimax(jeu board.Board, profondeur int, maximizingPlayer int, alpha int, beta int, x int, y int) int {
+	if profondeur == 0 || gagnant(jeu, x, y, maximizingPlayer) != 0 {
+		return eval(jeu, x, y, maximizingPlayer)
 	}
 	if maximizingPlayer == 2 {
 		value := -10000
@@ -45,7 +45,7 @@ func Minimax(jeu board.Board, profondeur int, maximizingPlayer int, alpha int, b
 			for j := 0; j < len(jeu); j++ {
 				if jeu[i][j] == 0 {
 					jeu[i][j] = 2
-					value = Max(value, Minimax(jeu, profondeur-1, 1, alpha, beta))
+					value = Max(value, Minimax(jeu, profondeur-1, 1, alpha, beta, i, j))
 					if alpha >= value {
 						return value
 					}
@@ -61,7 +61,7 @@ func Minimax(jeu board.Board, profondeur int, maximizingPlayer int, alpha int, b
 			for j := 0; j < len(jeu); j++ {
 				if jeu[i][j] == 0 {
 					jeu[i][j] = 1
-					value = Min(value, Minimax(jeu, profondeur-1, 2, alpha, beta))
+					value = Min(value, Minimax(jeu, profondeur-1, 2, alpha, beta, i, j))
 					if value >= beta {
 						return value
 					}
@@ -99,7 +99,7 @@ func nb_series(jeu board.Board, series_j1 *int, series_j2 *int, n int) int { //C
 
 	//Diagonale descendante
 	for i := 0; i < len(jeu); i++ {
-		for j := 0; j < len(jeu) - i; j++ {
+		for j := 0; j < len(jeu)-i; j++ {
 			if jeu[i][j] == 1 {
 				compteur1++
 				compteur2 = 0
@@ -182,10 +182,10 @@ func nb_series(jeu board.Board, series_j1 *int, series_j2 *int, n int) int { //C
 	return 0
 }
 
-func eval(jeu board.Board) int {
+func eval(jeu board.Board, x int, y int, player int) int {
 	nb_de_pions := 0
 
-	if vainqueur := gagnant(jeu); vainqueur != 0 {
+	if vainqueur := gagnant(jeu, x, y, player); vainqueur != 0 {
 		//On compte le nombre de pions présents sur le plateau
 		for i := 0; i < len(jeu); i++ {
 			for j := 0; j < len(jeu); j++ {
@@ -206,34 +206,21 @@ func eval(jeu board.Board) int {
 	series_j1, series_j2 := 0, 0
 	nb_series(jeu, &series_j1, &series_j2, 2)
 	return series_j1 - series_j2
-
 }
 
-func calc(jeu board.Board) {
-	value = 
-	res := jeu.CheckRulesAndCaptured()
-	if res.Captured
-}
-
-func gagnant(jeu board.Board) int {
-	var j1, j2 int
-
-	nb_series(jeu, &j1, &j2, 3)
-
-	if j1 != 0 {
-		return 1
-	} else if j2 != 0 {
-		return 2
-	} else {
-		//Si le jeu n'est pas fini et que personne n'a gagné, on renvoie 0
-		for i := 0; i < len(jeu); i++ {
-			for j := 0; j < len(jeu); j++ {
-				if jeu[i][j] == 0 {
-					return 0
-				}
-			}
+func gagnant(jeu board.Board, x int, y int, player int) int {
+	res := jeu.CheckRulesAndCaptured(pb.Node{X: int32(x), Y: int32(y), Player: int32(player)})
+	jeu[x][y] = int32(0)
+	if res.PartyFinish == true && len(res.WinOrLose) == 0 {
+		if player == 1 {
+			return 1
 		}
+		return 2
+	} else if res.PartyFinish == true && len(res.WinOrLose) != 0 {
+		if player == 1 {
+			return 2
+		}
+		return 1
 	}
-	//Si le jeu est fini et que personne n'a gagné, on renvoie 3
-	return 3
+	return 0
 }

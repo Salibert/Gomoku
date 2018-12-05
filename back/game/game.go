@@ -3,6 +3,7 @@ package game
 import (
 	"sync"
 
+	"github.com/Salibert/Gomoku/back/algorithm"
 	"github.com/Salibert/Gomoku/back/board"
 	"github.com/Salibert/Gomoku/back/player"
 	"github.com/Salibert/Gomoku/back/rules"
@@ -75,4 +76,10 @@ func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, 
 		res.IsPossible = true
 	}
 	return res, nil
+}
+
+func (game *Game) PlayIA(in *pb.Node) *pb.Node {
+	node := algorithm.IA_jouer(game.board, 3)
+	game.board[in.X][in.Y] = 2
+	return node
 }
