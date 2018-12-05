@@ -50,10 +50,14 @@ const (
 
 func parseRules(config pb.ConfigRules) []FuncCheckRules {
 	arrayFuncRulse := make([]FuncCheckRules, 0, 3)
-	if config.FreeThree == true {
+	if config.IsActiveRuleFreeThree == true {
 		arrayFuncRulse = append(arrayFuncRulse, checkFreeThreeNoSpace, checkFreeThreeSpace)
 	}
-	arrayFuncRulse = append(arrayFuncRulse, checkCapture, checkWin)
+	if config.IsActiveRuleCapture == true {
+		arrayFuncRulse = append(arrayFuncRulse, checkCapture)
+	}
+
+	arrayFuncRulse = append(arrayFuncRulse, checkWin)
 	return arrayFuncRulse
 }
 

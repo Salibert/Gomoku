@@ -24,13 +24,13 @@ func init() {
 }
 
 // AddNewGame method for create a game after a call front
-func (CurrentGames *Games) AddNewGame(gameID string) (*pb.CDGameResponse, error) {
+func (CurrentGames *Games) AddNewGame(in *pb.CDGameRequest) (*pb.CDGameResponse, error) {
 	CurrentGames.rwmux.Lock()
 	defer CurrentGames.rwmux.Unlock()
-	if _, ok := CurrentGames.game[gameID]; ok == true {
+	if _, ok := CurrentGames.game[in.GameID]; ok == true {
 		return &pb.CDGameResponse{IsSuccess: false, Message: "GameID Already exists"}, nil
 	}
-	CurrentGames.game[gameID] = game.New()
+	CurrentGames.game[in.GameID] = game.New(*in.Rules)
 	return &pb.CDGameResponse{IsSuccess: true}, nil
 }
 
@@ -55,7 +55,7 @@ func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (*pb.CheckRulesResp
 	return nil, errors.New("partie not found")
 }
 
-// PlayedAI choose the best move for win
-func (CurrentGames *Games) PlayedAI(in *pb.StonePlayed) (*pb.StonePlayed, error) {
+// PlayedIA choose the best move for win
+func (CurrentGames *Games) PlayedIA(in *pb.StonePlayed) (*pb.StonePlayed, error) {
 	return &pb.StonePlayed{CurrentPlayerMove: &pb.Node{X: in.CurrentPlayerMove.X, Y: in.CurrentPlayerMove.Y + 1, Player: 2}}, nil
 }

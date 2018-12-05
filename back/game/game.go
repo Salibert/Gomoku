@@ -17,18 +17,18 @@ type Game struct {
 }
 
 // New create new instance of Game
-func New() *Game {
+func New(config pb.ConfigRules) *Game {
 	game := &Game{
 		board:   board.New(),
 		players: make(map[int32]*player.Player),
 	}
 	game.players[1] = &player.Player{
 		Index: 1,
-		Rules: rules.New(1, 2, pb.ConfigRules{FreeThree: true, NbCaptureForWin: 10}),
+		Rules: rules.New(1, 2, config),
 	}
 	game.players[2] = &player.Player{
 		Index: 2,
-		Rules: rules.New(2, 1, pb.ConfigRules{FreeThree: true, NbCaptureForWin: 10}),
+		Rules: rules.New(2, 1, config),
 	}
 	return game
 }

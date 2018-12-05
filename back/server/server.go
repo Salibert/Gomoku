@@ -30,14 +30,14 @@ func init() {
 // CDGame ...
 func (s *Server) CDGame(context context.Context, in *pb.CDGameRequest) (*pb.CDGameResponse, error) {
 	if !in.Delete {
-		return manegeGame.CurrentGames.AddNewGame(in.GameID)
+		return manegeGame.CurrentGames.AddNewGame(in)
 	}
 	return manegeGame.CurrentGames.DeleteGame(in.GameID)
 }
 
 // Played ...
 func (s *Server) Played(context context.Context, in *pb.StonePlayed) (*pb.StonePlayed, error) {
-	return manegeGame.CurrentGames.PlayedAI(in)
+	return manegeGame.CurrentGames.PlayedIA(in)
 }
 
 // CheckRules ...
