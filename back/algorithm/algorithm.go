@@ -1,6 +1,8 @@
 package algorithm
 
 import (
+	"fmt"
+
 	"github.com/Salibert/Gomoku/back/board"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
@@ -18,10 +20,12 @@ func IA_jouer(jeu board.Board, profondeur int) *pb.Node {
 	var tmp, maxi, maxj int
 	var i, j int
 
+	fmt.Println("jeu = ", jeu)
 	for i = 0; i < len(jeu); i++ {
 		for j = 0; j < len(jeu); j++ {
 			if jeu[i][j] == 0 {
-				jeu[i][j] = 1
+				fmt.Println("[x] = ", i, " && [y] = ", j, " == [x][y] = ", jeu[i][j])
+				jeu[i][j] = 2
 				tmp = Minimax(jeu, profondeur, 2, -10000, 10000, i, j)
 				if tmp > max {
 					max = tmp

@@ -79,7 +79,7 @@ func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, 
 }
 
 func (game *Game) PlayIA(in *pb.Node) *pb.Node {
-	node := algorithm.IA_jouer(game.board, 3)
-	game.board[in.X][in.Y] = 2
+	node := algorithm.IA_jouer(game.board, 6)
+	(*game).board[node.X][node.Y] = node.Player
 	return node
 }
