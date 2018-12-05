@@ -28,9 +28,7 @@ func (board Board) UpdateBoard(stone pb.Node) {
 
 // CheckRules check all rules. Modify the report passed in params
 func (board Board) CheckRules(initialStone pb.Node, report rules.Schema) {
-	defer board.updateBoardAfterCapture(&report)
 	board.proccessRulesByAxes(report.ProccessCheckRules, initialStone)
-
 	if report.Report.NbFreeThree > 1 {
 		report.Report.ItIsAValidMove = false
 		return
@@ -45,6 +43,7 @@ func (board Board) CheckRules(initialStone pb.Node, report rules.Schema) {
 				}
 				if len(report.Report.NextMovesOrLose) == 0 {
 					report.Report.PartyFinish = true
+					report.Report.WinOrLose[i] = report.Report.WinOrLose[i][:0]
 					break loop
 				}
 				report.Report.WinOrLose[i] = report.Report.NextMovesOrLose
@@ -86,7 +85,7 @@ func (board Board) proccessRulesByAxes(m func(list []*pb.Node, index int), initi
 	}
 }
 
-func (board Board) updateBoardAfterCapture(report *rules.Schema) {
+func (board Board) UpdateBoardAfterCapture(report *rules.Schema) {
 	if len := len(report.Report.ListCapturedStone); len != 0 {
 		go func(list []*pb.Node, len int) {
 			var node *pb.Node

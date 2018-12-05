@@ -5,6 +5,8 @@ import (
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
+type Players map[int32]*Player
+
 // Player ...
 type Player struct {
 	Index           int32

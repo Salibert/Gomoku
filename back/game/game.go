@@ -14,14 +14,14 @@ import (
 type Game struct {
 	rwmux   sync.RWMutex
 	board   board.Board
-	players map[int32]*player.Player
+	players player.Players
 }
 
 // New create new instance of Game
 func New(config pb.ConfigRules) *Game {
 	game := &Game{
 		board:   board.New(),
-		players: make(map[int32]*player.Player),
+		players: make(player.Players),
 	}
 	game.players[1] = &player.Player{
 		Index: 1,
@@ -38,15 +38,16 @@ func New(config pb.ConfigRules) *Game {
 func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, error) {
 	game.rwmux.Lock()
 	res := &pb.CheckRulesResponse{}
+	currentPlayer := game.players[initialStone.Player]
+	defer func() {
+		game.board.UpdateBoardAfterCapture(&currentPlayer.Rules)
+		currentPlayer.Rules.Report.Reset()
+		game.rwmux.Unlock()
+	}()
 	if game.board[initialStone.X][initialStone.Y] != 0 {
 		res.IsPossible = false
 		return res, nil
 	}
-	currentPlayer := game.players[initialStone.Player]
-	defer func() {
-		go currentPlayer.Rules.Report.Reset()
-		game.rwmux.Unlock()
-	}()
 	game.board.CheckRules(*initialStone, currentPlayer.Rules)
 	if currentPlayer.Rules.Report.ItIsAValidMove == true {
 		lenListCapture := int32(len(currentPlayer.Rules.Report.ListCapturedStone))
@@ -79,7 +80,6 @@ func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, 
 }
 
 func (game *Game) PlayIA(in *pb.Node) *pb.Node {
-	node := algorithm.IA_jouer(game.board, 6, game.players[2].Rules)
-	(*game).board[node.X][node.Y] = node.Player
+	node := algorithm.IA_jouer(game.board, 5, game.players)
 	return node
 }

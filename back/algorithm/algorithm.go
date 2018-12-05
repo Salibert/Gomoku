@@ -4,19 +4,19 @@ import (
 	"fmt"
 
 	"github.com/Salibert/Gomoku/back/board"
-	"github.com/Salibert/Gomoku/back/rules"
+	"github.com/Salibert/Gomoku/back/player"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
 type Algo struct {
-	Report *rules.Schema
+	Players player.Players
 }
 
-func IA_jouer(jeu board.Board, profondeur int, schema rules.Schema) *pb.Node {
+func IA_jouer(jeu board.Board, profondeur int, players player.Players) *pb.Node {
 	var max int = -10000
 	var tmp, maxi, maxj int
 	var i, j int
-	algo := Algo{Report: &schema}
+	algo := Algo{Players: players}
 
 	fmt.Println("jeu = ", jeu)
 	for i = 0; i < len(jeu); i++ {
@@ -39,7 +39,9 @@ func IA_jouer(jeu board.Board, profondeur int, schema rules.Schema) *pb.Node {
 
 func (algo *Algo) Minimax(jeu board.Board, profondeur int, maximizingPlayer int, alpha int, beta int, x int, y int) int {
 	if profondeur == 0 || algo.gagnant(jeu, x, y, maximizingPlayer) != 0 {
-		return algo.eval(jeu, x, y, maximizingPlayer)
+		resultat := algo.newEval(jeu, x, y, maximizingPlayer)
+		fmt.Println("IA poid = ", resultat, " && maximizingPlayer = ", maximizingPlayer)
+		return resultat
 	}
 	if maximizingPlayer == 2 {
 		value := -10000
@@ -49,6 +51,7 @@ func (algo *Algo) Minimax(jeu board.Board, profondeur int, maximizingPlayer int,
 					jeu[i][j] = 2
 					value = Max(value, algo.Minimax(jeu, profondeur-1, 1, alpha, beta, i, j))
 					if alpha >= value {
+						jeu[i][j] = 0
 						return value
 					}
 					alpha = Max(alpha, value)
@@ -65,6 +68,7 @@ func (algo *Algo) Minimax(jeu board.Board, profondeur int, maximizingPlayer int,
 					jeu[i][j] = 1
 					value = Min(value, algo.Minimax(jeu, profondeur-1, 2, alpha, beta, i, j))
 					if value >= beta {
+						jeu[i][j] = 0
 						return value
 					}
 					beta = Min(beta, value)
@@ -184,42 +188,83 @@ func nb_series(jeu board.Board, series_j1 *int, series_j2 *int, n int) int { //C
 	return 0
 }
 
-func (algo *Algo) eval(jeu board.Board, x int, y int, player int) int {
-	nb_de_pions := 0
+func (algo *Algo) newEval(jeu board.Board, x int, y int, player int) int {
+	value := 0
+	raport := algo.Players[int32(player)].Rules
 
-	if vainqueur := algo.gagnant(jeu, x, y, player); vainqueur != 0 {
-		//On compte le nombre de pions présents sur le plateau
-		for i := 0; i < len(jeu); i++ {
-			for j := 0; j < len(jeu); j++ {
-				if jeu[i][j] != 0 {
-					nb_de_pions++
-				}
+	defer raport.Report.Reset()
+	jeu.CheckRules(pb.Node{X: int32(x), Y: int32(y), Player: int32(player)}, raport)
+	if raport.Report.ItIsAValidMove == false {
+		return -10000
+	} else {
+		if capture := len(raport.Report.ListCapturedStone); capture != 0 {
+			value += capture * 20
+		}
+		value += raport.Report.NbFreeThree * 5
+		if raport.Report.PartyFinish == true {
+			if counter := len(raport.Report.WinOrLose); counter == 0 {
+				value += 10000
 			}
 		}
-		if vainqueur == 1 {
-			return 1000 - nb_de_pions
-		} else if vainqueur == 2 {
-			return -1000 + nb_de_pions
-		} else {
-			return 0
-		}
 	}
-	//On compte le nombre de séries de 2 pions alignés de chacun des joueurs
-	series_j1, series_j2 := 0, 0
-	nb_series(jeu, &series_j1, &series_j2, 2)
-	return series_j1 - series_j2
+	if x+1 < len(jeu) && jeu[x+1][y] == 1 {
+
+	} else if x-1 > 0 && jeu[x-1][y] == 1 {
+		value += 2
+	} else if y-1 > 0 && jeu[x][y+1] == 1 {
+		value += 2
+	} else if y-1 > 0 && jeu[x][y-1] == 1 {
+		value += 2
+	} else if x+1 < len(jeu) && y+1 < len(jeu) && jeu[x+1][y+1] == 1 {
+		value += 2
+	} else if y-1 > 0 && x+1 < len(jeu) && jeu[x+1][y-1] == 1 {
+		value += 2
+	} else if x-1 > 0 && y+1 < len(jeu) && jeu[x-1][y+1] == 1 {
+		value += 2
+	} else if x-1 > 0 && y-1 > 0 && jeu[x-1][y-1] == 1 {
+		value += 2
+	}
+	return value
 }
 
-func (algo *Algo) gagnant(jeu board.Board, x int, y int, player int) int {
+// func (algo *Algo) eval(jeu board.Board, x int, y int, player int) int {
+// 	nb_de_pions := 0
 
-	jeu.CheckRules(pb.Node{X: int32(x), Y: int32(y), Player: int32(player)}, *algo.Report)
+// 	if vainqueur := algo.gagnant(jeu, x, y, player); vainqueur != 0 {
+// 		//On compte le nombre de pions présents sur le plateau
+// 		for i := 0; i < len(jeu); i++ {
+// 			for j := 0; j < len(jeu); j++ {
+// 				if jeu[i][j] != 0 {
+// 					nb_de_pions++
+// 				}
+// 			}
+// 		}
+// 		if vainqueur == 1 {
+// 			return 1000 - nb_de_pions
+// 		} else if vainqueur == 2 {
+// 			return -1000 + nb_de_pions
+// 		} else {
+// 			return 0
+// 		}
+// 	}
+// 	//On compte le nombre de séries de 2 pions alignés de chacun des joueurs
+// 	series_j1, series_j2 := 0, 0
+// 	nb_series(jeu, &series_j1, &series_j2, 2)
+// 	return series_j1 - series_j2
+// }
+
+func (algo *Algo) gagnant(jeu board.Board, x int, y int, player int) int {
+	raport := algo.Players[int32(player)].Rules
+
+	defer raport.Report.Reset()
+	jeu.CheckRules(pb.Node{X: int32(x), Y: int32(y), Player: int32(player)}, raport)
 	jeu[x][y] = int32(0)
-	if algo.Report.Report.PartyFinish == true && len(algo.Report.Report.WinOrLose) == 0 {
+	if raport.Report.PartyFinish == true && len(raport.Report.WinOrLose) == 0 {
 		if player == 1 {
 			return 1
 		}
 		return 2
-	} else if algo.Report.Report.PartyFinish == true && len(algo.Report.Report.WinOrLose) != 0 {
+	} else if raport.Report.PartyFinish == true && len(raport.Report.WinOrLose) != 0 {
 		if player == 1 {
 			return 2
 		}
