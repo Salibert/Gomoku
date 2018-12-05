@@ -11,7 +11,7 @@ import (
 
 const (
 	//GrpcPort ...
-	GrpcPort = ":50051"
+	GrpcPort = ":50052"
 )
 
 var (

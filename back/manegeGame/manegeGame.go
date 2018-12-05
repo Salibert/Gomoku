@@ -59,7 +59,7 @@ func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (*pb.CheckRulesResp
 // PlayedAI choose the best move for win
 func (CurrentGames *Games) PlayedAI(in *pb.StonePlayed) (*pb.StonePlayed, error) {
 	game := CurrentGames.game[in.GameID]
-	node := algorithm.Minmax(game.board)
+	node := algorithm.IA_jouer(game.board, 2)
 	game.board[in.CurrentPlayerMove.X][in.CurrentPlayerMove.Y] = in.CurrentPlayerMove.Player
 	return &pb.StonePlayed{CurrentPlayerMove: node}, nil
 }
