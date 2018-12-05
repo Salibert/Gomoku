@@ -4,6 +4,7 @@ import (
 	"errors"
 	"sync"
 
+	"github.com/Salibert/Gomoku/back/algorithm"
 	"github.com/Salibert/Gomoku/back/game"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
@@ -55,7 +56,10 @@ func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (*pb.CheckRulesResp
 	return nil, errors.New("partie not found")
 }
 
-// PlayedIA choose the best move for win
-func (CurrentGames *Games) PlayedIA(in *pb.StonePlayed) (*pb.StonePlayed, error) {
-	return &pb.StonePlayed{CurrentPlayerMove: &pb.Node{X: in.CurrentPlayerMove.X, Y: in.CurrentPlayerMove.Y + 1, Player: 2}}, nil
+// PlayedAI choose the best move for win
+func (CurrentGames *Games) PlayedAI(in *pb.StonePlayed) (*pb.StonePlayed, error) {
+	game := CurrentGames.game[in.GameID]
+	node := algorithm.Minmax(game.board)
+	game.board[in.CurrentPlayerMove.X][in.CurrentPlayerMove.Y] = in.CurrentPlayerMove.Player
+	return &pb.StonePlayed{CurrentPlayerMove: node}, nil
 }
