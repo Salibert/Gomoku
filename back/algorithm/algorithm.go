@@ -99,17 +99,19 @@ func nb_series(jeu board.Board, series_j1 *int, series_j2 *int, n int) int { //C
 
 	//Diagonale descendante
 	for i := 0; i < len(jeu); i++ {
-		if jeu[i][i] == 1 {
-			compteur1++
-			compteur2 = 0
-			if compteur1 == n {
-				*series_j1++
-			}
-		} else if jeu[i][i] == 2 {
-			compteur2++
-			compteur1 = 0
-			if compteur2 == n {
-				*series_j2++
+		for j := 0; j < len(jeu) - i; j++ {
+			if jeu[i][j] == 1 {
+				compteur1++
+				compteur2 = 0
+				if compteur1 == n {
+					*series_j1++
+				}
+			} else if jeu[i][i] == 2 {
+				compteur2++
+				compteur1 = 0
+				if compteur2 == n {
+					*series_j2++
+				}
 			}
 		}
 	}
@@ -205,6 +207,12 @@ func eval(jeu board.Board) int {
 	nb_series(jeu, &series_j1, &series_j2, 2)
 	return series_j1 - series_j2
 
+}
+
+func calc(jeu board.Board) {
+	value = 
+	res := jeu.CheckRulesAndCaptured()
+	if res.Captured
 }
 
 func gagnant(jeu board.Board) int {
