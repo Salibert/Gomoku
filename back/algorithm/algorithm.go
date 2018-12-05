@@ -22,7 +22,7 @@ func IA_jouer(jeu board.Board, profondeur int) *pb.Node {
 		for j = 0; j < len(jeu); j++ {
 			if jeu[i][j] == 0 {
 				jeu[i][j] = 1
-				tmp = Min(jeu, profondeur-1)
+				tmp = Minimax(jeu, profondeur, 2, -10000, 10000)
 				if tmp > max {
 					max = tmp
 					maxi = i
@@ -35,7 +35,7 @@ func IA_jouer(jeu board.Board, profondeur int) *pb.Node {
 	return &pb.Node{X: int32(maxi), Y: int32(maxj), Player: int32(2)}
 }
 
-func minimax(jeu board.Board, profondeur int, maximizingPlayer int) int {
+func Minimax(jeu board.Board, profondeur int, maximizingPlayer int, alpha int, beta int) int {
 	if profondeur == 0 || gagnant(jeu) != 0 {
 		return eval(jeu)
 	}
@@ -45,7 +45,11 @@ func minimax(jeu board.Board, profondeur int, maximizingPlayer int) int {
 			for j := 0; j < len(jeu); j++ {
 				if jeu[i][j] == 0 {
 					jeu[i][j] = 2
-					value = Max(value, minimax(jeu, depth-1, 1))
+					value = Max(value, Minimax(jeu, profondeur-1, 1, alpha, beta))
+					if alpha >= value {
+						return value
+					}
+					alpha = Max(alpha, value)
 					jeu[i][j] = 0
 				}
 			}
@@ -57,7 +61,11 @@ func minimax(jeu board.Board, profondeur int, maximizingPlayer int) int {
 			for j := 0; j < len(jeu); j++ {
 				if jeu[i][j] == 0 {
 					jeu[i][j] = 1
-					value = Min(value, minimax(jeu, depth-1, 2))
+					value = Min(value, Minimax(jeu, profondeur-1, 2, alpha, beta))
+					if value >= beta {
+						return value
+					}
+					beta = Min(beta, value)
 					jeu[i][j] = 0
 				}
 			}
@@ -66,48 +74,18 @@ func minimax(jeu board.Board, profondeur int, maximizingPlayer int) int {
 	}
 }
 
-func Max(jeu board.Board, profondeur int) int {
-	if profondeur == 0 || gagnant(jeu) != 0 {
-		return eval(jeu)
+func Max(jeu int, profondeur int) int {
+	if jeu > profondeur {
+		return profondeur
 	}
-	var max int = -10000
-	var tmp int
-
-	for i := 0; i < len(jeu); i++ {
-		for j := 0; j < len(jeu); j++ {
-			if jeu[i][j] == 0 {
-				jeu[i][j] = 2
-				tmp = Min(jeu, profondeur-1)
-				if tmp > max {
-					max = tmp
-				}
-				jeu[i][j] = 0
-			}
-		}
-	}
-	return max
+	return jeu
 }
 
-func Min(jeu board.Board, profondeur int) int {
-	if profondeur == 0 || gagnant(jeu) != 0 {
-		return eval(jeu)
+func Min(jeu int, profondeur int) int {
+	if jeu < profondeur {
+		return profondeur
 	}
-	var min int = 10000
-	var tmp int
-
-	for i := 0; i < len(jeu); i++ {
-		for j := 0; j < len(jeu); j++ {
-			if jeu[i][j] == 0 {
-				jeu[i][j] = 1
-				tmp = Max(jeu, profondeur-1)
-				if tmp < min {
-					min = tmp
-				}
-				jeu[i][j] = 0
-			}
-		}
-	}
-	return min
+	return jeu
 }
 
 func nb_series(jeu board.Board, series_j1 *int, series_j2 *int, n int) int { //Compte le nombre de séries de n pions alignés de chacun des joueurs
