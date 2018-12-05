@@ -50,7 +50,15 @@ public class gameMaster : MonoBehaviour
     }
     async public void GetCDGame() {    
         try {
-            GomokuBuffer.CDGameResponse reply = await Client.CDGameAsync( new GomokuBuffer.CDGameRequest(){ GameID= GameID });
+            Debug.Log(mainMenu.config);
+            GomokuBuffer.CDGameResponse reply = await Client.CDGameAsync(
+                new GomokuBuffer.CDGameRequest(){
+                    GameID= GameID,
+                    Rules= new GomokuBuffer.ConfigRules(){
+                        IsActiveRuleCapture = mainMenu.config.IsActiveRuleCapture,
+                        IsActiveRuleFreeThree = mainMenu.config.IsActiveRuleFreeThree,
+                    },
+                    });
             if (reply.IsSuccess == false)
                 Debug.Log("NONONONO");
         } catch (Exception e) {

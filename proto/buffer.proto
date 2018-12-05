@@ -9,8 +9,8 @@ message Node {
 }
 
 message ConfigRules {
-    bool FreeThree = 1;
-    int32 NbCaptureForWin = 2;
+    bool IsActiveRuleFreeThree = 1;
+    bool IsActiveRuleCapture = 2;
 }
 
 service Game {

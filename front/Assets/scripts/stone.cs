@@ -12,33 +12,44 @@ public class stone : MonoBehaviour
     private GomokuBuffer.Node node;
     private bool isCreate;
 
+    delegate void Played();
+    Played modePlayed;
     public void initNode(ref GomokuBuffer.Node n) { node = n; }
 
     void Start() {
         rend = GetComponent<Renderer>();
         meshRend = GetComponent<MeshRenderer>();
         gravity = GetComponent<Collider>();
+        if (mainMenu.modeGame == 1) {
+            modePlayed = playedModeIA;
+        } else {
+            modePlayed = playedMode1vs1;
+        }
     }
-    async void OnMouseDown() {
-        if (!isCreate) {
-            if (mainMenu.modeGame == 1) {
-                if (goban.GM.GetPlayerTurn() == 1) {
-                    if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
-                        SetStone();
-                        goban.board.Add(transform.GetComponent<stone>());
-                        goban.GM.GetPlayed(node);
-                    } else {
-                        Debug.Log("IMPOSSIBLE");
-                    }
-                }
+
+    async void playedMode1vs1() {
+        if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
+            SetStone();
+            goban.board.Add(transform.GetComponent<stone>());
+        } else {
+            Debug.Log("IMPOSSIBLE");
+        }
+    }
+    async void playedModeIA() {
+        if (goban.GM.GetPlayerTurn() == 1) {
+            if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
+                SetStone();
+                goban.board.Add(transform.GetComponent<stone>());
+                goban.GM.GetPlayed(node);
             } else {
-                if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
-                    SetStone();
-                    goban.board.Add(transform.GetComponent<stone>());
-                } else {
-                    Debug.Log("IMPOSSIBLE");
-                }
+                Debug.Log("IMPOSSIBLE");
             }
+        }
+    }
+
+    void OnMouseDown() {
+        if (!isCreate) {
+            modePlayed();
         }
     }
     void OnMouseEnter() {
