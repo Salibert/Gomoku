@@ -1,8 +1,6 @@
 package algorithm
 
 import (
-	"fmt"
-
 	"github.com/Salibert/Gomoku/back/board"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
@@ -37,20 +35,46 @@ func IA_jouer(jeu board.Board, profondeur int) *pb.Node {
 	return &pb.Node{X: int32(maxi), Y: int32(maxj), Player: int32(2)}
 }
 
-func Max(jeu board.Board, profondeur int) int {
-	fmt.Println("Max profondeur = ", profondeur)
+func minimax(jeu board.Board, profondeur int, maximizingPlayer int) int {
 	if profondeur == 0 || gagnant(jeu) != 0 {
-		//fmt.Println("Eval Max")
 		return eval(jeu)
 	}
+	if maximizingPlayer == 2 {
+		value := -10000
+		for i := 0; i < len(jeu); i++ {
+			for j := 0; j < len(jeu); j++ {
+				if jeu[i][j] == 0 {
+					jeu[i][j] = 2
+					value = Max(value, minimax(jeu, depth-1, 1))
+					jeu[i][j] = 0
+				}
+			}
+		}
+		return value
+	} else {
+		value := 10000
+		for i := 0; i < len(jeu); i++ {
+			for j := 0; j < len(jeu); j++ {
+				if jeu[i][j] == 0 {
+					jeu[i][j] = 1
+					value = Min(value, minimax(jeu, depth-1, 2))
+					jeu[i][j] = 0
+				}
+			}
+		}
+		return value
+	}
+}
 
+func Max(jeu board.Board, profondeur int) int {
+	if profondeur == 0 || gagnant(jeu) != 0 {
+		return eval(jeu)
+	}
 	var max int = -10000
 	var tmp int
 
 	for i := 0; i < len(jeu); i++ {
 		for j := 0; j < len(jeu); j++ {
-			fmt.Println("MAX ===> i = ", i, " && j = ", j)
-			fmt.Println("Max profondeur = ", profondeur)
 			if jeu[i][j] == 0 {
 				jeu[i][j] = 2
 				tmp = Min(jeu, profondeur-1)
@@ -61,14 +85,11 @@ func Max(jeu board.Board, profondeur int) int {
 			}
 		}
 	}
-	fmt.Println("======== Fin MAX ========")
 	return max
 }
 
 func Min(jeu board.Board, profondeur int) int {
-	//fmt.Println("Min profondeur = ", profondeur)
 	if profondeur == 0 || gagnant(jeu) != 0 {
-		//fmt.Println("Eval Min")
 		return eval(jeu)
 	}
 	var min int = 10000
@@ -76,7 +97,6 @@ func Min(jeu board.Board, profondeur int) int {
 
 	for i := 0; i < len(jeu); i++ {
 		for j := 0; j < len(jeu); j++ {
-			fmt.Println("MIN ===> i = ", i, " && j = ", j)
 			if jeu[i][j] == 0 {
 				jeu[i][j] = 1
 				tmp = Max(jeu, profondeur-1)
@@ -87,14 +107,97 @@ func Min(jeu board.Board, profondeur int) int {
 			}
 		}
 	}
-	fmt.Println("======== Fin MIN ========")
 	return min
 }
 
 func nb_series(jeu board.Board, series_j1 *int, series_j2 *int, n int) int { //Compte le nombre de séries de n pions alignés de chacun des joueurs
+	var compteur1, compteur2 int
 
 	*series_j1 = 0
 	*series_j2 = 0
+
+	compteur1 = 0
+	compteur2 = 0
+
+	//Diagonale descendante
+	for i := 0; i < len(jeu); i++ {
+		if jeu[i][i] == 1 {
+			compteur1++
+			compteur2 = 0
+			if compteur1 == n {
+				*series_j1++
+			}
+		} else if jeu[i][i] == 2 {
+			compteur2++
+			compteur1 = 0
+			if compteur2 == n {
+				*series_j2++
+			}
+		}
+	}
+	compteur1 = 0
+	compteur2 = 0
+
+	//Diagonale montante
+	for i := 0; i < len(jeu); i++ {
+		// fmt.Println("i = ", i, "\nlen = ", len(jeu))
+		if jeu[i][(len(jeu)-1)-i] == 1 {
+			compteur1++
+			compteur2 = 0
+			if compteur1 == n {
+				*series_j1++
+			}
+		} else if jeu[i][(len(jeu)-1)-i] == 2 {
+			compteur2++
+			compteur1 = 0
+			if compteur2 == n {
+				*series_j2++
+			}
+		}
+	}
+
+	//En ligne
+	for i := 0; i < len(jeu); i++ {
+		compteur1 = 0
+		compteur2 = 0
+
+		//Horizontalement
+		for j := 0; j < len(jeu); j++ {
+			if jeu[i][j] == 1 {
+				compteur1++
+				compteur2 = 0
+				if compteur1 == n {
+					*series_j1++
+				}
+			} else if jeu[i][j] == 2 {
+				compteur2++
+				compteur1 = 0
+				if compteur2 == n {
+					*series_j2++
+				}
+			}
+		}
+
+		compteur1 = 0
+		compteur2 = 0
+
+		//Verticalement
+		for j := 0; j < len(jeu); j++ {
+			if jeu[j][i] == 1 {
+				compteur1++
+				compteur2 = 0
+				if compteur1 == n {
+					*series_j1++
+				}
+			} else if jeu[j][i] == 2 {
+				compteur2++
+				compteur1 = 0
+				if compteur2 == n {
+					*series_j2++
+				}
+			}
+		}
+	}
 
 	return 0
 }
@@ -148,129 +251,3 @@ func gagnant(jeu board.Board) int {
 	//Si le jeu est fini et que personne n'a gagné, on renvoie 3
 	return 3
 }
-
-// func gomokuShapeScore(consecutive int, openEnds int, currentTurn int) int {
-// 	if openEnds == 0 && consecutive < 5 {
-// 		return 0
-// 	}
-// 	switch consecutive {
-// 	case 4:
-// 		switch openEnds {
-// 		case 1:
-// 			if currentTurn == 1 {
-// 				return 100000000
-// 			}
-// 			return 50
-// 		case 2:
-// 			if currentTurn == 1 {
-// 				return 100000000
-
-// 			}
-// 			return 500000
-// 		}
-// 	case 3:
-// 		switch openEnds {
-// 		case 1:
-// 			if currentTurn == 1 {
-// 				return 7
-// 			}
-// 			return 5
-// 		case 2:
-// 			if currentTurn == 1 {
-// 				return 10000
-// 			}
-// 			return 50
-// 		}
-// 	case 2:
-// 		switch openEnds {
-// 		case 1:
-// 			return 3
-// 		case 2:
-// 			return 5
-// 		}
-// 	case 1:
-// 		switch openEnds {
-// 		case 1:
-// 			return 1
-// 		case 2:
-// 			return 2
-// 		}
-// 	default:
-// 		return 200000000
-// 	}
-// 	return 0
-// }
-
-// func analyzeHorizontalSetsForBlack(current_turn int, board board.Board) int {
-// 	var score = 0
-// 	var countConsecutive = 0
-// 	var openEnds = 0
-
-// 	for i := 0; i < len(board); i++ {
-// 		for a := 0; a < len(board[i]); a++ {
-// 			if board[i][a] == 2 {
-// 				countConsecutive++
-// 			} else if board[i][a] == 0 && countConsecutive > 0 {
-// 				openEnds++
-// 				score += gomokuShapeScore(countConsecutive,
-// 					openEnds, current_turn)
-// 				countConsecutive = 0
-// 				openEnds = 1
-// 			} else if board[i][a] == 0 {
-// 				openEnds = 1
-// 			} else if countConsecutive > 0 {
-// 				score += gomokuShapeScore(countConsecutive,
-// 					openEnds, current_turn)
-// 				countConsecutive = 0
-// 				openEnds = 0
-// 			} else {
-// 				openEnds = 0
-// 			}
-// 		}
-// 		if countConsecutive > 0 {
-// 			score += gomokuShapeScore(countConsecutive,
-// 				openEnds, current_turn)
-// 		}
-// 		countConsecutive = 0
-// 		openEnds = 0
-// 	}
-// 	return score
-// }
-
-// func bestGomokuMove(bturn int, depth int, board board.Board) *pb.Node {
-// 	var xBest = -1
-// 	var yBest = -1
-// 	if bturn != 0 {
-// 		var bestScore = -1000000000
-// 		var color = 1
-// 	} else {
-// 		var bestScore = 1000000000
-// 		var color = 2
-// 	}
-// 	var analysis, response int
-// 	if depth%2 == 0 {
-// 		var analTurn = 2
-// 	} else {
-// 		var analTurn = 1
-// 	}
-// 	var moves = get_moves()
-
-// 	for i := moves.length - 1; i > moves.length-aiMoveCheck-1 && i >= 0; i-- {
-// 		board[moves[i][1]][moves[i][2]] = color
-// 		if depth == 1 {
-// 			analysis = analyzeGomoku(analTurn, board)
-// 		} else {
-// 			response = bestGomokuMove(!bturn, depth-1)
-// 			analysis = response[2]
-// 		}
-// 		board[moves[i][1]][moves[i][2]] = 0
-// 		if (analysis > bestScore && bturn) ||
-// 			(analysis < bestScore && !bturn) {
-// 			bestScore = analysis
-// 			xBest = moves[i][1]
-// 			yBest = moves[i][2]
-// 		}
-// 	}
-
-// 	return &pb.Node{X: xBest, Y: yBest, Player: 2}
-// }
