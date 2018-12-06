@@ -25,27 +25,28 @@ namespace GomokuBuffer {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgxidWZmZXIucHJvdG8SDGdvbW9rdUJ1ZmZlciIsCgROb2RlEgkKAVgYASAB",
-            "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUiSQoLQ29uZmlnUnVsZXMS",
-            "HQoVaXNBY3RpdmVSdWxlRnJlZVRocmVlGAEgASgIEhsKE2lzQWN0aXZlUnVs",
-            "ZUNhcHR1cmUYAiABKAgiWQoNQ0RHYW1lUmVxdWVzdBIOCgZHYW1lSUQYASAB",
-            "KAkSKAoFUnVsZXMYAiABKAsyGS5nb21va3VCdWZmZXIuQ29uZmlnUnVsZXMS",
-            "DgoGRGVsZXRlGAMgASgIIowBChJDaGVja1J1bGVzUmVzcG9uc2USEgoKSXNQ",
-            "b3NzaWJsZRgBIAEoCBIkCghDYXB0dXJlZBgCIAMoCzISLmdvbW9rdUJ1ZmZl",
-            "ci5Ob2RlEhgKEE5iU3RvbmVkQ2FwdHVyZWQYAyABKAUSEwoLUGFydHlGaW5p",
-            "c2gYBCABKAgSDQoFV2luSXMYBSABKAUiNAoOQ0RHYW1lUmVzcG9uc2USEQoJ",
-            "SXNTdWNjZXNzGAEgASgIEg8KB01lc3NhZ2UYAiABKAkiTAoLU3RvbmVQbGF5",
-            "ZWQSLQoRQ3VycmVudFBsYXllck1vdmUYASABKAsyEi5nb21va3VCdWZmZXIu",
-            "Tm9kZRIOCgZHYW1lSUQYAiABKAky3AEKBEdhbWUSRQoGQ0RHYW1lEhsuZ29t",
-            "b2t1QnVmZmVyLkNER2FtZVJlcXVlc3QaHC5nb21va3VCdWZmZXIuQ0RHYW1l",
-            "UmVzcG9uc2UiABJACgZQbGF5ZWQSGS5nb21va3VCdWZmZXIuU3RvbmVQbGF5",
-            "ZWQaGS5nb21va3VCdWZmZXIuU3RvbmVQbGF5ZWQiABJLCgpDaGVja1J1bGVz",
-            "EhkuZ29tb2t1QnVmZmVyLlN0b25lUGxheWVkGiAuZ29tb2t1QnVmZmVyLkNo",
-            "ZWNrUnVsZXNSZXNwb25zZSIAYgZwcm90bzM="));
+            "KAUSCQoBWRgCIAEoBRIOCgZQbGF5ZXIYAyABKAUiaAoLQ29uZmlnUnVsZXMS",
+            "HQoVSXNBY3RpdmVSdWxlRnJlZVRocmVlGAEgASgIEhsKE0lzQWN0aXZlUnVs",
+            "ZUNhcHR1cmUYAiABKAgSHQoVSXNBY3RpdmVSdWxlQWxpZ25tZW50GAMgASgI",
+            "IlkKDUNER2FtZVJlcXVlc3QSDgoGR2FtZUlEGAEgASgJEigKBVJ1bGVzGAIg",
+            "ASgLMhkuZ29tb2t1QnVmZmVyLkNvbmZpZ1J1bGVzEg4KBkRlbGV0ZRgDIAEo",
+            "CCKMAQoSQ2hlY2tSdWxlc1Jlc3BvbnNlEhIKCklzUG9zc2libGUYASABKAgS",
+            "JAoIQ2FwdHVyZWQYAiADKAsyEi5nb21va3VCdWZmZXIuTm9kZRIYChBOYlN0",
+            "b25lZENhcHR1cmVkGAMgASgFEhMKC1BhcnR5RmluaXNoGAQgASgIEg0KBVdp",
+            "bklzGAUgASgFIjQKDkNER2FtZVJlc3BvbnNlEhEKCUlzU3VjY2VzcxgBIAEo",
+            "CBIPCgdNZXNzYWdlGAIgASgJIkwKC1N0b25lUGxheWVkEi0KEUN1cnJlbnRQ",
+            "bGF5ZXJNb3ZlGAEgASgLMhIuZ29tb2t1QnVmZmVyLk5vZGUSDgoGR2FtZUlE",
+            "GAIgASgJMtwBCgRHYW1lEkUKBkNER2FtZRIbLmdvbW9rdUJ1ZmZlci5DREdh",
+            "bWVSZXF1ZXN0GhwuZ29tb2t1QnVmZmVyLkNER2FtZVJlc3BvbnNlIgASQAoG",
+            "UGxheWVkEhkuZ29tb2t1QnVmZmVyLlN0b25lUGxheWVkGhkuZ29tb2t1QnVm",
+            "ZmVyLlN0b25lUGxheWVkIgASSwoKQ2hlY2tSdWxlcxIZLmdvbW9rdUJ1ZmZl",
+            "ci5TdG9uZVBsYXllZBogLmdvbW9rdUJ1ZmZlci5DaGVja1J1bGVzUmVzcG9u",
+            "c2UiAGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.Node), global::GomokuBuffer.Node.Parser, new[]{ "X", "Y", "Player" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.ConfigRules), global::GomokuBuffer.ConfigRules.Parser, new[]{ "IsActiveRuleFreeThree", "IsActiveRuleCapture" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.ConfigRules), global::GomokuBuffer.ConfigRules.Parser, new[]{ "IsActiveRuleFreeThree", "IsActiveRuleCapture", "IsActiveRuleAlignment" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameRequest), global::GomokuBuffer.CDGameRequest.Parser, new[]{ "GameID", "Rules", "Delete" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CheckRulesResponse), global::GomokuBuffer.CheckRulesResponse.Parser, new[]{ "IsPossible", "Captured", "NbStonedCaptured", "PartyFinish", "WinIs" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GomokuBuffer.CDGameResponse), global::GomokuBuffer.CDGameResponse.Parser, new[]{ "IsSuccess", "Message" }, null, null, null),
@@ -268,6 +269,7 @@ namespace GomokuBuffer {
     public ConfigRules(ConfigRules other) : this() {
       isActiveRuleFreeThree_ = other.isActiveRuleFreeThree_;
       isActiveRuleCapture_ = other.isActiveRuleCapture_;
+      isActiveRuleAlignment_ = other.isActiveRuleAlignment_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -276,7 +278,7 @@ namespace GomokuBuffer {
       return new ConfigRules(this);
     }
 
-    /// <summary>Field number for the "isActiveRuleFreeThree" field.</summary>
+    /// <summary>Field number for the "IsActiveRuleFreeThree" field.</summary>
     public const int IsActiveRuleFreeThreeFieldNumber = 1;
     private bool isActiveRuleFreeThree_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -287,7 +289,7 @@ namespace GomokuBuffer {
       }
     }
 
-    /// <summary>Field number for the "isActiveRuleCapture" field.</summary>
+    /// <summary>Field number for the "IsActiveRuleCapture" field.</summary>
     public const int IsActiveRuleCaptureFieldNumber = 2;
     private bool isActiveRuleCapture_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -295,6 +297,17 @@ namespace GomokuBuffer {
       get { return isActiveRuleCapture_; }
       set {
         isActiveRuleCapture_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "IsActiveRuleAlignment" field.</summary>
+    public const int IsActiveRuleAlignmentFieldNumber = 3;
+    private bool isActiveRuleAlignment_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool IsActiveRuleAlignment {
+      get { return isActiveRuleAlignment_; }
+      set {
+        isActiveRuleAlignment_ = value;
       }
     }
 
@@ -313,6 +326,7 @@ namespace GomokuBuffer {
       }
       if (IsActiveRuleFreeThree != other.IsActiveRuleFreeThree) return false;
       if (IsActiveRuleCapture != other.IsActiveRuleCapture) return false;
+      if (IsActiveRuleAlignment != other.IsActiveRuleAlignment) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -321,6 +335,7 @@ namespace GomokuBuffer {
       int hash = 1;
       if (IsActiveRuleFreeThree != false) hash ^= IsActiveRuleFreeThree.GetHashCode();
       if (IsActiveRuleCapture != false) hash ^= IsActiveRuleCapture.GetHashCode();
+      if (IsActiveRuleAlignment != false) hash ^= IsActiveRuleAlignment.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -342,6 +357,10 @@ namespace GomokuBuffer {
         output.WriteRawTag(16);
         output.WriteBool(IsActiveRuleCapture);
       }
+      if (IsActiveRuleAlignment != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsActiveRuleAlignment);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -354,6 +373,9 @@ namespace GomokuBuffer {
         size += 1 + 1;
       }
       if (IsActiveRuleCapture != false) {
+        size += 1 + 1;
+      }
+      if (IsActiveRuleAlignment != false) {
         size += 1 + 1;
       }
       if (_unknownFields != null) {
@@ -373,6 +395,9 @@ namespace GomokuBuffer {
       if (other.IsActiveRuleCapture != false) {
         IsActiveRuleCapture = other.IsActiveRuleCapture;
       }
+      if (other.IsActiveRuleAlignment != false) {
+        IsActiveRuleAlignment = other.IsActiveRuleAlignment;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -390,6 +415,10 @@ namespace GomokuBuffer {
           }
           case 16: {
             IsActiveRuleCapture = input.ReadBool();
+            break;
+          }
+          case 24: {
+            IsActiveRuleAlignment = input.ReadBool();
             break;
           }
         }

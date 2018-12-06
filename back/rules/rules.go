@@ -23,6 +23,7 @@ type ReportCheckRules struct {
 	WinOrLose         [][]*pb.Node
 	NextMovesOrLose   []*pb.Node
 	NbFreeThree       int
+	SizeAlignment     int
 }
 
 type rules int
@@ -49,18 +50,18 @@ const (
 	// Block ...
 	// Block
 	// Alignment ...
-	//Alignment
+	Alignment
 )
 
 func parseRules(config pb.ConfigRules) []FuncCheckRules {
-	arrayFuncRulse := make([]FuncCheckRules, 0, 3)
+	arrayFuncRulse := make([]FuncCheckRules, 0, 4)
+	arrayFuncRulse = append(arrayFuncRulse, checkAlignment)
 	if config.IsActiveRuleFreeThree == true {
 		arrayFuncRulse = append(arrayFuncRulse, checkFreeThreeNoSpace, checkFreeThreeSpace)
 	}
 	if config.IsActiveRuleCapture == true {
 		arrayFuncRulse = append(arrayFuncRulse, checkCapture)
 	}
-
 	arrayFuncRulse = append(arrayFuncRulse, checkWin)
 	return arrayFuncRulse
 }
@@ -90,6 +91,7 @@ func (report *ReportCheckRules) Reset() {
 	report.PartyFinish = false
 	report.ItIsAValidMove = false
 	report.NbFreeThree = 0
+	report.SizeAlignment = 0
 }
 
 func compareNodesSchema(list []*pb.Node, schema []int32, index int, direction int) bool {
@@ -151,7 +153,7 @@ loop:
 				continue loop
 			}
 		}
-		schema.Report.WinOrLose = append(schema.Report.WinOrLose, list[i:lenSchema])
+		//schema.Report.WinOrLose = append(schema.Report.WinOrLose, list[i:lenSchema])
 		return true
 	}
 	return false
@@ -165,6 +167,27 @@ func (schema Schema) ProccessCheckRules(list []*pb.Node, index int) {
 			return
 		}
 	}
+}
+
+func checkAlignment(schema Schema, list []*pb.Node, index int) bool {
+	lenList := len(list)
+	alignment := 0
+	for i := index + 1; i < lenList; i++ {
+		if list[i].Player == list[index].Player {
+			alignment++
+			continue
+		}
+		break
+	}
+	for i := index - 1; i > 0; i-- {
+		if list[i].Player == list[index].Player {
+			alignment++
+			continue
+		}
+		break
+	}
+	schema.Report.SizeAlignment += alignment
+	return false
 }
 
 // CheckIfPartyIsFinish ...

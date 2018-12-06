@@ -13,6 +13,7 @@ public class mainMenu : MonoBehaviour {
 		config = new GomokuBuffer.ConfigRules(){
 			IsActiveRuleCapture = true,
 			IsActiveRuleFreeThree = true,
+			IsActiveRuleAlignment = true,
 		};
 	}
 

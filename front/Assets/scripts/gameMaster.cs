@@ -95,7 +95,8 @@ public class gameMaster : MonoBehaviour
                     }
                     index++;
                 }
-                goban.board.RemoveAt(index);
+                if (index <= goban.board.Count)
+                    goban.board.RemoveAt(index);
             }
         }
     }
