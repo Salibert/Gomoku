@@ -80,6 +80,6 @@ func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, 
 }
 
 func (game *Game) PlayIA(in *pb.Node) *pb.Node {
-	node := algorithm.IA_jouer(game.board, 5, game.players)
+	node := algorithm.IA_jouer(game.board, 2, game.players)
 	return node
 }

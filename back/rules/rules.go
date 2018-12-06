@@ -46,6 +46,10 @@ const (
 	Win
 	// ProbableCapture ...
 	ProbableCapture
+	// Block ...
+	// Block
+	// Alignment ...
+	//Alignment
 )
 
 func parseRules(config pb.ConfigRules) []FuncCheckRules {
