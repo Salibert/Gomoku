@@ -70,7 +70,7 @@ public class stone : MonoBehaviour
         node.Player = 0;
         isCreate = false;
         Vector3 up = transform.position;
-        up.y += 0.8f;
+        up.y += 0.1f;
         transform.position = up;
         gravity.attachedRigidbody.useGravity = false;
     }
@@ -78,6 +78,9 @@ public class stone : MonoBehaviour
         rend.material = goban.GM.GetCurrentMaterial();
         node.Player = goban.GM.GetPlayerTurn();
         goban.GM.NextPlayer();
+        Vector3 up = transform.position;
+        up.y += 0.9f;
+        transform.position = up;
         isCreate = true;
         gravity.attachedRigidbody.useGravity = true;
         meshRend.enabled = true;

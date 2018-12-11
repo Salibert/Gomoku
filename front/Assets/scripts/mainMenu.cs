@@ -14,6 +14,7 @@ public class mainMenu : MonoBehaviour {
 			IsActiveRuleCapture = true,
 			IsActiveRuleFreeThree = true,
 			IsActiveRuleAlignment = true,
+			IsActiveRuleWin = true,
 		};
 	}
 

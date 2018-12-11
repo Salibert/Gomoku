@@ -9,25 +9,35 @@ import (
 )
 
 type Algo struct {
-	Players player.Players
+	players     player.Players
+	bestMove    pb.Node
+	currentMove pb.Node
+	alpha, beta int
+}
+
+// New ...
+func New(config *pb.ConfigRules) {
+
 }
 
 func IA_jouer(jeu board.Board, profondeur int, players player.Players) *pb.Node {
 	var max int = -10000
-	var tmp, maxi, maxj int
-	var i, j int
-	algo := Algo{Players: players}
-
-	for i = 0; i < len(jeu); i++ {
-		for j = 0; j < len(jeu); j++ {
+	var tmp int
+	var maxi, maxj int32
+	var i, j int32
+	algo := Algo{players: players}
+	algo.alpha, algo.beta = -10000, 10000
+	for i = 0; i < board.SizeBoard; i++ {
+		for j = 0; j < board.SizeBoard; j++ {
 			if jeu[i][j] == 0 {
 				jeu[i][j] = 2
-				tmp = algo.Minimax(&jeu, profondeur, 1, -10000, 10000, i, j)
-				// fmt.Println("Value => ", tmp, " X = ", i, " Y= ", j)
+				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = j, i, int32(1)
+				tmp = algo.Alpha(jeu, 2, int32(1))
+				fmt.Println("tmp >= ", tmp)
 				if tmp > max {
 					max = tmp
-					maxi = i
-					maxj = j
+					maxi = algo.bestMove.X
+					maxj = algo.bestMove.Y
 				}
 				jeu[i][j] = 0
 			}
@@ -36,73 +46,139 @@ func IA_jouer(jeu board.Board, profondeur int, players player.Players) *pb.Node 
 	return &pb.Node{X: int32(maxi), Y: int32(maxj), Player: int32(2)}
 }
 
-func (algo *Algo) Minimax(jeu *board.Board, profondeur int, maximizingPlayer int, alpha int, beta int, x int, y int) int {
-	if profondeur == 0 || algo.gagnant(jeu, x, y, maximizingPlayer) != 0 {
-		resultat := algo.newEval(jeu, x, y, player.GetOpposentPlayer(int32(maximizingPlayer)))
+func (algo *Algo) Alpha(jeu board.Board, depth int, playerIndex int32) int {
+	if depth == 0 {
+		resultat := algo.newEval(jeu, player.GetOpposentPlayer(playerIndex))
 		return resultat
 	}
-	if maximizingPlayer == 2 {
-		value := -10000
-		for i := 0; i < len(*jeu); i++ {
-			for j := 0; j < len(*jeu); j++ {
-				if (*jeu)[i][j] == 0 {
-					(*jeu)[i][j] = 2
-					value = Max(value, algo.Minimax(jeu, profondeur-1, 1, alpha, beta, i, j))
-					fmt.Println("ALPHA VALUE => ", beta, " value => ", value)
-					if alpha >= value {
-						(*jeu)[i][j] = 0
-						return value
-					}
-					alpha = value
-					(*jeu)[i][j] = 0
+	if algo.gagnant(jeu, playerIndex) != 0 {
+		return 10000
+	}
+	var i, j int
+	SizeBoard := int(board.SizeBoard)
+loop:
+	for i = 0; i < SizeBoard; i++ {
+		for j = 0; j < SizeBoard; j++ {
+			if jeu[i][j] == 0 {
+				jeu[i][j] = playerIndex
+				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = int32(i), int32(j), playerIndex
+				// fmt.Println("currentMove ALPHA => ", algo.currentMove, " Player => ", playerIndex)
+				tmp := algo.currentMove
+				score := algo.Beta(jeu, depth-1, player.GetOpposentPlayer(playerIndex))
+				fmt.Println("SCORE ALPHA => ", score)
+				if score > algo.alpha {
+					algo.alpha = score
+					algo.bestMove = tmp
+					fmt.Println("TMP ALPHA => ", tmp)
+				}
+				jeu[i][j] = 0
+				if algo.alpha >= algo.beta {
+					fmt.Println("BREAK LOOP ALPHA", algo.alpha, algo.beta)
+					break loop
 				}
 			}
 		}
-		return value
-	} else {
-		value := 10000
-		for i := 0; i < len(*jeu); i++ {
-			for j := 0; j < len(*jeu); j++ {
-				if (*jeu)[i][j] == 0 {
-					(*jeu)[i][j] = 1
-					value = Min(value, algo.Minimax(jeu, profondeur-1, 2, alpha, beta, i, j))
-					fmt.Println("BETA VALUE => ", beta, " value => ", value)
-					if value >= beta {
-						(*jeu)[i][j] = 0
-						return value
-					}
-					beta = value
-					(*jeu)[i][j] = 0
+	}
+	return algo.alpha
+}
+
+func (algo *Algo) Beta(jeu board.Board, depth int, playerIndex int32) int {
+	if depth <= 0 {
+		resultat := algo.newEval(jeu, player.GetOpposentPlayer(playerIndex))
+		return resultat
+	}
+	if algo.gagnant(jeu, playerIndex) != 0 {
+		return 10000
+	}
+	var i, j int
+	SizeBoard := int(board.SizeBoard)
+loop:
+	for i = 0; i < SizeBoard; i++ {
+		for j = 0; j < SizeBoard; j++ {
+			if jeu[i][j] == 0 {
+				jeu[i][j] = playerIndex
+				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = int32(i), int32(j), playerIndex
+				tmp := algo.currentMove
+				score := algo.Beta(jeu, depth-1, player.GetOpposentPlayer(playerIndex))
+				fmt.Println("SCORE BETA => ", score)
+				if score < algo.beta {
+					algo.beta = score
+					algo.bestMove = tmp
+					fmt.Println("TMP BETA => ", tmp)
+				}
+				jeu[i][j] = 0
+				if algo.alpha >= algo.beta {
+					fmt.Println("BREAK LOOP BETA", algo.alpha, algo.beta)
+					break loop
 				}
 			}
 		}
-		return value
 	}
+	return algo.beta
 }
 
-func Max(jeu int, profondeur int) int {
-	fmt.Println("MAX VALUE => ", jeu, " algo => ", profondeur)
-	if jeu < profondeur {
-		return profondeur
-	}
-	return jeu
-}
+// func (algo *Algo) Minimax(jeu *board.Board, profondeur int, maximizingPlayer int, alpha int, beta int, x int, y int) int {
+// 	if profondeur == 0 || algo.gagnant(jeu, x, y, maximizingPlayer) != 0 {
+// 		resultat := algo.newEval(jeu, x, y, player.GetOpposentPlayer(int32(maximizingPlayer)))
+// 		return resultat
+// 	}
+// 	var v int
+// 	if maximizingPlayer == 2 {
+// 		// MAX
+// 		value := -10000
+// 		for i := 0; i < len(*jeu); i++ {
+// 			for j := 0; j < len(*jeu); j++ {
+// 				if (*jeu)[i][j] == 0 {
+// 					(*jeu)[i][j] = 2
+// 					v = algo.Minimax(jeu, profondeur-1, 1, alpha, beta, i, j)
+// 					if v > value {
+// 						value = v
+// 					}
+// 					if v >= beta {
+// 						(*jeu)[i][j] = 0
+// 						return value
+// 					}
+// 					if v < alpha {
+// 						alpha = v
+// 					}
+// 					(*jeu)[i][j] = 0
+// 				}
+// 			}
+// 		}
+// 		return value
+// 	} else {
+// 		// MIN
+// 		value := 10000
+// 		for i := 0; i < len(*jeu); i++ {
+// 			for j := 0; j < len(*jeu); j++ {
+// 				if (*jeu)[i][j] == 0 {
+// 					(*jeu)[i][j] = 1
+// 					v = algo.Minimax(jeu, profondeur-1, 2, alpha, beta, i, j)
+// 					// fmt.Println("BETA VALUE => ", beta, " value => ", value)
+// 					if v < value {
+// 						value = v
+// 					}
+// 					if v <= alpha {
+// 						(*jeu)[i][j] = 0
+// 						return value
+// 					}
+// 					if v < beta {
+// 						beta = v
+// 					}
+// 					(*jeu)[i][j] = 0
+// 				}
+// 			}
+// 		}
+// 		return value
+// 	}
+// }
 
-func Min(jeu int, profondeur int) int {
-	fmt.Println("MIN VALUE => ", jeu, " algo => ", profondeur)
-	if jeu > profondeur {
-		return profondeur
-	}
-	return jeu
-}
-
-func (algo *Algo) newEval(jeu *board.Board, x int, y int, player int32) int {
+func (algo *Algo) newEval(jeu board.Board, player int32) int {
 	value := 0
-	raport := algo.Players[player].Rules
-
+	raport := algo.players[player].Rules.Clone()
 	defer raport.Report.Reset()
-	jeu.CheckRules(pb.Node{X: int32(x), Y: int32(y), Player: int32(player)}, raport)
-
+	var x, y int = int(algo.currentMove.X), int(algo.currentMove.Y)
+	jeu.CheckRules(algo.currentMove, *raport)
 	if raport.Report.ItIsAValidMove == false {
 		return -10000
 	} else {
@@ -117,69 +193,45 @@ func (algo *Algo) newEval(jeu *board.Board, x int, y int, player int32) int {
 		}
 		value += raport.Report.SizeAlignment * 5
 	}
-	if x+1 < len(*jeu) && (*jeu)[x+1][y] == 1 {
+	if x+1 < len(jeu) && jeu[x+1][y] != 0 {
 		value += 2
 	}
-	if x-1 > 0 && (*jeu)[x-1][y] == 1 {
+	if x-1 > 0 && (jeu)[x-1][y] != 0 {
 		value += 2
 	}
-	if y+1 < 19 && (*jeu)[x][y+1] == 1 {
+	if y+1 < 19 && (jeu)[x][y+1] != 0 {
 		value += 2
 	}
-	if y-1 > 0 && (*jeu)[x][y-1] == 1 {
+	if y-1 > 0 && (jeu)[x][y-1] != 0 {
 		value += 2
 	}
-	if x+1 < len(*jeu) && y+1 < len(*jeu) && (*jeu)[x+1][y+1] == 1 {
+	if x+1 < len(jeu) && y+1 < len(jeu) && (jeu)[x+1][y+1] != 0 {
 		value += 2
 	}
-	if y-1 > 0 && x+1 < len(*jeu) && (*jeu)[x+1][y-1] == 1 {
+	if y-1 > 0 && x+1 < len(jeu) && (jeu)[x+1][y-1] != 0 {
 		value += 2
 	}
-	if x-1 > 0 && y+1 < len(*jeu) && (*jeu)[x-1][y+1] == 1 {
+	if x-1 > 0 && y+1 < len(jeu) && (jeu)[x-1][y+1] != 0 {
 		value += 2
 	}
-	if x-1 > 0 && y-1 > 0 && (*jeu)[x-1][y-1] == 1 {
+	if x-1 > 0 && y-1 > 0 && (jeu)[x-1][y-1] != 0 {
 		value += 2
 	}
-	if x+1 < len(*jeu) && (*jeu)[x+1][y] == 1 {
+	if x+1 < len(jeu) && (jeu)[x+1][y] != 0 {
 		value += 2
 	}
-	// func() {
-	// 	fmt.Println("\n", raport.Report)
-	// 	fmt.Println("Value =>")
-	// 	fmt.Println("")
-	// 	fmt.Println((*jeu)[0])
-	// 	fmt.Println((*jeu)[1])
-	// 	fmt.Println((*jeu)[2])
-	// 	fmt.Println((*jeu)[3])
-	// 	fmt.Println((*jeu)[4])
-	// 	fmt.Println((*jeu)[5])
-	// 	fmt.Println((*jeu)[6])
-	// 	fmt.Println((*jeu)[7])
-	// 	fmt.Println((*jeu)[8])
-	// 	fmt.Println((*jeu)[9])
-	// 	fmt.Println((*jeu)[10])
-	// 	fmt.Println((*jeu)[11])
-	// 	fmt.Println((*jeu)[12])
-	// 	fmt.Println((*jeu)[13])
-	// 	fmt.Println((*jeu)[14])
-	// 	fmt.Println((*jeu)[15])
-	// 	fmt.Println((*jeu)[16])
-	// 	fmt.Println((*jeu)[17])
-	// 	fmt.Println((*jeu)[18])
-	// 	fmt.Println("")
-	// }()
+	if player == 1 {
+		value *= -1
+	}
 	return value
 }
 
-func (algo *Algo) gagnant(jeu *board.Board, x int, y int, playerCurrent int) int {
-	raport := algo.Players[int32(playerCurrent)].Rules
-
-	defer raport.Report.Reset()
-	jeu.CheckRules(pb.Node{X: int32(x), Y: int32(y), Player: player.GetOpposentPlayer(int32(playerCurrent))}, raport)
+func (algo *Algo) gagnant(jeu board.Board, playerCurrent int32) int {
+	raport := algo.players[playerCurrent].Rules.Clone()
+	jeu.CheckRules(algo.currentMove, *raport)
 	if raport.Report.PartyFinish == true {
 		if len(raport.Report.WinOrLose[0]) == 0 {
-			return playerCurrent
+			return int(playerCurrent)
 		}
 	}
 	return 0

@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Salibert/Gomoku/back/manegeGame"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
@@ -37,6 +38,8 @@ func (s *Server) CDGame(context context.Context, in *pb.CDGameRequest) (*pb.CDGa
 
 // Played ...
 func (s *Server) Played(context context.Context, in *pb.StonePlayed) (*pb.StonePlayed, error) {
+	defer fmt.Println("END PLAYED")
+	fmt.Println("START PLAYED")
 	return manegeGame.CurrentGames.PlayedIA(in)
 }
 

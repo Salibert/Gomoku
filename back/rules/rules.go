@@ -14,18 +14,6 @@ type Schema struct {
 	Report    *ReportCheckRules
 }
 
-// ReportCheckRules create a report of this move
-// ! WARWING ! if you update a ReportCheckRules update Reset func
-type ReportCheckRules struct {
-	ListCapturedStone []*pb.Node
-	ItIsAValidMove    bool
-	PartyFinish       bool
-	WinOrLose         [][]*pb.Node
-	NextMovesOrLose   []*pb.Node
-	NbFreeThree       int
-	SizeAlignment     int
-}
-
 type rules int
 
 var rulesFuncArray = []func(p, o int32) []int32{
@@ -53,16 +41,21 @@ const (
 	Alignment
 )
 
+// parseRules use pb.ConfigRules for create a array of function checking
 func parseRules(config pb.ConfigRules) []FuncCheckRules {
-	arrayFuncRulse := make([]FuncCheckRules, 0, 4)
-	arrayFuncRulse = append(arrayFuncRulse, checkAlignment)
+	arrayFuncRulse := make([]FuncCheckRules, 0, 5)
 	if config.IsActiveRuleFreeThree == true {
 		arrayFuncRulse = append(arrayFuncRulse, checkFreeThreeNoSpace, checkFreeThreeSpace)
 	}
 	if config.IsActiveRuleCapture == true {
 		arrayFuncRulse = append(arrayFuncRulse, checkCapture)
 	}
-	arrayFuncRulse = append(arrayFuncRulse, checkWin)
+	if config.IsActiveRuleAlignment == true {
+		arrayFuncRulse = append(arrayFuncRulse, checkAlignment)
+	}
+	if config.IsActiveRuleWin == true {
+		arrayFuncRulse = append(arrayFuncRulse, checkWin)
+	}
 	return arrayFuncRulse
 }
 
@@ -83,15 +76,13 @@ func New(playerIndex, opposent int32, config pb.ConfigRules) Schema {
 	return checker
 }
 
-// Reset all report value
-func (report *ReportCheckRules) Reset() {
-	report.ListCapturedStone = report.ListCapturedStone[:0]
-	report.WinOrLose = report.WinOrLose[:0]
-	report.NextMovesOrLose = report.NextMovesOrLose[:0]
-	report.PartyFinish = false
-	report.ItIsAValidMove = false
-	report.NbFreeThree = 0
-	report.SizeAlignment = 0
+// Clone copy Schema struct
+func (schema Schema) Clone() *Schema {
+	clone := &Schema{}
+	clone.Schema = schema.Schema[:len(schema.Schema)]
+	clone.FuncCheck = schema.FuncCheck[:len(schema.FuncCheck)]
+	clone.Report = schema.Report.Clone()
+	return clone
 }
 
 func compareNodesSchema(list []*pb.Node, schema []int32, index int, direction int) bool {

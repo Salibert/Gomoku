@@ -46,9 +46,9 @@ public class goban : MonoBehaviour
         hitsAll.AddRange(Physics.RaycastAll(line.position, fwd, 1000));
         hitsAll.AddRange(Physics.RaycastAll(line.position, fwd * -1, 1000));
         hitsAll.ForEach(el => {
-            pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 0.8f, z = el.transform.position.z });
+            pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 0.1f, z = el.transform.position.z });
         });
-        pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 0.8f, z = line.position.z });
+        pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 0.1f, z = line.position.z });
         pos.Sort(delegate(Vector3 x, Vector3 y) {
             if (x.z == y.z)
                 return 0;
