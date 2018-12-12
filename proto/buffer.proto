@@ -13,6 +13,7 @@ message ConfigRules {
     bool IsActiveRuleCapture = 2;
     bool IsActiveRuleAlignment = 3;
     bool IsActiveRuleWin = 4;
+    bool IsActiveRuleBlock = 5;
 }
 
 service Game {
