@@ -35,63 +35,138 @@ func New(players player.Players, config pb.ConfigRules, moveOpposent pb.Node) Al
 	return algo
 }
 
-// func IA_jouer(jeu board.Board, profondeur int, players player.Players, config pb.ConfigRules, moveOpposent pb.Node) *pb.Node {
-// 	var max int = -10000
-// 	var tmp int
-// 	var maxi, maxj int32
-// 	var i, j int32
-// 	algo := New(players, config, moveOpposent)
-// 	for i = 0; i < board.SizeBoard; i++ {
-// 		for j = 0; j < board.SizeBoard; j++ {
-// 			if jeu[i][j] == 0 {
-// 				jeu[i][j] = 2
-// 				algo.alpha, algo.beta = -10000, 10000
-// 				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = i, j, int32(2)
-// 				tmp = algo.Beta(jeu, 6)
-// 				if tmp > max {
-// 					max = tmp
-// 					maxi = i
-// 					maxj = j
-// 				}
-// 				jeu[i][j] = 0
-// 			}
-// 		}
-// 	}
-// 	return &pb.Node{X: int32(maxi), Y: int32(maxj), Player: int32(2)}
-// }
+func IA_jouer(jeu board.Board, profondeur int, players player.Players, config pb.ConfigRules, moveOpposent pb.Node) *pb.Node {
+	var max int = -10000
+	var tmp int
+	var maxi, maxj int32
+	var i, j int32
+	algo := New(players, config, moveOpposent)
+	alpha, beta := -10000, 10000
+	for i = 0; i < board.SizeBoard; i++ {
+		for j = 0; j < board.SizeBoard; j++ {
+			if jeu[i][j] == 0 {
+				jeu[i][j] = 2
+				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = i, j, int32(2)
+				tmp = algo.alphabeta(jeu, 1, alpha, beta)
+				fmt.Println("TMP ", tmp, " MAX ", max)
+				if tmp > max {
+					max = tmp
+					maxi = i
+					maxj = j
+				}
+				jeu[i][j] = 0
+			}
+		}
+	}
+	return &pb.Node{X: int32(maxi), Y: int32(maxj), Player: int32(2)}
+}
 
-// func (algo *Algo) Alpha(jeu board.Board, depth int) int {
+func (algo *Algo) alphabeta(jeu board.Board, depth, alpha, beta int) int {
+	if algo.gagnant(jeu) != 0 {
+		return 10000
+	} else if depth <= 0 {
+		return algo.newEval(jeu)
+	}
+	var i, j int
+	playerIndex := player.GetOpposentPlayer(algo.currentMove.Player)
+	SizeBoard := int(board.SizeBoard)
+loop:
+	for i = 0; i < SizeBoard; i++ {
+		for j = 0; j < SizeBoard; j++ {
+			if jeu[i][j] == 0 {
+				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = int32(i), int32(j), playerIndex
+				jeu[i][j] = playerIndex
+				tmp := algo.currentMove
+				score := -algo.alphabeta(jeu, depth-1, -beta, -alpha)
+				jeu[i][j] = 0
+				if score >= alpha {
+					alpha = score
+					algo.bestMove = tmp
+					if alpha >= beta {
+						fmt.Println("PRUNE ALPHA")
+						break loop
+					}
+				}
+			}
+		}
+	}
+	return alpha
+}
+
+// func (algo *Algo) alphabeta(jeu board.Board, depth, alpha, beta int) int {
 // 	if algo.gagnant(jeu) != 0 {
 // 		return 10000
 // 	} else if depth <= 0 {
 // 		return algo.newEval(jeu)
 // 	}
-// 	var i, j int
-// 	playerIndex := player.GetOpposentPlayer(algo.currentMove.Player)
+// 	playerIndex := algo.currentMove.Player
+// 	current := algo.alphabeta(jeu, depth-1, -beta, -alpha)
 // 	SizeBoard := int(board.SizeBoard)
-// loop:
-// 	for i = 0; i < SizeBoard; i++ {
-// 		for j = 0; j < SizeBoard; j++ {
-// 			if jeu[i][j] == 0 {
+// 	var i, j int
+// 	if current >= alpha {
+// 		alpha = current
+// 	}
+// 	if current < beta {
+// 	loop:
+// 		for i = 0; i < SizeBoard; i++ {
+// 			for j = 0; j < SizeBoard; j++ {
 // 				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = int32(i), int32(j), playerIndex
-// 				jeu[i][j] = playerIndex
 // 				tmp := algo.currentMove
-// 				score := algo.Beta(jeu, depth-1)
-// 				if score > algo.alpha {
-// 					algo.alpha = score
+// 				jeu[i][j] = playerIndex
+// 				score := -algo.alphabeta(jeu, depth-1, -beta, -alpha)
+// 				if score > alpha && score < beta {
+// 					score = -algo.alphabeta(jeu, depth-1, -beta, -alpha)
+// 				}
+// 				jeu[i][j] = 0
+// 				if score >= current {
+// 					current = score
 // 					algo.bestMove = tmp
-// 				}
-// 				jeu[i][j] = 0
-// 				if algo.alpha >= algo.beta {
-// 					break loop
+// 					if score >= alpha {
+// 						alpha = score
+// 						if score >= beta {
+// 							break loop
+// 						}
+// 					}
 // 				}
 // 			}
 // 		}
 // 	}
-// 	return algo.alpha
+// 	return current
 // }
 
-// func (algo *Algo) Beta(jeu board.Board, depth int) int {
+// func (algo *Algo) Alpha(jeu board.Board, depth, alpha, beta int) int {
+// 	if algo.gagnant(jeu) != 0 {
+// 		return 10000
+// 	} else if depth <= 0 {
+// 		return algo.newEval(jeu)
+// 	}
+// 	var i, j int
+// 	playerIndex := player.GetOpposentPlayer(algo.currentMove.Player)
+// 	SizeBoard := int(board.SizeBoard)
+// loop:
+// 	for i = 0; i < SizeBoard; i++ {
+// 		for j = 0; j < SizeBoard; j++ {
+// 			if jeu[i][j] == 0 {
+// 				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = int32(i), int32(j), playerIndex
+// 				jeu[i][j] = playerIndex
+// 				tmp := algo.currentMove
+// 				score := algo.Beta(jeu, depth-1, alpha, beta)
+// 				jeu[i][j] = 0
+// 				if score > alpha {
+// 					alpha = score
+// 					algo.bestMove = tmp
+// 					if alpha >= beta {
+// 						fmt.Println("PRUNE ALPHA")
+// 						break loop
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// 	return alpha
+// }
+
+// func (algo *Algo) Beta(jeu board.Board, depth, alpha, beta int) int {
 // 	if algo.gagnant(jeu) != 0 {
 // 		return 10000
 // 	} else if depth <= 0 {
@@ -108,19 +183,48 @@ func New(players player.Players, config pb.ConfigRules, moveOpposent pb.Node) Al
 // 				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = int32(i), int32(j), playerIndex
 // 				jeu[i][j] = playerIndex
 // 				tmp := algo.currentMove
-// 				score := algo.Alpha(jeu, depth-1)
+// 				score := algo.Alpha(jeu, depth-1, alpha, beta)
+// 				jeu[i][j] = 0
 // 				if score < algo.beta {
-// 					algo.beta = score
+// 					beta = score
 // 					algo.bestMove = tmp
-// 				}
-// 				jeu[i][j] = 0
-// 				if algo.alpha >= algo.beta {
-// 					break loop
+// 					if alpha >= beta {
+// 						fmt.Println("PRUNE BETA")
+// 						break loop
+// 					}
 // 				}
 // 			}
 // 		}
 // 	}
-// 	return algo.beta
+// 	return beta
+// }
+
+// // MTDF ...
+// func MTDF(jeu board.Board, players player.Players, config pb.ConfigRules, moveOpposent pb.Node, depth, initG int) int {
+// 	g := initG
+// 	algo := New(players, config, moveOpposent)
+// 	var beta int
+// 	upperbound := math.MaxInt64
+// 	lowerbound := math.MinInt64
+// 	for {
+// 		if g == lowerbound {
+// 			beta = g + 1
+// 		} else {
+// 			beta = g
+// 		}
+// 		g = algo.AlphaBetaWithMemory(depth, beta-1, beta)
+// 		if g < beta {
+// 			upperbound = g
+// 		} else {
+// 			lowerbound = g
+// 		}
+// 	}
+// 	return g
+// }
+
+// // AlphaBetaWithMemory ...
+// func (algo Algo) AlphaBetaWithMemory(depth, alpha, beta int) int {
+// 	if
 // }
 
 func distance(moveOpposent, currentMove pb.Node) int {
@@ -136,6 +240,11 @@ func (algo *Algo) newEval(jeu board.Board) int {
 	if raport.Report.ItIsAValidMove == false {
 		return -10000
 	} else {
+		if len(algo.players[algo.currentMove.Player].NextMovesOrLose) != 0 {
+			if raport.Report.PartyFinish = algo.players[algo.currentMove.Player].CheckIfThisMoveBlockLose(&algo.currentMove); raport.Report.PartyFinish == true {
+				return 10000
+			}
+		}
 		if capture := len(raport.Report.ListCapturedStone); capture != 0 {
 			value += capture * 100
 		}
