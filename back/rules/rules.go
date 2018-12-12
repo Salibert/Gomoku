@@ -36,14 +36,14 @@ const (
 	// ProbableCapture ...
 	ProbableCapture
 	// Block ...
-	// Block
+	Block
 	// Alignment ...
 	Alignment
 )
 
 // parseRules use pb.ConfigRules for create a array of function checking
 func parseRules(config pb.ConfigRules) []FuncCheckRules {
-	arrayFuncRulse := make([]FuncCheckRules, 0, 5)
+	arrayFuncRulse := make([]FuncCheckRules, 0, 6)
 	if config.IsActiveRuleFreeThree == true {
 		arrayFuncRulse = append(arrayFuncRulse, checkFreeThreeNoSpace, checkFreeThreeSpace)
 	}
@@ -55,6 +55,9 @@ func parseRules(config pb.ConfigRules) []FuncCheckRules {
 	}
 	if config.IsActiveRuleWin == true {
 		arrayFuncRulse = append(arrayFuncRulse, checkWin)
+	}
+	if config.IsActiveRuleBlock == true {
+		arrayFuncRulse = append(arrayFuncRulse, checkBlock)
 	}
 	return arrayFuncRulse
 }
@@ -160,6 +163,27 @@ func (schema Schema) ProccessCheckRules(list []*pb.Node, index int) {
 	}
 }
 
+func checkBlock(schema Schema, list []*pb.Node, index int) bool {
+	lenList := len(list)
+	blocked := 0
+	for i := index + 1; i < lenList; i++ {
+		if list[i].Player != 0 && list[i].Player != list[index].Player {
+			blocked++
+			continue
+		}
+		break
+	}
+	for i := index - 1; i > 0; i-- {
+		if list[i].Player != 0 && list[i].Player != list[index].Player {
+			blocked++
+			continue
+		}
+		break
+	}
+	schema.Report.NbBlockStone += (blocked * 2)
+	return false
+}
+
 func checkAlignment(schema Schema, list []*pb.Node, index int) bool {
 	lenList := len(list)
 	alignment := 0
@@ -177,7 +201,7 @@ func checkAlignment(schema Schema, list []*pb.Node, index int) bool {
 		}
 		break
 	}
-	schema.Report.SizeAlignment += alignment
+	schema.Report.SizeAlignment += (alignment * 2)
 	return false
 }
 

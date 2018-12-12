@@ -15,6 +15,7 @@ type Game struct {
 	rwmux   sync.RWMutex
 	board   board.Board
 	players player.Players
+	config  pb.ConfigRules
 }
 
 // New create new instance of Game
@@ -31,6 +32,7 @@ func New(config pb.ConfigRules) *Game {
 		Index: 2,
 		Rules: rules.New(2, 1, config),
 	}
+	game.config = config
 	return game
 }
 
@@ -80,6 +82,5 @@ func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, 
 }
 
 func (game *Game) PlayIA(in *pb.Node) *pb.Node {
-	node := algorithm.IA_jouer(game.board, 2, game.players)
-	return node
+	return algorithm.IA_jouer(game.board, 2, game.players, game.config, *in)
 }

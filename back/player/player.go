@@ -15,6 +15,23 @@ type Player struct {
 	Rules           rules.Schema
 }
 
+// Clone Players
+func (players Players) Clone() Players {
+	new := make(Players)
+	for key, value := range players {
+		new[key] = value.Clone()
+	}
+	return new
+}
+
+// Clone Player
+func (player Player) Clone() *Player {
+	return &Player{
+		Index: player.Index,
+		Rules: *player.Rules.Clone(),
+	}
+}
+
 // GetOpposentPlayer return index to opposent player
 func GetOpposentPlayer(player int32) (opposent int32) {
 	switch player {
