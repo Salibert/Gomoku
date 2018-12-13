@@ -2,16 +2,16 @@ package player
 
 import (
 	"github.com/Salibert/Gomoku/back/rules"
-	pb "github.com/Salibert/Gomoku/back/server/pb"
+	"github.com/Salibert/Gomoku/back/server/inter"
 )
 
-type Players map[int32]*Player
+type Players map[int]*Player
 
 // Player ...
 type Player struct {
-	Index           int32
-	NextMovesOrLose [][]*pb.Node
-	Score           int32
+	Index           int
+	NextMovesOrLose [][]*inter.Node
+	Score           int
 	Rules           rules.Schema
 }
 
@@ -33,7 +33,7 @@ func (player Player) Clone() *Player {
 }
 
 // GetOpposentPlayer return index to opposent player
-func GetOpposentPlayer(player int32) (opposent int32) {
+func GetOpposentPlayer(player int) (opposent int) {
 	switch player {
 	case 1:
 		opposent = 2
@@ -44,7 +44,7 @@ func GetOpposentPlayer(player int32) (opposent int32) {
 }
 
 // CheckIfThisMoveBlockLose ...
-func (player Player) CheckIfThisMoveBlockLose(lastMove *pb.Node) (checkLose bool) {
+func (player Player) CheckIfThisMoveBlockLose(lastMove *inter.Node) (checkLose bool) {
 	for _, arrayBlockedStone := range player.NextMovesOrLose {
 		checkLose = true
 		for _, blockedStone := range arrayBlockedStone {

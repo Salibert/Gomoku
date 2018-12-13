@@ -8,49 +8,59 @@ import (
 
 	"github.com/Salibert/Gomoku/back/board"
 	"github.com/Salibert/Gomoku/back/player"
+	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
 type Algo struct {
 	players      player.Players
-	bestMove     pb.Node
-	reportWin    map[int32]rules.Schema
-	currentMove  pb.Node
-	moveOpposent pb.Node
-	alpha, beta  int
+	bestMove     inter.Node
+	reportWin    map[int]rules.Schema
+	reportEval   map[int]rules.Schema
+	currentMove  inter.Node
+	moveOpposent inter.Node
 }
 
 // New ...
-func New(players player.Players, config pb.ConfigRules, moveOpposent pb.Node) Algo {
+func New(players player.Players, config pb.ConfigRules, moveOpposent inter.Node) Algo {
 	algo := Algo{
-		players:   players.Clone(),
-		reportWin: make(map[int32]rules.Schema),
+		players:    players.Clone(),
+		reportWin:  make(map[int]rules.Schema),
+		reportEval: make(map[int]rules.Schema),
 	}
 	config.IsActiveRuleAlignment = true
 	config.IsActiveRuleBlock = true
-
-	algo.reportWin[1] = rules.New(1, 2, config)
-	algo.reportWin[2] = rules.New(2, 1, config)
+	config.IsActiveRuleProbableCapture = true
+	configWin := pb.ConfigRules{
+		IsActiveRuleWin:     config.IsActiveRuleWin,
+		IsActiveRuleCapture: config.IsActiveRuleCapture,
+	}
+	algo.reportWin[1] = rules.New(1, 2, configWin)
+	algo.reportWin[2] = rules.New(2, 1, configWin)
+	algo.reportEval[1] = rules.New(1, 2, config)
+	algo.reportEval[2] = rules.New(2, 1, config)
 	algo.moveOpposent = moveOpposent
 	return algo
 }
 
-func IA_jouer(jeu board.Board, profondeur int, players player.Players, config pb.ConfigRules, moveOpposent pb.Node) *pb.Node {
+func IA_jouer(jeu board.Board, profondeur int, players player.Players, config pb.ConfigRules, moveOpposent inter.Node) *inter.Node {
 	var max int = -10000
 	var tmp int
-	var maxi, maxj int32
-	var i, j int32
+	var maxi, maxj int
+	var best inter.Node
+	var i, j int
 	algo := New(players, config, moveOpposent)
 	alpha, beta := -10000, 10000
 	for i = 0; i < board.SizeBoard; i++ {
 		for j = 0; j < board.SizeBoard; j++ {
 			if jeu[i][j] == 0 {
 				jeu[i][j] = 2
-				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = i, j, int32(2)
+				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = i, j, 2
 				tmp = algo.alphabeta(jeu, 1, alpha, beta)
 				fmt.Println("TMP ", tmp, " MAX ", max)
 				if tmp > max {
 					max = tmp
+					best = algo.bestMove
 					maxi = i
 					maxj = j
 				}
@@ -58,7 +68,9 @@ func IA_jouer(jeu board.Board, profondeur int, players player.Players, config pb
 			}
 		}
 	}
-	return &pb.Node{X: int32(maxi), Y: int32(maxj), Player: int32(2)}
+	res := &inter.Node{X: maxi, Y: maxj, Player: 2}
+	fmt.Println("BEST => ", best, " RES => ", res)
+	return res
 }
 
 func (algo *Algo) alphabeta(jeu board.Board, depth, alpha, beta int) int {
@@ -74,7 +86,7 @@ loop:
 	for i = 0; i < SizeBoard; i++ {
 		for j = 0; j < SizeBoard; j++ {
 			if jeu[i][j] == 0 {
-				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = int32(i), int32(j), playerIndex
+				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = i, j, playerIndex
 				jeu[i][j] = playerIndex
 				tmp := algo.currentMove
 				score := -algo.alphabeta(jeu, depth-1, -beta, -alpha)
@@ -110,7 +122,7 @@ loop:
 // 	loop:
 // 		for i = 0; i < SizeBoard; i++ {
 // 			for j = 0; j < SizeBoard; j++ {
-// 				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = int32(i), int32(j), playerIndex
+// 				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = i, j, playerIndex
 // 				tmp := algo.currentMove
 // 				jeu[i][j] = playerIndex
 // 				score := -algo.alphabeta(jeu, depth-1, -beta, -alpha)
@@ -147,7 +159,7 @@ loop:
 // 	for i = 0; i < SizeBoard; i++ {
 // 		for j = 0; j < SizeBoard; j++ {
 // 			if jeu[i][j] == 0 {
-// 				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = int32(i), int32(j), playerIndex
+// 				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = i, j, playerIndex
 // 				jeu[i][j] = playerIndex
 // 				tmp := algo.currentMove
 // 				score := algo.Beta(jeu, depth-1, alpha, beta)
@@ -180,7 +192,7 @@ loop:
 // 	for i = 0; i < SizeBoard; i++ {
 // 		for j = 0; j < SizeBoard; j++ {
 // 			if jeu[i][j] == 0 {
-// 				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = int32(i), int32(j), playerIndex
+// 				algo.currentMove.X, algo.currentMove.Y, algo.currentMove.Player = i, j, playerIndex
 // 				jeu[i][j] = playerIndex
 // 				tmp := algo.currentMove
 // 				score := algo.Alpha(jeu, depth-1, alpha, beta)
@@ -200,7 +212,7 @@ loop:
 // }
 
 // // MTDF ...
-// func MTDF(jeu board.Board, players player.Players, config pb.ConfigRules, moveOpposent pb.Node, depth, initG int) int {
+// func MTDF(jeu board.Board, players player.Players, config pb.ConfigRules, moveOpposent inter.Node, depth, initG int) int {
 // 	g := initG
 // 	algo := New(players, config, moveOpposent)
 // 	var beta int
@@ -227,14 +239,14 @@ loop:
 // 	if
 // }
 
-func distance(moveOpposent, currentMove pb.Node) int {
+func distance(moveOpposent, currentMove inter.Node) int {
 	return int(math.Sqrt(math.Pow(float64(moveOpposent.X-currentMove.X), 2) +
 		math.Pow(float64(moveOpposent.Y-currentMove.Y), 2)))
 }
 
 func (algo *Algo) newEval(jeu board.Board) int {
 	value := 0
-	raport := algo.reportWin[algo.currentMove.Player]
+	raport := algo.reportEval[algo.currentMove.Player]
 	defer raport.Report.Reset()
 	jeu.CheckRules(algo.currentMove, raport)
 	if raport.Report.ItIsAValidMove == false {
@@ -256,6 +268,7 @@ func (algo *Algo) newEval(jeu board.Board) int {
 		}
 		value += raport.Report.SizeAlignment * 5
 		value += raport.Report.NbBlockStone * 5
+		value -= raport.Report.LevelCapture * 10
 	}
 	value += 19 - distance(algo.moveOpposent, algo.currentMove)
 	// if value != 0 {

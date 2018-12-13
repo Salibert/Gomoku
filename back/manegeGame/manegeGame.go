@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/Salibert/Gomoku/back/game"
+	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
@@ -50,7 +51,7 @@ func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (*pb.CheckRulesResp
 	CurrentGames.rwmux.Lock()
 	defer CurrentGames.rwmux.Unlock()
 	if game, ok := CurrentGames.game[in.GameID]; ok == true {
-		return game.ProccessRules(in.CurrentPlayerMove)
+		return game.ProccessRules(inter.NewNode(in.CurrentPlayerMove))
 	}
 	return nil, errors.New("partie not found")
 }
@@ -58,5 +59,5 @@ func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (*pb.CheckRulesResp
 // PlayedAI choose the best move for win
 func (CurrentGames *Games) PlayedIA(in *pb.StonePlayed) (*pb.StonePlayed, error) {
 	game := CurrentGames.game[in.GameID]
-	return &pb.StonePlayed{CurrentPlayerMove: game.PlayIA(in.CurrentPlayerMove)}, nil
+	return &pb.StonePlayed{CurrentPlayerMove: game.PlayIA(inter.NewNode(in.CurrentPlayerMove)).Convert()}, nil
 }

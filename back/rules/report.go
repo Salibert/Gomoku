@@ -1,20 +1,19 @@
 package rules
 
-import (
-	pb "github.com/Salibert/Gomoku/back/server/pb"
-)
+import "github.com/Salibert/Gomoku/back/server/inter"
 
 // ReportCheckRules create a report of this move
 type ReportCheckRules struct {
 	// UPDATE RESET AND CLONE IF MODIF REPORTCHECKRULES
-	ListCapturedStone []*pb.Node
+	ListCapturedStone []*inter.Node
 	ItIsAValidMove    bool
 	PartyFinish       bool
-	WinOrLose         [][]*pb.Node
-	NextMovesOrLose   []*pb.Node
+	WinOrLose         [][]*inter.Node
+	NextMovesOrLose   []*inter.Node
 	NbFreeThree       int
 	SizeAlignment     int
 	NbBlockStone      int
+	LevelCapture      int
 }
 
 // Clone create a uniform object, Dont clone slicer but init
@@ -28,6 +27,7 @@ func (report *ReportCheckRules) Clone() *ReportCheckRules {
 	clone.NbFreeThree = report.NbFreeThree
 	clone.SizeAlignment = report.SizeAlignment
 	clone.NbBlockStone = report.NbBlockStone
+	clone.LevelCapture = report.LevelCapture
 	return clone
 }
 
@@ -41,4 +41,5 @@ func (report *ReportCheckRules) Reset() {
 	report.NbFreeThree = 0
 	report.SizeAlignment = 0
 	report.NbBlockStone = 0
+	report.LevelCapture = 0
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/Salibert/Gomoku/back/board"
 	"github.com/Salibert/Gomoku/back/player"
 	"github.com/Salibert/Gomoku/back/rules"
+	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
@@ -37,7 +38,7 @@ func New(config pb.ConfigRules) *Game {
 }
 
 // ProccessRules ...
-func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, error) {
+func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesResponse, error) {
 	game.rwmux.Lock()
 	res := &pb.CheckRulesResponse{}
 	currentPlayer := game.players[initialStone.Player]
@@ -52,14 +53,14 @@ func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, 
 	}
 	game.board.CheckRules(*initialStone, currentPlayer.Rules)
 	if currentPlayer.Rules.Report.ItIsAValidMove == true {
-		lenListCapture := int32(len(currentPlayer.Rules.Report.ListCapturedStone))
+		lenListCapture := len(currentPlayer.Rules.Report.ListCapturedStone)
 		if lenListCapture != 0 {
 			currentPlayer.Score += lenListCapture
-			res.NbStonedCaptured = lenListCapture
-			res.Captured = currentPlayer.Rules.Report.ListCapturedStone
+			res.NbStonedCaptured = int32(lenListCapture)
+			res.Captured = inter.ConvertArrayNode(currentPlayer.Rules.Report.ListCapturedStone)
 			if currentPlayer.Score == 10 {
 				res.PartyFinish = true
-				res.WinIs = currentPlayer.Index
+				res.WinIs = int32(currentPlayer.Index)
 				return res, nil
 			}
 		} else {
@@ -67,7 +68,7 @@ func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, 
 		}
 		if len(currentPlayer.NextMovesOrLose) != 0 {
 			if res.PartyFinish = currentPlayer.CheckIfThisMoveBlockLose(initialStone); res.PartyFinish == true {
-				res.WinIs = player.GetOpposentPlayer(currentPlayer.Index)
+				res.WinIs = int32(player.GetOpposentPlayer(currentPlayer.Index))
 			}
 		}
 		if currentPlayer.Rules.Report.PartyFinish == false &&
@@ -81,6 +82,6 @@ func (game *Game) ProccessRules(initialStone *pb.Node) (*pb.CheckRulesResponse, 
 	return res, nil
 }
 
-func (game *Game) PlayIA(in *pb.Node) *pb.Node {
+func (game *Game) PlayIA(in *inter.Node) *inter.Node {
 	return algorithm.IA_jouer(game.board, 2, game.players, game.config, *in)
 }

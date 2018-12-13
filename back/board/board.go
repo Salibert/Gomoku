@@ -3,31 +3,31 @@ package board
 import (
 	"github.com/Salibert/Gomoku/back/axis"
 	"github.com/Salibert/Gomoku/back/rules"
-	pb "github.com/Salibert/Gomoku/back/server/pb"
+	"github.com/Salibert/Gomoku/back/server/inter"
 )
 
 // SizeBoard is the size of the board
-const SizeBoard int32 = 19
+const SizeBoard int = 19
 
 // Board ...
-type Board [][]int32
+type Board [][]int
 
 // New ...
 func New() Board {
 	board := make(Board, 19, 19)
 	for i := 0; i < 19; i++ {
-		board[i] = make([]int32, 19, 19)
+		board[i] = make([]int, 19, 19)
 	}
 	return board
 }
 
 // UpdateBoard board with new stone
-func (board Board) UpdateBoard(stone pb.Node) {
+func (board Board) UpdateBoard(stone inter.Node) {
 	board[stone.X][stone.Y] = stone.Player
 }
 
 // CheckRules check all rules. Modify the report passed in params
-func (board Board) CheckRules(initialStone pb.Node, report rules.Schema) {
+func (board Board) CheckRules(initialStone inter.Node, report rules.Schema) {
 	board.proccessRulesByAxes(report.ProccessCheckRules, initialStone)
 	if report.Report.NbFreeThree > 1 {
 		report.Report.ItIsAValidMove = false
@@ -47,20 +47,21 @@ func (board Board) CheckRules(initialStone pb.Node, report rules.Schema) {
 					break loop
 				}
 				report.Report.WinOrLose[i] = report.Report.NextMovesOrLose
-				report.Report.NextMovesOrLose = make([]*pb.Node, 0, 0)
+				report.Report.NextMovesOrLose = make([]*inter.Node, 0, 0)
 			}
 		}
 	}
 }
 
-func (board Board) createListCheckStone(index int, initialStone pb.Node) ([]*pb.Node, int) {
-	listCheckStone := make([]*pb.Node, 0, 11)
+func (board Board) createListCheckStone(index int, initialStone inter.Node) ([]*inter.Node, int) {
+	listCheckStone := make([]*inter.Node, 0, 11)
 	var indexStone int
 	axisCheck := axis.DialRightAxes[index]
 	Y, X := initialStone.Y+(axisCheck.Y*5), initialStone.X+(axisCheck.X*5)
 	for i := 5; i > 0; i-- {
 		if Y >= 0 && X >= 0 && Y < SizeBoard && X < SizeBoard {
-			listCheckStone = append(listCheckStone, &pb.Node{X: X, Y: Y, Player: board[X][Y]})
+
+			listCheckStone = append(listCheckStone, &inter.Node{X: X, Y: Y, Player: board[X][Y]})
 		}
 		Y -= axisCheck.Y
 		X -= axisCheck.X
@@ -71,7 +72,7 @@ func (board Board) createListCheckStone(index int, initialStone pb.Node) ([]*pb.
 	Y, X = initialStone.Y+axisCheck.Y, initialStone.X+axisCheck.X
 	for i := 0; i < 5; i++ {
 		if Y >= 0 && X >= 0 && Y < SizeBoard && X < SizeBoard {
-			listCheckStone = append(listCheckStone, &pb.Node{X: X, Y: Y, Player: board[X][Y]})
+			listCheckStone = append(listCheckStone, &inter.Node{X: X, Y: Y, Player: board[X][Y]})
 		}
 		Y += axisCheck.Y
 		X += axisCheck.X
@@ -79,7 +80,7 @@ func (board Board) createListCheckStone(index int, initialStone pb.Node) ([]*pb.
 	return listCheckStone, indexStone
 }
 
-func (board Board) proccessRulesByAxes(m func(list []*pb.Node, index int), initialStone pb.Node) {
+func (board Board) proccessRulesByAxes(m func(list []*inter.Node, index int), initialStone inter.Node) {
 	for index := 0; index < 4; index++ {
 		m(board.createListCheckStone(index, initialStone))
 	}
@@ -87,8 +88,8 @@ func (board Board) proccessRulesByAxes(m func(list []*pb.Node, index int), initi
 
 func (board Board) UpdateBoardAfterCapture(report *rules.Schema) {
 	if len := len(report.Report.ListCapturedStone); len != 0 {
-		go func(list []*pb.Node, len int) {
-			var node *pb.Node
+		go func(list []*inter.Node, len int) {
+			var node *inter.Node
 			for len > 0 {
 				node = list[len-1]
 				board[node.X][node.Y] = 0

@@ -14,6 +14,7 @@ message ConfigRules {
     bool IsActiveRuleAlignment = 3;
     bool IsActiveRuleWin = 4;
     bool IsActiveRuleBlock = 5;
+    bool IsActiveRuleProbableCapture = 6;
 }
 
 service Game {

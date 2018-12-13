@@ -1,22 +1,23 @@
 package rules
 
 import (
+	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
 // FuncCheckRules ...
-type FuncCheckRules func(schema Schema, list []*pb.Node, index int) bool
+type FuncCheckRules func(schema Schema, list []*inter.Node, index int) bool
 
 // Schema ...
 type Schema struct {
-	Schema    [][]int32
+	Schema    [][]int
 	FuncCheck []FuncCheckRules
 	Report    *ReportCheckRules
 }
 
 type rules int
 
-var rulesFuncArray = []func(p, o int32) []int32{
+var rulesFuncArray = []func(p, o int) []int{
 	createCapture,
 	createFreeThreeSpace,
 	createFreeThreeNoSpace,
@@ -35,10 +36,6 @@ const (
 	Win
 	// ProbableCapture ...
 	ProbableCapture
-	// Block ...
-	Block
-	// Alignment ...
-	Alignment
 )
 
 // parseRules use pb.ConfigRules for create a array of function checking
@@ -63,14 +60,14 @@ func parseRules(config pb.ConfigRules) []FuncCheckRules {
 }
 
 // New create a instance of Schema
-func New(playerIndex, opposent int32, config pb.ConfigRules) Schema {
+func New(playerIndex, opposent int, config pb.ConfigRules) Schema {
 	checker := Schema{
 		FuncCheck: parseRules(config),
-		Schema:    make([][]int32, 5, 5),
+		Schema:    make([][]int, 5, 5),
 		Report: &ReportCheckRules{
-			ListCapturedStone: make([]*pb.Node, 0, 16),
-			WinOrLose:         make([][]*pb.Node, 0, 8),
-			NextMovesOrLose:   make([]*pb.Node, 0, 10),
+			ListCapturedStone: make([]*inter.Node, 0, 16),
+			WinOrLose:         make([][]*inter.Node, 0, 8),
+			NextMovesOrLose:   make([]*inter.Node, 0, 10),
 		},
 	}
 	for i, f := range rulesFuncArray {
@@ -88,7 +85,7 @@ func (schema Schema) Clone() *Schema {
 	return clone
 }
 
-func compareNodesSchema(list []*pb.Node, schema []int32, index int, direction int) bool {
+func compareNodesSchema(list []*inter.Node, schema []int, index int, direction int) bool {
 	len := len(list)
 	for _, player := range schema {
 		if 0 <= index && index < len && player == list[index].Player {
@@ -100,7 +97,7 @@ func compareNodesSchema(list []*pb.Node, schema []int32, index int, direction in
 	return true
 }
 
-func checkFreeThreeNoSpace(schema Schema, list []*pb.Node, index int) bool {
+func checkFreeThreeNoSpace(schema Schema, list []*inter.Node, index int) bool {
 	var isSuccess bool
 	for i := 3; i > 0; i-- {
 		if isSuccess = compareNodesSchema(list, schema.Schema[FreeThreeNoSpace], index-i, 1); isSuccess == true {
@@ -111,7 +108,7 @@ func checkFreeThreeNoSpace(schema Schema, list []*pb.Node, index int) bool {
 	return false
 }
 
-func checkFreeThreeSpace(schema Schema, list []*pb.Node, index int) bool {
+func checkFreeThreeSpace(schema Schema, list []*inter.Node, index int) bool {
 	var isFreeThree1, isFreeThree2 bool
 	if isFreeThree1 = compareNodesSchema(list, schema.Schema[FreeThreeSpace], index-1, 1); isFreeThree1 == true {
 		schema.Report.NbFreeThree++
@@ -125,7 +122,7 @@ func checkFreeThreeSpace(schema Schema, list []*pb.Node, index int) bool {
 	return false
 }
 
-func checkCapture(schema Schema, list []*pb.Node, index int) bool {
+func checkCapture(schema Schema, list []*inter.Node, index int) bool {
 	var isCapture bool
 	if isCapture = compareNodesSchema(list, schema.Schema[Capture], index, 1); isCapture == true {
 		schema.Report.ListCapturedStone = append(schema.Report.ListCapturedStone, list[index+1], list[index+2])
@@ -136,7 +133,7 @@ func checkCapture(schema Schema, list []*pb.Node, index int) bool {
 	return isCapture
 }
 
-func checkWin(schema Schema, list []*pb.Node, index int) bool {
+func checkWin(schema Schema, list []*inter.Node, index int) bool {
 	schemaWin := schema.Schema[Win]
 	lenSchema := len(schemaWin)
 	lenList := len(list)
@@ -154,7 +151,7 @@ loop:
 }
 
 // ProccessCheckRules ...
-func (schema Schema) ProccessCheckRules(list []*pb.Node, index int) {
+func (schema Schema) ProccessCheckRules(list []*inter.Node, index int) {
 	var isSuccessChecked bool
 	for _, f := range schema.FuncCheck {
 		if isSuccessChecked = f(schema, list, index); isSuccessChecked == true {
@@ -163,7 +160,7 @@ func (schema Schema) ProccessCheckRules(list []*pb.Node, index int) {
 	}
 }
 
-func checkBlock(schema Schema, list []*pb.Node, index int) bool {
+func checkBlock(schema Schema, list []*inter.Node, index int) bool {
 	lenList := len(list)
 	blocked := 0
 	for i := index + 1; i < lenList; i++ {
@@ -187,7 +184,7 @@ func checkBlock(schema Schema, list []*pb.Node, index int) bool {
 	return false
 }
 
-func checkAlignment(schema Schema, list []*pb.Node, index int) bool {
+func checkAlignment(schema Schema, list []*inter.Node, index int) bool {
 	lenList := len(list)
 	alignment := 0
 	for i := index + 1; i < lenList; i++ {
@@ -211,8 +208,35 @@ func checkAlignment(schema Schema, list []*pb.Node, index int) bool {
 	return false
 }
 
+func probableCapture(schema Schema, list []*inter.Node, index int) bool {
+	var isSuccessChecked bool
+	schemaProbableCapture := schema.Schema[ProbableCapture]
+	levelCapture := 0
+	len := len(list)
+	if index != 0 && index != len-1 {
+		switch list[index+1].Player {
+		case list[index].Player:
+			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-1, 1); isSuccessChecked == true {
+				levelCapture++
+			} else if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+2, -1); isSuccessChecked == true {
+				levelCapture++
+			}
+		case 0:
+			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-2, 1); isSuccessChecked == true {
+				levelCapture++
+			}
+		default:
+			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+1, -1); isSuccessChecked == true {
+				levelCapture++
+			}
+		}
+	}
+	schema.Report.LevelCapture += levelCapture
+	return false
+}
+
 // CheckIfPartyIsFinish ...
-func (schema Schema) CheckIfPartyIsFinish(list []*pb.Node, index int) {
+func (schema Schema) CheckIfPartyIsFinish(list []*inter.Node, index int) {
 	var isSuccessChecked bool
 	schemaProbableCapture := schema.Schema[ProbableCapture]
 	len := len(list)
@@ -237,22 +261,22 @@ func (schema Schema) CheckIfPartyIsFinish(list []*pb.Node, index int) {
 	return
 }
 
-func createCapture(player, opposent int32) []int32 {
-	return []int32{player, opposent, opposent, player}
+func createCapture(player, opposent int) []int {
+	return []int{player, opposent, opposent, player}
 }
 
-func createFreeThreeSpace(player, opposent int32) []int32 {
-	return []int32{0, player, 0, player, player, 0}
+func createFreeThreeSpace(player, opposent int) []int {
+	return []int{0, player, 0, player, player, 0}
 }
 
-func createFreeThreeNoSpace(player, opposent int32) []int32 {
-	return []int32{0, player, player, player, 0}
+func createFreeThreeNoSpace(player, opposent int) []int {
+	return []int{0, player, player, player, 0}
 }
 
-func createWin(player, opposent int32) []int32 {
-	return []int32{player, player, player, player, player}
+func createWin(player, opposent int) []int {
+	return []int{player, player, player, player, player}
 }
 
-func createProbableCapture(player, opposent int32) []int32 {
-	return []int32{opposent, player, player, 0}
+func createProbableCapture(player, opposent int) []int {
+	return []int{opposent, player, player, 0}
 }

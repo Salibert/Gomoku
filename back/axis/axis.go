@@ -2,7 +2,7 @@ package axis
 
 // Axis ...
 type Axis struct {
-	X, Y int32
+	X, Y int
 }
 
 // DialRightAxes ...
@@ -21,7 +21,7 @@ var DialLeftAxes = [4]Axis{
 	Axis{X: -1, Y: -1}, // ↖
 }
 
-func inverse(nb int32) int32 {
+func inverse(nb int) int {
 	switch nb {
 	case -1:
 		return 1
@@ -39,12 +39,12 @@ func (axis *Axis) Inverse() Axis {
 }
 
 // Multiply multiply axis by multiplier
-func (axis *Axis) Multiply(multiplier int32) Axis {
+func (axis *Axis) Multiply(multiplier int) Axis {
 	return Axis{X: axis.X * multiplier, Y: axis.Y * multiplier}
 }
 
 // Divide divide axis by divisor
-func (axis *Axis) Divide(divisor int32) Axis {
+func (axis *Axis) Divide(divisor int) Axis {
 	return Axis{X: axis.X / divisor, Y: axis.Y / divisor}
 }
 
