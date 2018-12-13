@@ -180,7 +180,7 @@ func checkBlock(schema Schema, list []*inter.Node, index int) bool {
 	if blocked >= 4 {
 		schema.Report.NbBlockStone = 1000
 	}
-	schema.Report.NbBlockStone += (blocked * 2)
+	schema.Report.NbBlockStone += (blocked * blocked)
 	return false
 }
 
@@ -204,7 +204,7 @@ func checkAlignment(schema Schema, list []*inter.Node, index int) bool {
 	if alignment >= 4 {
 		schema.Report.SizeAlignment = 1000
 	}
-	schema.Report.SizeAlignment += (alignment * 2)
+	schema.Report.SizeAlignment += (alignment * alignment)
 	return false
 }
 

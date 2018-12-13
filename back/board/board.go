@@ -86,6 +86,7 @@ func (board Board) proccessRulesByAxes(m func(list []*inter.Node, index int), in
 	}
 }
 
+// UpdateBoardAfterCapture ...
 func (board Board) UpdateBoardAfterCapture(report *rules.Schema) {
 	if len := len(report.Report.ListCapturedStone); len != 0 {
 		go func(list []*inter.Node, len int) {
@@ -97,4 +98,37 @@ func (board Board) UpdateBoardAfterCapture(report *rules.Schema) {
 			}
 		}(report.Report.ListCapturedStone, len)
 	}
+}
+
+func trim(X, Y int) (newX, newY int) {
+	trimXzero := X - 5
+	trimYzero := Y - 5
+	trimX := X + 5
+	trimY := Y + 5
+	if trimXzero < 0 {
+		X = 6
+	} else if trimX > SizeBoard {
+		X = SizeBoard - 6
+	}
+	if trimYzero < 0 {
+		Y = 6
+	} else if trimY > SizeBoard {
+		Y = SizeBoard - 6
+	}
+	return X, Y
+}
+
+// CreateSearchSpace ...
+func (board Board) CreateSearchSpace(lastMoveOpposent inter.Node) []inter.Node {
+	X, Y := trim(lastMoveOpposent.X, lastMoveOpposent.Y)
+	X, Y = X-5, Y-5
+	MovesList := make([]inter.Node, 121, 121)
+	index := 0
+	for x := 0; x < 11; x++ {
+		for y := 0; y < 11; y++ {
+			MovesList[index].X, MovesList[index].Y = x+X, y+Y
+			index++
+		}
+	}
+	return MovesList
 }
