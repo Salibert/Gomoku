@@ -15,6 +15,7 @@ message ConfigRules {
     bool IsActiveRuleWin = 4;
     bool IsActiveRuleBlock = 5;
     bool IsActiveRuleProbableCapture = 6;
+    int32 PlayerIndexIA = 7;
 }
 
 service Game {
@@ -34,7 +35,7 @@ message CheckRulesResponse {
     repeated Node Captured = 2;
     int32 NbStonedCaptured = 3;
     bool PartyFinish = 4;
-    int32 WinIs = 5;
+    int32 IsWin = 5;
 }
 
 message CDGameResponse {

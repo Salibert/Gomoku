@@ -3,12 +3,12 @@ package game
 import (
 	"sync"
 
-	"github.com/Salibert/Gomoku/back/algorithm"
 	"github.com/Salibert/Gomoku/back/board"
 	"github.com/Salibert/Gomoku/back/player"
 	"github.com/Salibert/Gomoku/back/rules"
 	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
+	"github.com/Salibert/Gomoku/back/solver"
 )
 
 // Game contains all the meta data of a part
@@ -16,7 +16,7 @@ type Game struct {
 	rwmux   sync.RWMutex
 	board   board.Board
 	players player.Players
-	config  pb.ConfigRules
+	IA      *solver.IA
 }
 
 // New create new instance of Game
@@ -33,7 +33,9 @@ func New(config pb.ConfigRules) *Game {
 		Index: 2,
 		Rules: rules.New(2, 1, config),
 	}
-	game.config = config
+	if config.PlayerIndexIA != 0 {
+		game.IA = solver.New(config, int(config.PlayerIndexIA))
+	}
 	return game
 }
 
@@ -60,7 +62,7 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 			res.Captured = inter.ConvertArrayNode(currentPlayer.Rules.Report.ListCapturedStone)
 			if currentPlayer.Score == 10 {
 				res.PartyFinish = true
-				res.WinIs = int32(currentPlayer.Index)
+				res.IsWin = int32(currentPlayer.Index)
 				return res, nil
 			}
 		} else {
@@ -68,7 +70,7 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 		}
 		if len(currentPlayer.NextMovesOrLose) != 0 {
 			if res.PartyFinish = currentPlayer.CheckIfThisMoveBlockLose(initialStone); res.PartyFinish == true {
-				res.WinIs = int32(player.GetOpposentPlayer(currentPlayer.Index))
+				res.IsWin = int32(player.GetOpposentPlayer(currentPlayer.Index))
 			}
 		}
 		if currentPlayer.Rules.Report.PartyFinish == false &&
@@ -83,5 +85,6 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 }
 
 func (game *Game) PlayIA(in *inter.Node) *inter.Node {
-	return algorithm.IA_jouer(game.board, 2, game.players, game.config, *in)
+	game.IA.Update(game.board, *in)
+	return game.IA.Play(game.board, 2, game.players)
 }

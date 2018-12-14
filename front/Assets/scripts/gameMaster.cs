@@ -71,6 +71,7 @@ public class gameMaster : MonoBehaviour
             await GetCheckRules(reply.CurrentPlayerMove, reply.CurrentPlayerMove.Player);
             Transform stone = goban.GetStone(reply.CurrentPlayerMove);
             stone.transform.GetComponent<stone>().SetStone();
+            goban.board.Add(stone.transform.GetComponent<stone>());
         } catch (Exception e) {
             Debug.Log("RPC failed" + e);
             throw;
@@ -105,7 +106,7 @@ public class gameMaster : MonoBehaviour
             Debug.Log("List capture "+ reply.Captured);
             updateCapture(reply);
             if (reply.PartyFinish == true) {
-                Debug.Log("GG SALE PUTE !!!" + reply.WinIs);
+                Debug.Log("GG SALE PUTE !!!" + reply.IsWin);
             }
             return reply.IsPossible;
         } catch (Exception e) {

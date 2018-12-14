@@ -14,6 +14,9 @@ public class stone : MonoBehaviour
 
     delegate void Played();
     Played modePlayed;
+
+    delegate void Render();
+    Render renderStone;
     public void initNode(ref GomokuBuffer.Node n) { node = n; }
 
     void Start() {
@@ -22,8 +25,10 @@ public class stone : MonoBehaviour
         gravity = GetComponent<Collider>();
         if (mainMenu.modeGame == 1) {
             modePlayed = playedModeIA;
+            renderStone = renderStoneIA;
         } else {
             modePlayed = playedMode1vs1;
+            renderStone = renderStone1vs1;
         }
     }
 
@@ -47,6 +52,16 @@ public class stone : MonoBehaviour
         }
     }
 
+    void renderStoneIA() {
+        if (goban.GM.GetPlayerTurn() == 1) {
+            rend.material = goban.GM.GetCurrentMaterial();
+            meshRend.enabled = true;
+        }
+    }
+    void renderStone1vs1() {
+        rend.material = goban.GM.GetCurrentMaterial();
+        meshRend.enabled = true;
+    }
     void OnMouseDown() {
         if (!isCreate) {
             modePlayed();
@@ -54,8 +69,7 @@ public class stone : MonoBehaviour
     }
     void OnMouseEnter() {
         if (!isCreate) {
-            rend.material = goban.GM.GetCurrentMaterial();
-            meshRend.enabled = true;
+            renderStone();
         }
     }
 

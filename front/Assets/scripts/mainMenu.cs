@@ -13,7 +13,6 @@ public class mainMenu : MonoBehaviour {
 		config = new GomokuBuffer.ConfigRules(){
 			IsActiveRuleCapture = true,
 			IsActiveRuleFreeThree = true,
-			IsActiveRuleAlignment = true,
 			IsActiveRuleWin = true,
 		};
 	}
@@ -25,6 +24,7 @@ public class mainMenu : MonoBehaviour {
 
 	public void PlayGameIA() {
 		modeGame = 1;
+		config.PlayerIndexIA = 2;
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 	}
 
