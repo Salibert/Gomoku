@@ -1,7 +1,6 @@
 package solver
 
 import (
-	"github.com/Salibert/Gomoku/back/board"
 	"github.com/Salibert/Gomoku/back/rules"
 	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
@@ -9,7 +8,7 @@ import (
 
 // IA ...
 type IA struct {
-	searchZone  []inter.Node
+	SearchZone  []inter.Node
 	reportWin   map[int]rules.Schema
 	reportEval  map[int]rules.Schema
 	minMax      Algo
@@ -37,6 +36,6 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	return regis
 }
 
-func (ia *IA) Update(board board.Board, moveOpposent inter.Node) {
-	ia.searchZone = board.CreateSearchSpace(moveOpposent)
-}
+// func (ia *IA) Update(board board.Board, moveOpposent inter.Node) {
+// 	ia.SearchZone = board.CreateSearchSpace(moveOpposent)
+// }

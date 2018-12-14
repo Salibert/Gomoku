@@ -56,6 +56,9 @@ func parseRules(config pb.ConfigRules) []FuncCheckRules {
 	if config.IsActiveRuleBlock == true {
 		arrayFuncRulse = append(arrayFuncRulse, checkBlock)
 	}
+	if config.IsActiveRuleProbableCapture == true {
+		arrayFuncRulse = append(arrayFuncRulse, probableCapture)
+	}
 	return arrayFuncRulse
 }
 

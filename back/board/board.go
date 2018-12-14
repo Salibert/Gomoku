@@ -1,8 +1,6 @@
 package board
 
 import (
-	"fmt"
-
 	"github.com/Salibert/Gomoku/back/axis"
 	"github.com/Salibert/Gomoku/back/rules"
 	"github.com/Salibert/Gomoku/back/server/inter"
@@ -91,7 +89,7 @@ func (board Board) proccessRulesByAxes(m func(list []*inter.Node, index int), in
 // UpdateBoardAfterCapture ...
 func (board Board) UpdateBoardAfterCapture(report *rules.Schema) {
 	if len := len(report.Report.ListCapturedStone); len != 0 {
-		go func(list []*inter.Node, len int) {
+		func(list []*inter.Node, len int) {
 			var node *inter.Node
 			for len > 0 {
 				node = list[len-1]
@@ -120,44 +118,42 @@ func trim(X, Y int) (newX, newY int) {
 	return X, Y
 }
 
-// CreateSearchSpace ...
-func (board Board) CreateSearchSpace(lastMoveOpposent inter.Node) []inter.Node {
-	X, Y := trim(lastMoveOpposent.X, lastMoveOpposent.Y)
-	X, Y = X-6, Y-6
-	tmpX, tmpY := 0, 0
-	MovesList := make([]inter.Node, 0, 121)
-	for x := 0; x < 11; x++ {
-		for y := 0; y < 11; y++ {
-			tmpX, tmpY = x+X, y+Y
-			fmt.Println("TMP +> X", tmpX, " TMP +> Y ", tmpY)
-			if board[tmpX][tmpY] == 0 {
-				MovesList = append(MovesList, inter.Node{X: tmpX, Y: tmpY})
+func searchIfZoneExist(searchZone []inter.Node, x, y int) bool {
+	for _, el := range searchZone {
+		if el.X == x && el.Y == y {
+			return true
+		}
+	}
+	return false
+}
+
+func (board Board) UpdateSearchSpace(searchZone *[]inter.Node, lastMove inter.Node, size int) {
+	if cap(*searchZone) == 0 {
+		*searchZone = make([]inter.Node, 0, 361)
+	} else {
+		lenSearchZone := len(*searchZone)
+		for i := 0; i < lenSearchZone; i++ {
+			if (*searchZone)[i].Y == lastMove.Y && (*searchZone)[i].Y == lastMove.Y {
+				copy((*searchZone)[i:], (*searchZone)[i+1:])
+				(*searchZone)[lenSearchZone-1] = inter.Node{}
+				(*searchZone) = (*searchZone)[:lenSearchZone-1]
+				break
 			}
 		}
 	}
-	return MovesList
+	tmpX, tmpY := 0, 0
+	sizeMax := size*size + 1
+	var isExist bool
+	for x := -size; x < sizeMax; x++ {
+		for y := -size; y < sizeMax; y++ {
+			tmpX, tmpY = x+lastMove.X, y+lastMove.Y
+			if tmpX >= 0 && tmpX < SizeBoard && tmpY >= 0 && tmpY < SizeBoard {
+				if isExist = searchIfZoneExist(*searchZone, tmpX, tmpY); isExist == false {
+					if board[tmpX][tmpY] == 0 {
+						*searchZone = append(*searchZone, inter.Node{X: tmpX, Y: tmpY})
+					}
+				}
+			}
+		}
+	}
 }
-
-// func (board Board) UpdateSearchSpace(searhZone []inter.Node, lastMove inter.Node, sizeMax int) {
-// 	if searhZone == nil {
-// 		searhZone = make([]inter.Node, 0, 361)
-// 	} else {
-// 		lenSearchZone := len(searhZone)
-// 		for i := 0; i < lenSearchZone; i++ {
-// 			if searhZone[i].Y == lastMove.Y && searhZone[i].Y == lastMove.Y {
-// 				copy(searhZone[i:], searhZone[i+1:])
-// 				searhZone[lenSearchZone-1] = inter.Node{}
-// 				searhZone = searhZone[:lenSearchZone-1]
-// 				break
-// 			}
-// 		}
-// 	}
-// 	tmpX, tmpY := 0, 0
-// 	for size := sizeMax; size > 0; size++ {
-// 		for x := 0; x < sizeMax; x++ {
-// 			for y := 0; y < sizeMax; y++ {
-
-// 			}
-// 		}
-// 	}
-// }

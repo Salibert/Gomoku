@@ -12,7 +12,7 @@ func (ia *IA) HeuristicScore(board board.Board, move inter.Node) int {
 	defer report.Report.Reset()
 	board.CheckRules(move, report)
 	if report.Report.ItIsAValidMove == false {
-		return -1000
+		return -10000
 	} else {
 		if len(ia.minMax.players[move.Player].NextMovesOrLose) != 0 {
 			if report.Report.PartyFinish = ia.minMax.players[move.Player].CheckIfThisMoveBlockLose(&move); report.Report.PartyFinish == true {
@@ -28,9 +28,9 @@ func (ia *IA) HeuristicScore(board board.Board, move inter.Node) int {
 				value += 100
 			}
 		}
-		value += report.Report.SizeAlignment
-		value += report.Report.NbBlockStone
-		value -= report.Report.LevelCapture * 2
+		value += report.Report.SizeAlignment * 2
+		value += report.Report.NbBlockStone * 2
+		value -= report.Report.LevelCapture * 10
 	}
 	return value
 }

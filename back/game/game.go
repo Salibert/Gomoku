@@ -35,8 +35,20 @@ func New(config pb.ConfigRules) *Game {
 	}
 	if config.PlayerIndexIA != 0 {
 		game.IA = solver.New(config, int(config.PlayerIndexIA))
+	} else {
+		game.IA = nil
 	}
 	return game
+}
+
+// UpdateGame proccess all Update after a modif board
+func (game *Game) UpdateGame(player *player.Player, initialStone *inter.Node) {
+	game.board.UpdateBoardAfterCapture(&player.Rules)
+	if game.IA != nil {
+		game.board.UpdateSearchSpace(&game.IA.SearchZone, *initialStone, 2)
+	}
+	player.Rules.Report.Reset()
+	game.rwmux.Unlock()
 }
 
 // ProccessRules ...
@@ -45,9 +57,7 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 	res := &pb.CheckRulesResponse{}
 	currentPlayer := game.players[initialStone.Player]
 	defer func() {
-		game.board.UpdateBoardAfterCapture(&currentPlayer.Rules)
-		currentPlayer.Rules.Report.Reset()
-		game.rwmux.Unlock()
+		go game.UpdateGame(currentPlayer, initialStone)
 	}()
 	if game.board[initialStone.X][initialStone.Y] != 0 {
 		res.IsPossible = false
@@ -85,6 +95,5 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 }
 
 func (game *Game) PlayIA(in *inter.Node) *inter.Node {
-	game.IA.Update(game.board, *in)
-	return game.IA.Play(game.board, 2, game.players)
+	return game.IA.Play(game.board, 5, game.players)
 }
