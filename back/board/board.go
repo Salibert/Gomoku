@@ -35,20 +35,18 @@ func (board Board) CheckRules(initialStone inter.Node, report rules.Schema) {
 	}
 	report.Report.ItIsAValidMove = true
 	if lenWinOrLose := len(report.Report.WinOrLose); lenWinOrLose != 0 {
-		if report.Schema[rules.Capture] != nil {
-		loop:
-			for i := 0; i < lenWinOrLose; i++ {
-				for _, checkedStone := range report.Report.WinOrLose[i] {
-					board.proccessRulesByAxes(report.CheckIfPartyIsFinish, *checkedStone)
-				}
-				if len(report.Report.NextMovesOrLose) == 0 {
-					report.Report.PartyFinish = true
-					report.Report.WinOrLose[i] = report.Report.WinOrLose[i][:0]
-					break loop
-				}
-				report.Report.WinOrLose[i] = report.Report.NextMovesOrLose
-				report.Report.NextMovesOrLose = make([]*inter.Node, 0, 0)
+	loop:
+		for i := 0; i < lenWinOrLose; i++ {
+			for _, checkedStone := range report.Report.WinOrLose[i] {
+				board.proccessRulesByAxes(report.CheckIfPartyIsFinish, *checkedStone)
 			}
+			if len(report.Report.NextMovesOrLose) == 0 {
+				report.Report.PartyFinish = true
+				report.Report.WinOrLose[i] = report.Report.NextMovesOrLose[:0]
+				break loop
+			}
+			report.Report.WinOrLose[i] = report.Report.NextMovesOrLose
+			report.Report.NextMovesOrLose = make([]*inter.Node, 0, 10)
 		}
 	}
 }
@@ -142,7 +140,7 @@ func (board Board) UpdateSearchSpace(searchZone *[]inter.Node, lastMove inter.No
 		}
 	}
 	tmpX, tmpY := 0, 0
-	sizeMax := size*size + 1
+	sizeMax := size + 1
 	var isExist bool
 	for x := -size; x < sizeMax; x++ {
 		for y := -size; y < sizeMax; y++ {

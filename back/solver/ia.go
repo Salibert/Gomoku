@@ -35,7 +35,3 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	regis.reportEval[2] = rules.New(2, 1, config)
 	return regis
 }
-
-// func (ia *IA) Update(board board.Board, moveOpposent inter.Node) {
-// 	ia.SearchZone = board.CreateSearchSpace(moveOpposent)
-// }

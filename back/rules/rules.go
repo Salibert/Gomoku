@@ -147,7 +147,7 @@ loop:
 				continue loop
 			}
 		}
-		//schema.Report.WinOrLose = append(schema.Report.WinOrLose, list[i:lenSchema])
+		schema.Report.WinOrLose = append(schema.Report.WinOrLose, list[i:lenSchema])
 		return true
 	}
 	return false
@@ -180,9 +180,6 @@ func checkBlock(schema Schema, list []*inter.Node, index int) bool {
 		}
 		break
 	}
-	if blocked >= 4 {
-		schema.Report.NbBlockStone = 1000
-	}
 	schema.Report.NbBlockStone += (blocked * blocked)
 	return false
 }
@@ -203,9 +200,6 @@ func checkAlignment(schema Schema, list []*inter.Node, index int) bool {
 			continue
 		}
 		break
-	}
-	if alignment >= 4 {
-		schema.Report.SizeAlignment = 1000
 	}
 	schema.Report.SizeAlignment += (alignment * alignment)
 	return false

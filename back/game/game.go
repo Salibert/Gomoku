@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/Salibert/Gomoku/back/board"
@@ -95,5 +96,6 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 }
 
 func (game *Game) PlayIA(in *inter.Node) *inter.Node {
-	return game.IA.Play(game.board, 5, game.players)
+	fmt.Println("LEN => ", len(game.IA.SearchZone))
+	return game.IA.Play(game.board, 4, game.players)
 }

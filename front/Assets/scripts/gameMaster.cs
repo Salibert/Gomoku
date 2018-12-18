@@ -19,15 +19,23 @@ public class gameMaster : MonoBehaviour
     protected Channel channel;
     protected string GameID;
     protected Game.GameClient Client;
+    public GameObject finishGameUI;
+    public Text winner;
+
     void Awake() {
         channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
         Client = new Game.GameClient(channel);
         GameID = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         CurrentPlayer = Player1.GetComponent<player>();
+        finishGameUI.SetActive(false);
         player1 = CurrentPlayer;
         player2 = Player2.GetComponent<player>();
     }
 
+	public void PartyFinish() {
+        winner.text = "Player " + CurrentPlayer.GetIndex().ToString();
+		finishGameUI.SetActive(true);
+	}
     public void NextPlayer() {
         if (CurrentPlayer.GetIndex() == player1.GetIndex()) {
             CurrentPlayer = player2;
@@ -106,7 +114,7 @@ public class gameMaster : MonoBehaviour
             Debug.Log("List capture "+ reply.Captured);
             updateCapture(reply);
             if (reply.PartyFinish == true) {
-                Debug.Log("GG SALE PUTE !!!" + reply.IsWin);
+                PartyFinish();
             }
             return reply.IsPossible;
         } catch (Exception e) {
