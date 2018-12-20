@@ -1,39 +1,49 @@
 package solver
 
 import (
+	"fmt"
+
 	"github.com/Salibert/Gomoku/back/board"
 	"github.com/Salibert/Gomoku/back/server/inter"
 )
 
-func (ia *IA) Heuristic(board board.Board, move inter.Node) int {
-	return ia.HeuristicScore(board, move)
-}
-
 // HeuristicScore ...
 func (ia *IA) HeuristicScore(board board.Board, move inter.Node) (value int) {
 	report := ia.reportEval[move.Player]
+	defer report.Report.Reset()
 	if move.Player == 0 {
 		return 0
 	}
-	defer report.Report.Reset()
-	board.CheckRules(move, report)
-	if report.Report.ItIsAValidMove == false {
-		return 0
-	} else {
-		if capture := len(report.Report.ListCapturedStone); capture != 0 {
-			value += capture * 25
+	var tmp, player int
+	for i := 0; i < 19; i++ {
+		for j := 0; j < 19; j++ {
+			player = board[i][j]
+			if player != 0 {
+				report.Report.Reset()
+				test := inter.Node{X: i, Y: j, Player: player}
+				board.CheckRules(test, report)
+				if capture := len(report.Report.ListCapturedStone); capture != 0 {
+					tmp += capture * 5
+				}
+				tmp += report.Report.NbFreeThree
+				tmp += report.Report.SizeAlignment
+				tmp += report.Report.NbBlockStone * 10
+				tmp -= report.Report.LevelCapture * 10
+				if report.Report.ItIsAValidMove == false {
+					return 0
+				}
+				switch player {
+				case ia.playerIndex:
+					value += tmp
+				default:
+					value -= tmp
+				}
+
+			}
 		}
-		value += report.Report.NbFreeThree
-		value += report.Report.SizeAlignment
-		value += report.Report.NbBlockStone
-		value -= report.Report.LevelCapture * 10
 	}
-	switch move.Player {
-	case ia.playerIndex:
-		return -value
-	default:
-		return value
-	}
+	fmt.Println("VALUE ", value)
+	return value
 }
 
 func (ia *IA) isWin(board board.Board, move inter.Node) int {
