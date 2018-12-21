@@ -38,7 +38,7 @@ func (s *Server) CDGame(context context.Context, in *pb.CDGameRequest) (res *pb.
 
 // Played ...
 func (s *Server) Played(context context.Context, in *pb.StonePlayed) (res *pb.StonePlayed, err error) {
-	manegeGame.CurrentGames.PlayedIA(in)
+	res, err = manegeGame.CurrentGames.PlayedIA(in)
 	return
 }
 
