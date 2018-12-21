@@ -9,13 +9,14 @@ message Node {
 }
 
 message ConfigRules {
-    bool IsActiveRuleFreeThree = 1;
-    bool IsActiveRuleCapture = 2;
-    bool IsActiveRuleAlignment = 3;
-    bool IsActiveRuleWin = 4;
-    bool IsActiveRuleBlock = 5;
-    bool IsActiveRuleProbableCapture = 6;
-    int32 PlayerIndexIA = 7;
+    int32 PlayerIndexIA = 1;
+    bool IsActiveRuleFreeThree = 2;
+    bool IsActiveRuleCapture = 3;
+    bool IsActiveRuleAlignment = 4;
+    bool IsActiveRuleWin = 5;
+    bool IsActiveRuleBlock = 6;
+    bool IsActiveRuleProbableCapture = 7;
+    bool IsActiveRuleAmbientSearch = 8;
 }
 
 service Game {

@@ -22,6 +22,7 @@ func (ia *IA) Play(board board.Board, depth int, players player.Players) *inter.
 	if len(ia.SearchZone) != 0 {
 		var test int
 		// test, best = ia.PVS(board, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, MAX_DEPTH, -10000, 10000)
+		// test, best = ia.NegaMax(board, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, MAX_DEPTH, -10000, 10000)
 		test, best = ia.MinMax(board, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, MAX_DEPTH, true)
 		fmt.Println("TEST +> ", test)
 	} else {
@@ -36,70 +37,76 @@ func (ia *IA) Play(board board.Board, depth int, players player.Players) *inter.
 }
 
 func (ia *IA) MinMax(board board.Board, move inter.Node, depth int, max bool) (current int, best inter.Node) {
-	if result := ia.isWin(board, move); result != 0 {
+	if result := ia.isWin(board, depth, move); result != 0 {
 		return result, move
 	} else if depth <= 0 {
-		return ia.HeuristicScore(board, move), move
+		return ia.HeuristicScore(board, depth, move), move
 	}
 	if max == true {
 		current = math.MinInt64
 		for _, move = range ia.SearchZone {
-			board[move.X][move.Y] = ia.playerIndex
-			move.Player = ia.playerIndex
-			score, _ := ia.MinMax(board, move, depth-1, false)
-			board[move.X][move.Y] = 0
-			if score > current {
-				current = score
-				best = move
-			}
-			if depth == MAX_DEPTH {
-				fmt.Println("SCORE ", score, " DEPTH", depth, " MOVE", move, " BEST ", best)
-			}
-			if depth == MAX_DEPTH-1 {
-				fmt.Println("SCORE ", score, " DEPTH", depth, " MOVE", move, " BEST ", best)
-			}
-			if depth == MAX_DEPTH-2 {
-				fmt.Println("SCORE ", score, " DEPTH", depth, " MOVE", move, " BEST ", best)
+			if board[move.X][move.Y] == 0 {
+
+				board[move.X][move.Y] = ia.playerIndex
+				move.Player = ia.playerIndex
+				score, _ := ia.MinMax(board, move, depth-1, false)
+				board[move.X][move.Y] = 0
+				if depth == MAX_DEPTH {
+					fmt.Println("SCORE ", score, "BEST SCORE ", current, " DEPTH", depth, " MOVE", move, " BEST ", best, "MAX")
+				}
+				if depth == MAX_DEPTH-2 {
+					fmt.Println("SCORE ", score, "BEST SCORE ", current, " DEPTH", depth, " MOVE", move, " BEST ", best, "MAX")
+				}
+				if depth == MAX_DEPTH-1 {
+					fmt.Println("SCORE ", score, "BEST SCORE ", current, " DEPTH", depth, " MOVE", move, " BEST ", best, "MAX")
+				}
+				if score > current {
+					current = score
+					best = move
+				}
 			}
 		}
 	} else {
 		current = math.MaxInt64
 		playerIndex := player.GetOpposentPlayer(move.Player)
 		for _, move = range ia.SearchZone {
-			board[move.X][move.Y] = playerIndex
-			move.Player = playerIndex
-			score, _ := ia.MinMax(board, move, depth-1, false)
-			board[move.X][move.Y] = 0
-			if score < current {
-				current = score
-				best = move
-			}
-			if depth == MAX_DEPTH {
-				fmt.Println("SCORE ", score, " DEPTH", depth, " MOVE", move, " BEST ", best)
-			}
-			if depth == MAX_DEPTH-1 {
-				fmt.Println("SCORE ", score, " DEPTH", depth, " MOVE", move, " BEST ", best)
-			}
-			if depth == MAX_DEPTH-2 {
-				fmt.Println("SCORE ", score, " DEPTH", depth, " MOVE", move, " BEST ", best)
+			if board[move.X][move.Y] == 0 {
+
+				board[move.X][move.Y] = playerIndex
+				move.Player = playerIndex
+				score, _ := ia.MinMax(board, move, depth-1, true)
+				board[move.X][move.Y] = 0
+				if depth == MAX_DEPTH {
+					fmt.Println("SCORE ", score, "BEST SCORE ", current, " DEPTH", depth, " MOVE", move, " BEST ", best, "MIN")
+				}
+				if depth == MAX_DEPTH-1 {
+					fmt.Println("SCORE ", score, "BEST SCORE ", current, " DEPTH", depth, " MOVE", move, " BEST ", best, "MIN")
+				}
+				if depth == MAX_DEPTH-2 {
+					fmt.Println("SCORE ", score, "BEST SCORE ", current, " DEPTH", depth, " MOVE", move, " BEST ", best, "MIN")
+				}
+				if score < current {
+					current = score
+					best = move
+				}
 			}
 		}
 	}
 	return
 }
 
-// func max(a, b int) int {
-// 	if a < b {
-// 		return b
-// 	}
-// 	return a
-// }
+func max(a, b int) int {
+	if a < b {
+		return b
+	}
+	return a
+}
 
 // func (ia *IA) NegaMax(board board.Board, move inter.Node, depth, alpha, beta int) (current int, best inter.Node) {
-// 	if result := ia.isWin(board, move); result != 0 {
+// 	if result := ia.isWin(board, depth, move); result != 0 {
 // 		return result, move
 // 	} else if depth <= 0 {
-// 		return ia.HeuristicScore(board, move), move
+// 		return ia.HeuristicScore(board, depth, move), move
 // 	}
 // 	var score int
 // 	current = math.MinInt64
@@ -133,10 +140,10 @@ func (ia *IA) MinMax(board board.Board, move inter.Node, depth int, max bool) (c
 
 // func (ia *IA) PVS(board board.Board, move inter.Node, depth, alpha, beta int) (_ int, best inter.Node) {
 // 	// fmt.Println("MOVE ", move)
-// 	if result := ia.isWin(board, move); result != 0 {
+// 	if result := ia.isWin(board, depth, move); result != 0 {
 // 		return result, move
 // 	} else if depth <= 0 {
-// 		return ia.HeuristicScore(board, move), move
+// 		return ia.HeuristicScore(board, depth, move), move
 // 	}
 // 	var score, key int
 // 	playerIndex := player.GetOpposentPlayer(move.Player)
@@ -181,10 +188,10 @@ func (ia *IA) MinMax(board board.Board, move inter.Node, depth int, max bool) (c
 // }
 
 // func (ia *IA) PVS(board board.Board, move inter.Node, depth, alpha, beta int) (current int, best inter.Node) {
-// 	if result := ia.isWin(board, move); result != 0 {
+// 	if result := ia.isWin(board, depth, move); result != 0 {
 // 		return result, move
 // 	} else if depth <= 0 {
-// 		return ia.HeuristicScore(board, move), move
+// 		return ia.HeuristicScore(board, depth, move), move
 // 	}
 // 	current, best = ia.PVS(board, move, depth-1, -beta, -alpha)
 // 	current = -current

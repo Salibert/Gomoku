@@ -97,5 +97,5 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 
 func (game *Game) PlayIA(in *inter.Node) *inter.Node {
 	fmt.Println("LEN => ", len(game.IA.SearchZone))
-	return game.IA.Play(game.board, 2, game.players)
+	return game.IA.Play(game.board, 5, game.players)
 }

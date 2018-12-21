@@ -25,6 +25,7 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	config.IsActiveRuleAlignment = true
 	config.IsActiveRuleBlock = true
 	config.IsActiveRuleProbableCapture = true
+	config.IsActiveRuleAmbientSearch = true
 	configWin := pb.ConfigRules{
 		IsActiveRuleWin:     config.IsActiveRuleWin,
 		IsActiveRuleCapture: config.IsActiveRuleCapture,
