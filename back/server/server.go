@@ -28,18 +28,29 @@ func init() {
 }
 
 // CDGame ...
-func (s *Server) CDGame(context context.Context, in *pb.CDGameRequest) (res *pb.CDGameResponse, err error) {
+func (s *Server) CDGame(ctx context.Context, in *pb.CDGameRequest) (res *pb.CDGameResponse, err error) {
 	if !in.Delete {
 		res, err = manegeGame.CurrentGames.AddNewGame(in)
+	} else {
+		res, err = manegeGame.CurrentGames.DeleteGame(in.GameID)
 	}
-	res, err = manegeGame.CurrentGames.DeleteGame(in.GameID)
-	return
+	select {
+	case <-ctx.Done():
+		return nil, nil
+	default:
+		return res, err
+	}
 }
 
 // Played ...
-func (s *Server) Played(context context.Context, in *pb.StonePlayed) (res *pb.StonePlayed, err error) {
+func (s *Server) Played(ctx context.Context, in *pb.StonePlayed) (res *pb.StonePlayed, err error) {
 	res, err = manegeGame.CurrentGames.PlayedIA(in)
-	return
+	select {
+	case <-ctx.Done():
+		return nil, nil
+	default:
+		return res, err
+	}
 }
 
 // CheckRules ...
