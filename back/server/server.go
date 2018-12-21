@@ -28,19 +28,27 @@ func init() {
 }
 
 // CDGame ...
-func (s *Server) CDGame(context context.Context, in *pb.CDGameRequest) (*pb.CDGameResponse, error) {
+func (s *Server) CDGame(context context.Context, in *pb.CDGameRequest) (res *pb.CDGameResponse, err error) {
 	if !in.Delete {
-		return manegeGame.CurrentGames.AddNewGame(in)
+		res, err = manegeGame.CurrentGames.AddNewGame(in)
 	}
-	return manegeGame.CurrentGames.DeleteGame(in.GameID)
+	res, err = manegeGame.CurrentGames.DeleteGame(in.GameID)
+	return
 }
 
 // Played ...
-func (s *Server) Played(context context.Context, in *pb.StonePlayed) (*pb.StonePlayed, error) {
-	return manegeGame.CurrentGames.PlayedIA(in)
+func (s *Server) Played(context context.Context, in *pb.StonePlayed) (res *pb.StonePlayed, err error) {
+	manegeGame.CurrentGames.PlayedIA(in)
+	return
 }
 
 // CheckRules ...
-func (s *Server) CheckRules(context context.Context, in *pb.StonePlayed) (*pb.CheckRulesResponse, error) {
-	return manegeGame.CurrentGames.ProccessRules(in)
+func (s *Server) CheckRules(ctx context.Context, in *pb.StonePlayed) (*pb.CheckRulesResponse, error) {
+	res, err := manegeGame.CurrentGames.ProccessRules(in)
+	select {
+	case <-ctx.Done():
+		return nil, nil
+	default:
+		return res, err
+	}
 }

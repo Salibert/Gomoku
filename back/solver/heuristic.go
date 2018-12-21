@@ -1,8 +1,6 @@
 package solver
 
 import (
-	"math"
-
 	"github.com/Salibert/Gomoku/back/board"
 	"github.com/Salibert/Gomoku/back/server/inter"
 )
@@ -26,26 +24,16 @@ func (ia *IA) HeuristicScore(board board.Board, depth int, move inter.Node) (val
 				test := inter.Node{X: i, Y: j, Player: player}
 				board.CheckRules(test, report)
 				if capture := len(report.Report.ListCapturedStone); capture != 0 {
-					tmp += capture * 25
+					tmp += capture * 30
 				}
-				tmp += report.Report.NbFreeThree
-				tmp += report.Report.SizeAlignment * 2
+				tmp += report.Report.NbFreeThree * 5
+				tmp += report.Report.SizeAlignment * 5
 				tmp += report.Report.NbBlockStone * 5
 				tmp += report.Report.AmbientScore
-				tmp -= report.Report.LevelCapture * 20
+				tmp -= report.Report.LevelCapture * 100
 				if report.Report.ItIsAValidMove == false {
 					return 0
 				}
-				// if test.X == 9 && test.Y == 8 {
-				// 	fmt.Println("REPORT ", tmp)
-				// 	fmt.Println(report.Report.NbFreeThree)
-				// 	fmt.Println(report.Report.SizeAlignment)
-				// 	fmt.Println(report.Report.NbBlockStone)
-				// 	fmt.Println(report.Report.AmbientScore)
-				// 	fmt.Println(report.Report.LevelCapture)
-				// 	fmt.Println("")
-
-				// }
 				switch player {
 				case ia.playerIndex:
 					value += tmp
@@ -55,14 +43,6 @@ func (ia *IA) HeuristicScore(board board.Board, depth int, move inter.Node) (val
 			}
 		}
 	}
-	// if move.X == 9 && move.Y == 8 {
-	// 	fmt.Println(" vaule ", value)
-	// }
-	// fmt.Println("move => ", move.X, move.Y, move.Player, "detpth ", depth, " VALUE ", value)
-	// for i := 0; i < 19; i++ {
-	// 	fmt.Println(board[i])
-	// }
-	// fmt.Println("\n")
 	return value
 }
 
@@ -80,17 +60,17 @@ func (ia *IA) isWin(board board.Board, depth int, move inter.Node) int {
 		if len(report.Report.WinOrLose[0]) == 0 {
 			switch move.Player {
 			case ia.playerIndex:
-				return math.MaxInt64 + depth
+				return 10000 + depth
 			default:
-				return math.MinInt64 - depth
+				return -10000 - depth
 			}
 		}
 	} else if ia.minMax.players[move.Player].Score == 8 && len(report.Report.ListCapturedStone) != 0 {
 		switch move.Player {
 		case ia.playerIndex:
-			return math.MaxInt64 + depth
+			return 10000 + depth
 		default:
-			return math.MinInt64 - depth
+			return -10000 - depth
 		}
 	}
 	return 0
