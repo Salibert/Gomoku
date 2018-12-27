@@ -8,10 +8,13 @@ using GomokuBuffer;
 public class goban : MonoBehaviour
 {
     public Transform stonePrefab;
+    public Transform zoneCapturePrefab;
     public static List<stone> board;
     private static Transform inter;
 
     public static gameMaster GM;
+
+    public static Dictionary<int, Transform> zoneCapture;
     void Start()
     {
         GM = GameObject.Find("gameMaster").GetComponent<gameMaster>();
@@ -25,6 +28,16 @@ public class goban : MonoBehaviour
             if (line.rotation.y == 0) {
                 createStones(findIntersections(line), i);
             }
+        }
+        if (mainMenu.config.IsActiveRuleCapture == true) {
+            Transform zonesCapture = transform.Find("zonesCapture");
+            zoneCapture = new Dictionary<int, Transform>();
+            line = Instantiate(zoneCapturePrefab,new Vector3(){ x=transform.position.x, y=transform.position.y, z= transform.position.z - 11}, new Quaternion(), zonesCapture);
+            line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(1));
+            zoneCapture.Add(1, line);
+            line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(2));
+            line = Instantiate(zoneCapturePrefab,new Vector3(){ x=transform.position.x, y=transform.position.y, z= transform.position.z + 11}, new Quaternion(), zonesCapture);
+            zoneCapture.Add(2, line);   
         }
         GM.GetCDGame();
     }
@@ -43,8 +56,8 @@ public class goban : MonoBehaviour
         Vector3 fwd = transform.TransformDirection(transform.forward);
         List<Vector3> pos = new List<Vector3>();
         List<RaycastHit> hitsAll = new List<RaycastHit>();
-        hitsAll.AddRange(Physics.RaycastAll(line.position, fwd, 1000));
-        hitsAll.AddRange(Physics.RaycastAll(line.position, fwd * -1, 1000));
+        hitsAll.AddRange(Physics.RaycastAll(line.position, fwd, 100));
+        hitsAll.AddRange(Physics.RaycastAll(line.position, fwd * -1, 100));
         hitsAll.ForEach(el => {
             pos.Add(new Vector3() { x = line.position.x, y = line.position.y + 0.1f, z = el.transform.position.z });
         });

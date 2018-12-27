@@ -21,7 +21,7 @@ public class stone : MonoBehaviour
     Render renderStone;
     public void initNode(ref GomokuBuffer.Node n) { node = n; X = n.X; Y = n.Y; }
 
-    void Start() {
+    void Awake() {
         rend = GetComponent<Renderer>();
         meshRend = GetComponent<MeshRenderer>();
         gravity = GetComponent<Collider>();
@@ -102,6 +102,9 @@ public class stone : MonoBehaviour
         meshRend.enabled = true;
     }
 
+    public void SetMaterial(Material material) {
+        rend.material = material;
+    }
     public GomokuBuffer.Node GetNode() {
         return node;
     }

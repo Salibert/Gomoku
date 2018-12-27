@@ -5,18 +5,34 @@ using UnityEngine;
 public class zoneCapture : MonoBehaviour {
 	public Transform stonePrefab;
 	private Transform[] listStone;
-	// Use this for initialization
-	void Start () {
+	public void SetZoneCapture(player player) {
 		listStone = new Transform[10];
 		Transform inter = transform.Find("stones");
 		Vector3 pos = transform.position;
+		float x = pos.x - (transform.localScale.x / 2) + 2.25f;
 		for ( int i =0; i < 10; i++) {
-			listStone[i] = Instantiate(stonePrefab, new Vector3(){x=pos.x + i, y=pos.y + 0.5f, z=pos.z}, new Quaternion() { x=0, y=0, z=0 }, inter);
+			listStone[i] = Instantiate(stonePrefab, new Vector3(){x= x+ (i * 1.5f), y=pos.y + 0.25f, z=pos.z}, new Quaternion() { x=0, y=0, z=0 }, inter);
+			stone script = listStone[i].GetComponent<stone>();
+			script.SetMaterial(player.GetMaterial());
+			Destroy(listStone[i].GetComponent<stone>());
+			listStone[i].GetComponent<MeshRenderer>().enabled = false;
+			listStone[i].GetComponent<Collider>().attachedRigidbody.useGravity = true;
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	IEnumerator animeStone(int score) {
+		Transform stone;
+		for (int i = 0; i < score; i++) {
+			new WaitForSecondsRealtime(10);
+			stone = listStone[i];
+			stone.GetComponent<MeshRenderer>().enabled = true;
+			Vector3 up = stone.position;
+        	up.y += 0.9f;
+			stone.position = up;
+		}
+		yield return null;
+    }
+
+	public void AddStone(int score) {
+		StartCoroutine(animeStone(score));
 	}
 }

@@ -32,8 +32,8 @@ public class gameMaster : MonoBehaviour
         player2 = Player2.GetComponent<player>();
     }
 
-	public void PartyFinish() {
-        winner.text = "Player " + CurrentPlayer.GetIndex().ToString();
+	public void PartyFinish(int player) {
+        winner.text = "Player " + player.ToString();
 		finishGameUI.SetActive(true);
 	}
     public void NextPlayer() {
@@ -89,6 +89,8 @@ public class gameMaster : MonoBehaviour
     private void updateCapture(GomokuBuffer.CheckRulesResponse reply) {
         if (reply.NbStonedCaptured != 0) {
             CurrentPlayer.SetScore(CurrentPlayer.GetScore() + reply.NbStonedCaptured);
+            Debug.Log("SALUT TOI" + reply.NbStonedCaptured);
+            goban.zoneCapture[CurrentPlayer.GetIndex()].GetComponent<zoneCapture>().AddStone(CurrentPlayer.GetScore());
             int index;
             GomokuBuffer.Node elementNode;
             foreach(GomokuBuffer.Node capturedStone in reply.Captured) {
@@ -114,12 +116,19 @@ public class gameMaster : MonoBehaviour
             Debug.Log("List capture "+ reply.Captured);
             updateCapture(reply);
             if (reply.PartyFinish == true) {
-                PartyFinish();
+                PartyFinish(reply.IsWin);
             }
             return reply.IsPossible;
         } catch (Exception e) {
             Debug.Log("RPC failed" + e);
             throw;
+        }
+    }
+    public player GetPlayer(int index) {
+        if (index == 1){
+            return player1;
+        } else {
+            return player2;
         }
     }
 }
