@@ -35,8 +35,8 @@ public class goban : MonoBehaviour
             line = Instantiate(zoneCapturePrefab,new Vector3(){ x=transform.position.x, y=transform.position.y, z= transform.position.z - 11}, new Quaternion(), zonesCapture);
             line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(1));
             zoneCapture.Add(1, line);
-            line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(2));
             line = Instantiate(zoneCapturePrefab,new Vector3(){ x=transform.position.x, y=transform.position.y, z= transform.position.z + 11}, new Quaternion(), zonesCapture);
+            line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(2));
             zoneCapture.Add(2, line);   
         }
         GM.GetCDGame();

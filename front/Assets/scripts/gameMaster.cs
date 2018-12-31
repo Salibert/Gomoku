@@ -21,6 +21,7 @@ public class gameMaster : MonoBehaviour
     protected Game.GameClient Client;
     public GameObject finishGameUI;
     public Text winner;
+    public Text time;
 
     void Awake() {
         channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
@@ -73,9 +74,12 @@ public class gameMaster : MonoBehaviour
     }
 
     async public void GetPlayed(GomokuBuffer.Node node) {
+        DateTime start = DateTime.Now;
         try {
             GomokuBuffer.StonePlayed reply = await Client.PlayedAsync(
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
+            TimeSpan end = DateTime.Now.Subtract(start);
+            time.text = end.ToString();
             await GetCheckRules(reply.CurrentPlayerMove, reply.CurrentPlayerMove.Player);
             Transform stone = goban.GetStone(reply.CurrentPlayerMove);
             stone.transform.GetComponent<stone>().SetStone();

@@ -7,11 +7,13 @@ public class zoneCapture : MonoBehaviour {
 	private Transform[] listStone;
 	public void SetZoneCapture(player player) {
 		listStone = new Transform[10];
+		// Debug.Log("SALUT => " + player.GetIndex() + player.GetMaterial());
 		Transform inter = transform.Find("stones");
 		Vector3 pos = transform.position;
-		float x = pos.x - (transform.localScale.x / 2) + 2.25f;
+		float offsetX = pos.x - (transform.localScale.x / 2) + 2.25f;
+		float offsetY = pos.y + (transform.localScale.y / 2) + 0.25f;
 		for ( int i =0; i < 10; i++) {
-			listStone[i] = Instantiate(stonePrefab, new Vector3(){x= x+ (i * 1.5f), y=pos.y + 0.25f, z=pos.z}, new Quaternion() { x=0, y=0, z=0 }, inter);
+			listStone[i] = Instantiate(stonePrefab, new Vector3(){x= offsetX+ (i * 1.5f), y=pos.y + offsetY, z=pos.z}, new Quaternion() { x=0, y=0, z=0 }, inter);
 			stone script = listStone[i].GetComponent<stone>();
 			script.SetMaterial(player.GetMaterial());
 			Destroy(listStone[i].GetComponent<stone>());
