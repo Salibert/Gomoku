@@ -41,6 +41,7 @@ public class pauseMenu : MonoBehaviour {
 	}
 	public void LoadMenu() {
 		StartCoroutine(LoadAsync());
+		goban.GM.GetCDGame(true);
 	}
 	public void QuitGame() {
 		Debug.Log("QUIT");

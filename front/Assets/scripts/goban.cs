@@ -39,7 +39,7 @@ public class goban : MonoBehaviour
             line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(2));
             zoneCapture.Add(2, line);   
         }
-        GM.GetCDGame();
+        GM.GetCDGame(false);
     }
 
     private void createStones(Vector3[] pos, int x) {

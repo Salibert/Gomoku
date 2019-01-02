@@ -36,6 +36,7 @@ public class gameMaster : MonoBehaviour
 	public void PartyFinish(int player) {
         winner.text = "Player " + player.ToString();
 		finishGameUI.SetActive(true);
+        GetCDGame(true);
 	}
     public void NextPlayer() {
         if (CurrentPlayer.GetIndex() == player1.GetIndex()) {
@@ -57,13 +58,14 @@ public class gameMaster : MonoBehaviour
     public string GetGameID() {
         return GameID;
     }
-    async public void GetCDGame() {    
+    async public void GetCDGame(bool delete) {    
         try {
             Debug.Log(mainMenu.config);
             GomokuBuffer.CDGameResponse reply = await Client.CDGameAsync(
                 new GomokuBuffer.CDGameRequest(){
                     GameID= GameID,
                     Rules= mainMenu.config.Clone(),
+                    Delete= delete,
                 });
             if (reply.IsSuccess == false)
                 Debug.Log("NONONONO");
@@ -112,7 +114,7 @@ public class gameMaster : MonoBehaviour
             }
         }
     }
-    
+
     async public Task<bool> GetCheckRules(GomokuBuffer.Node node, int player) {
         try {
             node.Player = player;

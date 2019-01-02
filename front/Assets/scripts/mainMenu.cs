@@ -20,11 +20,13 @@ public class mainMenu : MonoBehaviour {
 	private String[] nameDifficulty;
 	private int indexDifficulty;
 	void Awake() {
-		config = new GomokuBuffer.ConfigRules(){
-			IsActiveRuleCapture = true,
-			IsActiveRuleFreeThree = true,
-			IsActiveRuleWin = true,
-		};
+		if (config == null) {
+			config = new GomokuBuffer.ConfigRules(){
+				IsActiveRuleCapture = true,
+				IsActiveRuleFreeThree = true,
+				IsActiveRuleWin = true,
+			};
+		}
 		nameDifficulty = new String[]{ "easy","medium","hard","very hard","master"};
 		difficulty = new Dictionary<string, int>();
 		int lvl = 1;

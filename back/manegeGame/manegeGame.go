@@ -2,6 +2,7 @@ package manegeGame
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/Salibert/Gomoku/back/game"
@@ -36,12 +37,17 @@ func (CurrentGames *Games) AddNewGame(in *pb.CDGameRequest) (*pb.CDGameResponse,
 }
 
 // DeleteGame method for delete a game in the map
-func (CurrentGames *Games) DeleteGame(gameID string) (res *pb.CDGameResponse, err error) {
+func (CurrentGames *Games) DeleteGame(gameID string) (_ *pb.CDGameResponse, err error) {
 	CurrentGames.rwmux.Lock()
 	defer CurrentGames.rwmux.Unlock()
-	delete(CurrentGames.game, gameID)
-	if _, ok := CurrentGames.game[gameID]; ok == false {
-		res.IsSuccess = true
+	res := &pb.CDGameResponse{}
+	if _, ok := CurrentGames.game[gameID]; ok == true {
+		fmt.Println("TRY", gameID, CurrentGames)
+		delete(CurrentGames.game, gameID)
+		if _, ok := CurrentGames.game[gameID]; ok == false {
+			fmt.Println("SUCCESS")
+			res.IsSuccess = true
+		}
 	}
 	return res, err
 }
@@ -53,7 +59,7 @@ func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (*pb.CheckRulesResp
 	if game, ok := CurrentGames.game[in.GameID]; ok == true {
 		return game.ProccessRules(inter.NewNode(in.CurrentPlayerMove))
 	}
-	return nil, errors.New("partie not found")
+	return nil, errors.New("Partie not found")
 }
 
 // PlayedAI choose the best move for win
