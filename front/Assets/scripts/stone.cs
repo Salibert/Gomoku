@@ -47,7 +47,9 @@ public class stone : MonoBehaviour
             if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
                 SetStone();
                 goban.board.Add(transform.GetComponent<stone>());
-                goban.GM.GetPlayed(node);
+                if (!goban.GM.GetGameIsFinish()) {
+                    goban.GM.GetPlayed(node);
+                }
             } else {
                 Debug.Log("IMPOSSIBLE");
             }
@@ -65,18 +67,18 @@ public class stone : MonoBehaviour
         meshRend.enabled = true;
     }
     void OnMouseDown() {
-        if (!isCreate) {
+        if (!isCreate && !goban.GM.GetGameIsFinish()) {
             modePlayed();
         }
     }
     void OnMouseEnter() {
-        if (!isCreate) {
+        if (!isCreate && !goban.GM.GetGameIsFinish()) {
             renderStone();
         }
     }
 
     void OnMouseExit() {
-        if (!isCreate) {
+        if (!isCreate && !goban.GM.GetGameIsFinish()) {
             meshRend.enabled = false;
         }
     }

@@ -24,6 +24,8 @@ public class gameMaster : MonoBehaviour
     private int PlayerIndexIA;
     public Text winner;
     public Text time;
+    public GameObject spotligth;
+    private bool gameIsFinish;
 
     void Awake() {
         channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
@@ -38,12 +40,22 @@ public class gameMaster : MonoBehaviour
 
     IEnumerator playerFirstIA()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(0.5f);
         GomokuBuffer.Node node = new GomokuBuffer.Node();
         GetPlayed(node);
     }
+    IEnumerator movingSpot(Vector3 lastMove) {
+        spotligth.transform.LookAt(lastMove);
+        Light light= spotligth.GetComponent<Light>();
+        for (float i=light.spotAngle;i > 19; i-=0.25f) {
+            yield return new WaitForSeconds(0.02f);
+            light.spotAngle = (float)i;
+        }
 
-	public void PartyFinish(int player) {
+    }
+	IEnumerator PartyFinish(int player, Vector3 lastMove) {
+        StartCoroutine(movingSpot(lastMove));
+        yield return new WaitForSeconds(5);
         winner.text = "Player " + player.ToString();
 		finishGameUI.SetActive(true);
         GetCDGame(true);
@@ -55,9 +67,12 @@ public class gameMaster : MonoBehaviour
             CurrentPlayer = player1;
         }
     }
-
     public int GetPlayerTurn() { return CurrentPlayer.GetIndex(); }
     public Material GetCurrentMaterial() { return CurrentPlayer.GetMaterial(); }
+
+    public bool GetGameIsFinish() {
+        return this.gameIsFinish;
+    }
 
     public Game.GameClient GetClient() {
         return Client;
@@ -73,7 +88,7 @@ public class gameMaster : MonoBehaviour
             if (PlayerIndexIA == 1) {
                 StartCoroutine(playerFirstIA());
             }
-            GomokuBuffer.CDGameResponse reply = await Client.CDGameAsync(
+            await Client.CDGameAsync(
                 new GomokuBuffer.CDGameRequest(){
                     GameID= GameID,
                     Rules= mainMenu.config.Clone(),
@@ -133,7 +148,8 @@ public class gameMaster : MonoBehaviour
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID });
             updateCapture(reply);
             if (reply.PartyFinish == true) {
-                PartyFinish(reply.IsWin);
+                gameIsFinish = true;
+                StartCoroutine(PartyFinish(reply.IsWin, goban.GetStone(node).position));
             }
             return reply.IsPossible;
         } catch (Exception e) {

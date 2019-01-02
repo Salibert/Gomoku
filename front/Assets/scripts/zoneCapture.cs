@@ -7,7 +7,6 @@ public class zoneCapture : MonoBehaviour {
 	private Transform[] listStone;
 	public void SetZoneCapture(player player) {
 		listStone = new Transform[10];
-		// Debug.Log("SALUT => " + player.GetIndex() + player.GetMaterial());
 		Transform inter = transform.Find("stones");
 		Vector3 pos = transform.position;
 		float offsetX = pos.x - (transform.localScale.x / 2) + 2.25f;
@@ -24,12 +23,12 @@ public class zoneCapture : MonoBehaviour {
 	IEnumerator animeStone(int score) {
 		Transform stone;
 		for (int i = 0; i < score; i++) {
-			new WaitForSecondsRealtime(10);
 			stone = listStone[i];
 			stone.GetComponent<MeshRenderer>().enabled = true;
 			Vector3 up = stone.position;
         	up.y += 0.9f;
 			stone.position = up;
+			yield return new WaitForSeconds(0.25f);
 		}
 		yield return null;
     }
