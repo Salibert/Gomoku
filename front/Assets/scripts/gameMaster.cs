@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using Grpc.Core;
 using GomokuBuffer;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +20,12 @@ public class gameMaster : MonoBehaviour
     protected string GameID;
     protected Game.GameClient Client;
     public GameObject finishGameUI;
+
+    private int PlayerIndexIA;
     public Text winner;
     public Text time;
+    public GameObject spotligth;
+    private bool gameIsFinish;
 
     void Awake() {
         channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
@@ -31,11 +35,30 @@ public class gameMaster : MonoBehaviour
         finishGameUI.SetActive(false);
         player1 = CurrentPlayer;
         player2 = Player2.GetComponent<player>();
+        PlayerIndexIA = mainMenu.config.PlayerIndexIA;
     }
 
-	public void PartyFinish(int player) {
+    IEnumerator playerFirstIA()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GomokuBuffer.Node node = new GomokuBuffer.Node();
+        GetPlayed(node);
+    }
+    IEnumerator movingSpot(Vector3 lastMove) {
+        spotligth.transform.LookAt(lastMove);
+        Light light= spotligth.GetComponent<Light>();
+        for (float i=light.spotAngle;i > 19; i-=0.25f) {
+            yield return new WaitForSeconds(0.02f);
+            light.spotAngle = (float)i;
+        }
+
+    }
+	IEnumerator PartyFinish(int player, Vector3 lastMove) {
+        StartCoroutine(movingSpot(lastMove));
+        yield return new WaitForSeconds(5);
         winner.text = "Player " + player.ToString();
 		finishGameUI.SetActive(true);
+        GetCDGame(true);
 	}
     public void NextPlayer() {
         if (CurrentPlayer.GetIndex() == player1.GetIndex()) {
@@ -44,9 +67,12 @@ public class gameMaster : MonoBehaviour
             CurrentPlayer = player1;
         }
     }
-
     public int GetPlayerTurn() { return CurrentPlayer.GetIndex(); }
     public Material GetCurrentMaterial() { return CurrentPlayer.GetMaterial(); }
+
+    public bool GetGameIsFinish() {
+        return this.gameIsFinish;
+    }
 
     public Game.GameClient GetClient() {
         return Client;
@@ -57,16 +83,17 @@ public class gameMaster : MonoBehaviour
     public string GetGameID() {
         return GameID;
     }
-    async public void GetCDGame() {    
+    async public void GetCDGame(bool delete) {    
         try {
-            Debug.Log(mainMenu.config);
-            GomokuBuffer.CDGameResponse reply = await Client.CDGameAsync(
+            if (PlayerIndexIA == 1) {
+                StartCoroutine(playerFirstIA());
+            }
+            await Client.CDGameAsync(
                 new GomokuBuffer.CDGameRequest(){
                     GameID= GameID,
                     Rules= mainMenu.config.Clone(),
+                    Delete= delete,
                 });
-            if (reply.IsSuccess == false)
-                Debug.Log("NONONONO");
         } catch (Exception e) {
             Debug.Log("RPC failed" + e);
             throw;
@@ -89,11 +116,12 @@ public class gameMaster : MonoBehaviour
             throw;
         }
     }
-
+    public int GetPlayerIndexIA(){
+        return this.PlayerIndexIA;
+    }
     private void updateCapture(GomokuBuffer.CheckRulesResponse reply) {
         if (reply.NbStonedCaptured != 0) {
             CurrentPlayer.SetScore(CurrentPlayer.GetScore() + reply.NbStonedCaptured);
-            Debug.Log("SALUT TOI" + reply.NbStonedCaptured);
             goban.zoneCapture[CurrentPlayer.GetIndex()].GetComponent<zoneCapture>().AddStone(CurrentPlayer.GetScore());
             int index;
             GomokuBuffer.Node elementNode;
@@ -112,15 +140,16 @@ public class gameMaster : MonoBehaviour
             }
         }
     }
+
     async public Task<bool> GetCheckRules(GomokuBuffer.Node node, int player) {
         try {
             node.Player = player;
             GomokuBuffer.CheckRulesResponse reply = await Client.CheckRulesAsync(
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID });
-            Debug.Log("List capture "+ reply.Captured);
             updateCapture(reply);
             if (reply.PartyFinish == true) {
-                PartyFinish(reply.IsWin);
+                gameIsFinish = true;
+                StartCoroutine(PartyFinish(reply.IsWin, goban.GetStone(node).position));
             }
             return reply.IsPossible;
         } catch (Exception e) {

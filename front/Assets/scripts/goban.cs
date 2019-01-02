@@ -30,16 +30,18 @@ public class goban : MonoBehaviour
             }
         }
         if (mainMenu.config.IsActiveRuleCapture == true) {
+            int player = mainMenu.config.PlayerIndexIA == 1 ? 2 : 1;
+            int other = player == 1 ? 2 : 1;
             Transform zonesCapture = transform.Find("zonesCapture");
             zoneCapture = new Dictionary<int, Transform>();
             line = Instantiate(zoneCapturePrefab,new Vector3(){ x=transform.position.x, y=transform.position.y, z= transform.position.z - 11}, new Quaternion(), zonesCapture);
-            line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(1));
-            zoneCapture.Add(1, line);
+            line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(player));
+            zoneCapture.Add(player, line);
             line = Instantiate(zoneCapturePrefab,new Vector3(){ x=transform.position.x, y=transform.position.y, z= transform.position.z + 11}, new Quaternion(), zonesCapture);
-            line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(2));
-            zoneCapture.Add(2, line);   
+            line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(other));
+            zoneCapture.Add(other, line);   
         }
-        GM.GetCDGame();
+        GM.GetCDGame(false);
     }
 
     private void createStones(Vector3[] pos, int x) {
