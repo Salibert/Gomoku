@@ -43,7 +43,7 @@ public class stone : MonoBehaviour
         }
     }
     async void playedModeIA() {
-        if (goban.GM.GetPlayerTurn() == 1) {
+        if (goban.GM.GetPlayerTurn() != goban.GM.GetPlayerIndexIA()) {
             if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
                 SetStone();
                 goban.board.Add(transform.GetComponent<stone>());
@@ -55,7 +55,7 @@ public class stone : MonoBehaviour
     }
 
     void renderStoneIA() {
-        if (goban.GM.GetPlayerTurn() == 1) {
+        if (goban.GM.GetPlayerTurn() != goban.GM.GetPlayerIndexIA()) {
             rend.material = goban.GM.GetCurrentMaterial();
             meshRend.enabled = true;
         }

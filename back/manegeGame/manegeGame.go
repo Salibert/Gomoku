@@ -64,6 +64,10 @@ func (CurrentGames *Games) ProccessRules(in *pb.StonePlayed) (*pb.CheckRulesResp
 
 // PlayedAI choose the best move for win
 func (CurrentGames *Games) PlayedIA(in *pb.StonePlayed) (*pb.StonePlayed, error) {
-	game := CurrentGames.game[in.GameID]
-	return &pb.StonePlayed{CurrentPlayerMove: game.PlayIA(inter.NewNode(in.CurrentPlayerMove)).Convert()}, nil
+	CurrentGames.rwmux.Lock()
+	defer CurrentGames.rwmux.Unlock()
+	if game, ok := CurrentGames.game[in.GameID]; ok == true {
+		return &pb.StonePlayed{CurrentPlayerMove: game.PlayIA(inter.NewNode(in.CurrentPlayerMove)).Convert()}, nil
+	}
+	return nil, errors.New("Partie not found")
 }

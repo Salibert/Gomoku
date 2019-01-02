@@ -1,7 +1,6 @@
 package solver
 
 import (
-	"fmt"
 	"math"
 
 	"github.com/Salibert/Gomoku/back/board"
@@ -14,21 +13,15 @@ type Algo struct {
 	bestMove inter.Node
 }
 
-var MAX_DEPTH = 5
-
-func (ia *IA) Play(board board.Board, depth int, players player.Players) *inter.Node {
+func (ia *IA) Play(board board.Board, players player.Players) *inter.Node {
 	ia.minMax.players = players
 	var best inter.Node
 	if len(ia.SearchZone) != 0 {
-		_, best = ia.MinMax(board, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, MAX_DEPTH, -100000, 1000000, true)
+		_, best = ia.MinMax(board, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, ia.depth, -100000, 1000000, true)
 	} else {
-		best.X, best.Y, best.Player = 10, 10, 2
+		best.X, best.Y, best.Player = 10, 10, ia.playerIndex
 	}
-	fmt.Println(best)
-	fmt.Println(ia.minMax.bestMove)
-	fmt.Println(ia.SearchZone)
 	best.Player = ia.playerIndex
-	ia.minMax.bestMove.Player = ia.playerIndex
 	return &best
 }
 
