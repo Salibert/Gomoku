@@ -14,6 +14,7 @@ type ReportCheckRules struct {
 	SizeAlignment     int
 	NbBlockStone      int
 	LevelCapture      int
+	AmbientScore      int
 }
 
 // Clone create a uniform object, Dont clone slicer but init
@@ -28,6 +29,7 @@ func (report *ReportCheckRules) Clone() *ReportCheckRules {
 	clone.SizeAlignment = report.SizeAlignment
 	clone.NbBlockStone = report.NbBlockStone
 	clone.LevelCapture = report.LevelCapture
+	clone.AmbientScore = report.AmbientScore
 	return clone
 }
 
@@ -42,4 +44,5 @@ func (report *ReportCheckRules) Reset() {
 	report.SizeAlignment = 0
 	report.NbBlockStone = 0
 	report.LevelCapture = 0
+	report.AmbientScore = 0
 }

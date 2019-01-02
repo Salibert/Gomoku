@@ -6,45 +6,70 @@ import (
 )
 
 // HeuristicScore ...
-func (ia *IA) HeuristicScore(board board.Board, move inter.Node) int {
-	value := 0
+func (ia *IA) HeuristicScore(board board.Board, depth int, move inter.Node) (value int) {
 	report := ia.reportEval[move.Player]
 	defer report.Report.Reset()
-	board.CheckRules(move, report)
-	if report.Report.ItIsAValidMove == false {
-		return -1000
-	} else {
-		if len(ia.minMax.players[move.Player].NextMovesOrLose) != 0 {
-			if report.Report.PartyFinish = ia.minMax.players[move.Player].CheckIfThisMoveBlockLose(&move); report.Report.PartyFinish == true {
-				return 1000
+	if move.Player == 0 {
+		return 0
+	}
+	var tmp, player int
+	for i := 0; i < 19; i++ {
+		for j := 0; j < 19; j++ {
+			player = board[i][j]
+			if player != 0 {
+				tmp = 0
+				report.Report.Reset()
+				test := inter.Node{X: i, Y: j, Player: player}
+				board.CheckRules(test, report)
+				if capture := len(report.Report.ListCapturedStone); capture != 0 {
+					tmp += capture * 35
+				}
+				tmp += report.Report.NbFreeThree * 3
+				tmp += report.Report.SizeAlignment * 6
+				tmp += report.Report.NbBlockStone * 8
+				tmp += report.Report.AmbientScore
+				tmp -= report.Report.LevelCapture * 100
+				if report.Report.ItIsAValidMove == false {
+					return 0
+				}
+				switch player {
+				case ia.playerIndex:
+					value += tmp
+				default:
+					value -= tmp
+				}
 			}
 		}
-		if capture := len(report.Report.ListCapturedStone); capture != 0 {
-			value += capture * 25
-		}
-		value += report.Report.NbFreeThree * 5
-		if report.Report.PartyFinish == true {
-			if counter := len(report.Report.WinOrLose); counter == 0 {
-				value += 100
-			}
-		}
-		value += report.Report.SizeAlignment
-		value += report.Report.NbBlockStone
-		value -= report.Report.LevelCapture * 2
 	}
 	return value
 }
 
-func (ia *IA) isWin(board board.Board, move inter.Node) int {
+func (ia *IA) isWin(board board.Board, depth int, move inter.Node) int {
 	report := ia.reportWin[move.Player]
-	defer report.Report.Reset()
+	if move.Player == 0 {
+		return 0
+	}
+	defer func() {
+		report.Report.Reset()
+
+	}()
 	board.CheckRules(move, report)
 	if report.Report.PartyFinish == true {
 		if len(report.Report.WinOrLose[0]) == 0 {
-			return 1
+			switch move.Player {
+			case ia.playerIndex:
+				return 10000 + depth
+			default:
+				return -10000 - depth
+			}
 		}
 	} else if ia.minMax.players[move.Player].Score == 8 && len(report.Report.ListCapturedStone) != 0 {
-		return 1
+		switch move.Player {
+		case ia.playerIndex:
+			return 10000 + depth
+		default:
+			return -10000 - depth
+		}
 	}
 	return 0
 }

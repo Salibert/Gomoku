@@ -56,6 +56,12 @@ func parseRules(config pb.ConfigRules) []FuncCheckRules {
 	if config.IsActiveRuleBlock == true {
 		arrayFuncRulse = append(arrayFuncRulse, checkBlock)
 	}
+	if config.IsActiveRuleProbableCapture == true {
+		arrayFuncRulse = append(arrayFuncRulse, probableCapture)
+	}
+	if config.IsActiveRuleAmbientSearch == true {
+		arrayFuncRulse = append(arrayFuncRulse, ambientScore)
+	}
 	return arrayFuncRulse
 }
 
@@ -144,7 +150,7 @@ loop:
 				continue loop
 			}
 		}
-		//schema.Report.WinOrLose = append(schema.Report.WinOrLose, list[i:lenSchema])
+		schema.Report.WinOrLose = append(schema.Report.WinOrLose, list[i:], list[:lenSchema])
 		return true
 	}
 	return false
@@ -177,10 +183,29 @@ func checkBlock(schema Schema, list []*inter.Node, index int) bool {
 		}
 		break
 	}
-	if blocked >= 4 {
-		schema.Report.NbBlockStone = 1000
-	}
 	schema.Report.NbBlockStone += (blocked * blocked)
+	return false
+}
+
+func ambientScore(schema Schema, list []*inter.Node, index int) bool {
+	ambientScore := 0
+	if index-1 >= 0 {
+		switch list[index-1].Player {
+		case 0:
+			ambientScore += 2
+		default:
+			ambientScore++
+		}
+	}
+	if index+1 < len(list) {
+		switch list[index+1].Player {
+		case 0:
+			ambientScore++
+		default:
+			ambientScore += 2
+		}
+	}
+	schema.Report.AmbientScore += ambientScore
 	return false
 }
 
@@ -200,9 +225,6 @@ func checkAlignment(schema Schema, list []*inter.Node, index int) bool {
 			continue
 		}
 		break
-	}
-	if alignment >= 4 {
-		schema.Report.SizeAlignment = 1000
 	}
 	schema.Report.SizeAlignment += (alignment * alignment)
 	return false

@@ -28,19 +28,38 @@ func init() {
 }
 
 // CDGame ...
-func (s *Server) CDGame(context context.Context, in *pb.CDGameRequest) (*pb.CDGameResponse, error) {
+func (s *Server) CDGame(ctx context.Context, in *pb.CDGameRequest) (res *pb.CDGameResponse, err error) {
 	if !in.Delete {
-		return manegeGame.CurrentGames.AddNewGame(in)
+		res, err = manegeGame.CurrentGames.AddNewGame(in)
+	} else {
+		res, err = manegeGame.CurrentGames.DeleteGame(in.GameID)
 	}
-	return manegeGame.CurrentGames.DeleteGame(in.GameID)
+	select {
+	case <-ctx.Done():
+		return nil, nil
+	default:
+		return res, err
+	}
 }
 
 // Played ...
-func (s *Server) Played(context context.Context, in *pb.StonePlayed) (*pb.StonePlayed, error) {
-	return manegeGame.CurrentGames.PlayedIA(in)
+func (s *Server) Played(ctx context.Context, in *pb.StonePlayed) (res *pb.StonePlayed, err error) {
+	res, err = manegeGame.CurrentGames.PlayedIA(in)
+	select {
+	case <-ctx.Done():
+		return nil, nil
+	default:
+		return res, err
+	}
 }
 
 // CheckRules ...
-func (s *Server) CheckRules(context context.Context, in *pb.StonePlayed) (*pb.CheckRulesResponse, error) {
-	return manegeGame.CurrentGames.ProccessRules(in)
+func (s *Server) CheckRules(ctx context.Context, in *pb.StonePlayed) (*pb.CheckRulesResponse, error) {
+	res, err := manegeGame.CurrentGames.ProccessRules(in)
+	select {
+	case <-ctx.Done():
+		return nil, nil
+	default:
+		return res, err
+	}
 }

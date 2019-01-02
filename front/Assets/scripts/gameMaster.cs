@@ -19,15 +19,24 @@ public class gameMaster : MonoBehaviour
     protected Channel channel;
     protected string GameID;
     protected Game.GameClient Client;
+    public GameObject finishGameUI;
+    public Text winner;
+    public Text time;
+
     void Awake() {
         channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
         Client = new Game.GameClient(channel);
         GameID = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         CurrentPlayer = Player1.GetComponent<player>();
+        finishGameUI.SetActive(false);
         player1 = CurrentPlayer;
         player2 = Player2.GetComponent<player>();
     }
 
+	public void PartyFinish(int player) {
+        winner.text = "Player " + player.ToString();
+		finishGameUI.SetActive(true);
+	}
     public void NextPlayer() {
         if (CurrentPlayer.GetIndex() == player1.GetIndex()) {
             CurrentPlayer = player2;
@@ -65,9 +74,12 @@ public class gameMaster : MonoBehaviour
     }
 
     async public void GetPlayed(GomokuBuffer.Node node) {
+        DateTime start = DateTime.Now;
         try {
             GomokuBuffer.StonePlayed reply = await Client.PlayedAsync(
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
+            TimeSpan end = DateTime.Now.Subtract(start);
+            time.text = end.ToString();
             await GetCheckRules(reply.CurrentPlayerMove, reply.CurrentPlayerMove.Player);
             Transform stone = goban.GetStone(reply.CurrentPlayerMove);
             stone.transform.GetComponent<stone>().SetStone();
@@ -81,6 +93,8 @@ public class gameMaster : MonoBehaviour
     private void updateCapture(GomokuBuffer.CheckRulesResponse reply) {
         if (reply.NbStonedCaptured != 0) {
             CurrentPlayer.SetScore(CurrentPlayer.GetScore() + reply.NbStonedCaptured);
+            Debug.Log("SALUT TOI" + reply.NbStonedCaptured);
+            goban.zoneCapture[CurrentPlayer.GetIndex()].GetComponent<zoneCapture>().AddStone(CurrentPlayer.GetScore());
             int index;
             GomokuBuffer.Node elementNode;
             foreach(GomokuBuffer.Node capturedStone in reply.Captured) {
@@ -106,12 +120,19 @@ public class gameMaster : MonoBehaviour
             Debug.Log("List capture "+ reply.Captured);
             updateCapture(reply);
             if (reply.PartyFinish == true) {
-                Debug.Log("GG SALE PUTE !!!" + reply.IsWin);
+                PartyFinish(reply.IsWin);
             }
             return reply.IsPossible;
         } catch (Exception e) {
             Debug.Log("RPC failed" + e);
             throw;
+        }
+    }
+    public player GetPlayer(int index) {
+        if (index == 1){
+            return player1;
+        } else {
+            return player2;
         }
     }
 }

@@ -1,7 +1,6 @@
 package solver
 
 import (
-	"github.com/Salibert/Gomoku/back/board"
 	"github.com/Salibert/Gomoku/back/rules"
 	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
@@ -9,7 +8,7 @@ import (
 
 // IA ...
 type IA struct {
-	searchZone  []inter.Node
+	SearchZone  []inter.Node
 	reportWin   map[int]rules.Schema
 	reportEval  map[int]rules.Schema
 	minMax      Algo
@@ -25,7 +24,10 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	regis.playerIndex = playerIndex
 	config.IsActiveRuleAlignment = true
 	config.IsActiveRuleBlock = true
-	config.IsActiveRuleProbableCapture = true
+	if config.IsActiveRuleCapture == true {
+		config.IsActiveRuleProbableCapture = true
+	}
+	config.IsActiveRuleAmbientSearch = true
 	configWin := pb.ConfigRules{
 		IsActiveRuleWin:     config.IsActiveRuleWin,
 		IsActiveRuleCapture: config.IsActiveRuleCapture,
@@ -35,8 +37,4 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	regis.reportEval[1] = rules.New(1, 2, config)
 	regis.reportEval[2] = rules.New(2, 1, config)
 	return regis
-}
-
-func (ia *IA) Update(board board.Board, moveOpposent inter.Node) {
-	ia.searchZone = board.CreateSearchSpace(moveOpposent)
 }

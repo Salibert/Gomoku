@@ -5,7 +5,7 @@ using UnityEngine;
 public class player : MonoBehaviour {
         public Material material;
         public int index;
-        static public int score;
+        public int score;
 
 	public void SetScore(int newScore) {
 		score = newScore;
