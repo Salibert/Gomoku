@@ -17,6 +17,8 @@ message ConfigRules {
     bool IsActiveRuleBlock = 6;
     bool IsActiveRuleProbableCapture = 7;
     bool IsActiveRuleAmbientSearch = 8;
+    bool IsActiveHelperPlayer = 9;
+    int32 DepthIA = 10;
 }
 
 service Game {

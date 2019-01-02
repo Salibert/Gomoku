@@ -112,6 +112,7 @@ public class gameMaster : MonoBehaviour
             }
         }
     }
+    
     async public Task<bool> GetCheckRules(GomokuBuffer.Node node, int player) {
         try {
             node.Player = player;
