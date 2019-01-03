@@ -25,6 +25,7 @@ public class gameMaster : MonoBehaviour
     public Text winner;
     public Text time;
     public GameObject spotligth;
+    public Transform StoneOrbit;
     private bool gameIsFinish;
 
     void Awake() {
@@ -36,6 +37,7 @@ public class gameMaster : MonoBehaviour
         player1 = CurrentPlayer;
         player2 = Player2.GetComponent<player>();
         PlayerIndexIA = mainMenu.config.PlayerIndexIA;
+        StoneOrbit.GetComponent<StoneOrbit>().SwitchAnimation(1);
     }
 
     IEnumerator playerFirstIA()

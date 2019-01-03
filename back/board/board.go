@@ -126,17 +126,13 @@ func searchIfZoneExist(searchZone []inter.Node, x, y int) bool {
 }
 
 func (board Board) UpdateSearchSpace(searchZone *[]inter.Node, lastMove inter.Node, size int) {
-	if cap(*searchZone) == 0 {
-		*searchZone = make([]inter.Node, 0, 361)
-	} else {
-		lenSearchZone := len(*searchZone)
-		for i := 0; i < lenSearchZone; i++ {
-			if (*searchZone)[i].Y == lastMove.Y && (*searchZone)[i].Y == lastMove.Y {
-				copy((*searchZone)[i:], (*searchZone)[i+1:])
-				(*searchZone)[lenSearchZone-1] = inter.Node{}
-				(*searchZone) = (*searchZone)[:lenSearchZone-1]
-				break
-			}
+	lenSearchZone := len(*searchZone)
+	for i := 0; i < lenSearchZone; i++ {
+		if (*searchZone)[i].Y == lastMove.Y && (*searchZone)[i].Y == lastMove.Y {
+			copy((*searchZone)[i:], (*searchZone)[i+1:])
+			(*searchZone)[lenSearchZone-1] = inter.Node{}
+			(*searchZone) = (*searchZone)[:lenSearchZone-1]
+			break
 		}
 	}
 	tmpX, tmpY := 0, 0
