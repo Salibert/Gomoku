@@ -11,34 +11,62 @@ import (
 	"github.com/Salibert/Gomoku/back/server/inter"
 )
 
-type Algo struct {
-	players  player.Players
-	bestMove inter.Node
+const (
+	sizeListMoves int = 361
+	sizeMap       int = 19
+)
+
+type ABoard [sizeMap][sizeMap]int
+
+func createListMoves(NewListMoves *[sizeListMoves]inter.Node, listMoves []inter.Node) {
+	for key, el := range listMoves {
+		NewListMoves[key] = el
+	}
+}
+
+func createABoard(newBoard *ABoard, board board.Board) {
+	for x, el := range board {
+		for y, point := range el {
+			newBoard[x][y] = point
+		}
+	}
+}
+
+func createBoard(aBoard *ABoard, board board.Board) {
+	for x, el := range aBoard {
+		for y, point := range el {
+			board[x][y] = point
+		}
+	}
 }
 
 func (ia *IA) Play(board board.Board, players player.Players) *inter.Node {
-	ia.minMax.players = players
+	ia.players = players
 	var best inter.Node
+	var listMoves [sizeListMoves]inter.Node
+	var newBoard ABoard
+	createListMoves(&listMoves, ia.ListMoves)
+	createABoard(&newBoard, board)
 	if len(ia.SearchZone) != 0 {
-		_, best = ia.MinMax(board, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, ia.depth, -100000, 1000000, true)
+		start := time.Now()
+		_, best = ia.MinMax(newBoard, listMoves, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, ia.depth, -100000, 1000000, len(ia.ListMoves), true)
+		t := time.Now()
+		fmt.Println(t.Sub(start))
 	} else {
 		r := rand.New(rand.NewSource(time.Now().UnixNano()))
-		tmp1 := r.Intn(13)
-		best.X = tmp1 + 3
-		tmp2 := r.Intn(13)
-		best.Y = tmp2 + 3
+		best.X = r.Intn(13) + 3
+		best.Y = r.Intn(13) + 3
 		best.Player = ia.playerIndex
-		fmt.Println("TMP +> 1: ", tmp1, " 2:", tmp2)
 	}
 	best.Player = ia.playerIndex
 	return &best
 }
 
-func (ia *IA) MinMax(board board.Board, move inter.Node, depth int, alpha, beta int, max bool) (current int, best inter.Node) {
-	if result := ia.isWin(board, depth, move); result != 0 {
+func (ia *IA) MinMax(board ABoard, list [sizeListMoves]inter.Node, move inter.Node, depth, alpha, beta, index int, max bool) (current int, best inter.Node) {
+	if result := ia.isWin(&board, depth, move); result != 0 {
 		return result, move
 	} else if depth <= 0 {
-		return ia.HeuristicScore(board, depth, move), move
+		return ia.HeuristicScore(&board, list, index, move), move
 	}
 	if max == true {
 		current = math.MinInt64
@@ -47,7 +75,8 @@ func (ia *IA) MinMax(board board.Board, move inter.Node, depth int, alpha, beta 
 
 				board[move.X][move.Y] = ia.playerIndex
 				move.Player = ia.playerIndex
-				score, _ := ia.MinMax(board, move, depth-1, alpha, beta, false)
+				list[index] = move
+				score, _ := ia.MinMax(board, list, move, depth-1, alpha, beta, index+1, false)
 				board[move.X][move.Y] = 0
 				if score > current {
 					current = score
@@ -69,7 +98,8 @@ func (ia *IA) MinMax(board board.Board, move inter.Node, depth int, alpha, beta 
 			if board[move.X][move.Y] == 0 {
 				board[move.X][move.Y] = playerIndex
 				move.Player = playerIndex
-				score, _ := ia.MinMax(board, move, depth-1, alpha, beta, true)
+				list[index] = move
+				score, _ := ia.MinMax(board, list, move, depth-1, alpha, beta, index+1, true)
 				board[move.X][move.Y] = 0
 				if score < current {
 					current = score

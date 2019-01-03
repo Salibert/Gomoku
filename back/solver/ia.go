@@ -1,6 +1,11 @@
 package solver
 
 import (
+	"sync"
+
+	"github.com/Salibert/Gomoku/back/board"
+
+	"github.com/Salibert/Gomoku/back/player"
 	"github.com/Salibert/Gomoku/back/rules"
 	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
@@ -9,10 +14,12 @@ import (
 // IA ...
 type IA struct {
 	SearchZone         []inter.Node
+	ListMoves          []inter.Node
 	reportWin          map[int]rules.Schema
 	reportEval         map[int]rules.Schema
-	minMax             Algo
+	players            player.Players
 	playerIndex, depth int
+	pool               *sync.Pool
 }
 
 // New ...
@@ -38,5 +45,33 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	regis.reportWin[2] = rules.New(2, 1, configWin)
 	regis.reportEval[1] = rules.New(1, 2, config)
 	regis.reportEval[2] = rules.New(2, 1, config)
+	regis.SearchZone = make([]inter.Node, 0, 361)
+	regis.ListMoves = make([]inter.Node, 0, 361)
+	regis.pool = &sync.Pool{
+		New: func() interface{} {
+			board := make(board.Board, 19, 19)
+			for index := 0; index < 19; index++ {
+				board[index] = make([]int, 19, 19)
+			}
+			return board
+		},
+	}
 	return regis
+}
+
+func (ia *IA) UpdateListMove(listCapture []*inter.Node, lastMove inter.Node) {
+	if len(listCapture) != 0 {
+		for _, capture := range listCapture {
+			for i, list := range ia.ListMoves {
+				if list == *capture {
+					lenListMoves := len(ia.ListMoves)
+					copy((ia.ListMoves)[i:], (ia.ListMoves)[i+1:])
+					(ia.ListMoves)[lenListMoves-1] = inter.Node{}
+					(ia.ListMoves) = (ia.ListMoves)[:lenListMoves-1]
+					break
+				}
+			}
+		}
+	}
+	ia.ListMoves = append(ia.ListMoves, lastMove)
 }

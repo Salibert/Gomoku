@@ -2,7 +2,6 @@ package manegeGame
 
 import (
 	"errors"
-	"fmt"
 	"sync"
 
 	"github.com/Salibert/Gomoku/back/game"
@@ -42,10 +41,8 @@ func (CurrentGames *Games) DeleteGame(gameID string) (_ *pb.CDGameResponse, err 
 	defer CurrentGames.rwmux.Unlock()
 	res := &pb.CDGameResponse{}
 	if _, ok := CurrentGames.game[gameID]; ok == true {
-		fmt.Println("TRY", gameID, CurrentGames)
 		delete(CurrentGames.game, gameID)
 		if _, ok := CurrentGames.game[gameID]; ok == false {
-			fmt.Println("SUCCESS")
 			res.IsSuccess = true
 		}
 	}
