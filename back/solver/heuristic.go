@@ -8,10 +8,10 @@ import (
 // HeuristicScore ...
 func (ia *IA) HeuristicScore(aBoard *ABoard, list [sizeListMoves]inter.Node, index int, move inter.Node) (value int) {
 	report := ia.reportEval[move.Player]
-	board := ia.pool.Get().(board.Board)
+	board := Pool.Get().(board.Board)
 	defer func() {
 		report.Report.Reset()
-		ia.pool.Put(board)
+		Pool.Put(board)
 	}()
 	if move.Player == 0 {
 		return 0
@@ -49,10 +49,10 @@ func (ia *IA) isWin(aBoard *ABoard, depth int, move inter.Node) int {
 	if move.Player == 0 {
 		return 0
 	}
-	board := ia.pool.Get().(board.Board)
+	board := Pool.Get().(board.Board)
 	defer func() {
 		report.Report.Reset()
-		ia.pool.Put(board)
+		Pool.Put(board)
 	}()
 	createBoard(aBoard, board)
 	board.CheckRules(move, report)

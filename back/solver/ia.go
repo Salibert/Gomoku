@@ -11,6 +11,21 @@ import (
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
+var Pool *sync.Pool
+var salut int
+
+func init() {
+	Pool = &sync.Pool{
+		New: func() interface{} {
+			board := make(board.Board, 19, 19)
+			for index := 0; index < 19; index++ {
+				board[index] = make([]int, 19, 19)
+			}
+			return board
+		},
+	}
+}
+
 // IA ...
 type IA struct {
 	SearchZone         []inter.Node
@@ -19,7 +34,6 @@ type IA struct {
 	reportEval         map[int]rules.Schema
 	players            player.Players
 	playerIndex, depth int
-	pool               *sync.Pool
 }
 
 // New ...
@@ -47,15 +61,7 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	regis.reportEval[2] = rules.New(2, 1, config)
 	regis.SearchZone = make([]inter.Node, 0, 361)
 	regis.ListMoves = make([]inter.Node, 0, 361)
-	regis.pool = &sync.Pool{
-		New: func() interface{} {
-			board := make(board.Board, 19, 19)
-			for index := 0; index < 19; index++ {
-				board[index] = make([]int, 19, 19)
-			}
-			return board
-		},
-	}
+
 	return regis
 }
 
