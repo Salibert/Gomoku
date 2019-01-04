@@ -1,6 +1,8 @@
 package rules
 
-import "github.com/Salibert/Gomoku/back/server/inter"
+import (
+	"github.com/Salibert/Gomoku/back/server/inter"
+)
 
 // ReportCheckRules create a report of this move
 type ReportCheckRules struct {

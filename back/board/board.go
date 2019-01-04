@@ -51,36 +51,38 @@ func (board Board) CheckRules(initialStone inter.Node, report rules.Schema) {
 	}
 }
 
-func (board Board) createListCheckStone(index int, initialStone inter.Node) ([]*inter.Node, int) {
-	listCheckStone := make([]*inter.Node, 0, 11)
-	var indexStone int
+func (board Board) sendRadius(m func(list *axis.Radius, index, lenRadius int), index int, initialStone inter.Node) {
+	listCheckStone := &axis.Radius{}
+	var indexStone, indexRadius int
 	axisCheck := axis.DialRightAxes[index]
 	Y, X := initialStone.Y+(axisCheck.Y*5), initialStone.X+(axisCheck.X*5)
 	for i := 5; i > 0; i-- {
 		if Y >= 0 && X >= 0 && Y < SizeBoard && X < SizeBoard {
-
-			listCheckStone = append(listCheckStone, &inter.Node{X: X, Y: Y, Player: board[X][Y]})
+			listCheckStone[indexRadius] = inter.Node{X: X, Y: Y, Player: board[X][Y]}
+			indexRadius++
 		}
 		Y -= axisCheck.Y
 		X -= axisCheck.X
 	}
-	indexStone = len(listCheckStone)
-	listCheckStone = append(listCheckStone, &initialStone)
+	indexStone = indexRadius
+	indexRadius++
+	listCheckStone[indexStone] = initialStone
 	axisCheck = axisCheck.Inverse()
 	Y, X = initialStone.Y+axisCheck.Y, initialStone.X+axisCheck.X
 	for i := 0; i < 5; i++ {
 		if Y >= 0 && X >= 0 && Y < SizeBoard && X < SizeBoard {
-			listCheckStone = append(listCheckStone, &inter.Node{X: X, Y: Y, Player: board[X][Y]})
+			listCheckStone[indexRadius] = inter.Node{X: X, Y: Y, Player: board[X][Y]}
+			indexRadius++
 		}
 		Y += axisCheck.Y
 		X += axisCheck.X
 	}
-	return listCheckStone, indexStone
+	m(listCheckStone, indexStone, indexRadius)
 }
 
-func (board Board) proccessRulesByAxes(m func(list []*inter.Node, index int), initialStone inter.Node) {
+func (board Board) proccessRulesByAxes(m func(list *axis.Radius, index, lenRadius int), initialStone inter.Node) {
 	for index := 0; index < 4; index++ {
-		m(board.createListCheckStone(index, initialStone))
+		board.sendRadius(m, index, initialStone)
 	}
 }
 

@@ -1,9 +1,14 @@
 package axis
 
+import "github.com/Salibert/Gomoku/back/server/inter"
+
 // Axis ...
 type Axis struct {
 	X, Y int
 }
+
+// Radius is a node array cut by the same axis with a length of 12 squares
+type Radius [11]inter.Node
 
 // DialRightAxes ...
 var DialRightAxes = [4]Axis{
