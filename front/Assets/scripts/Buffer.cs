@@ -40,12 +40,14 @@ namespace GomokuBuffer {
             "aXNoGAQgASgIEg0KBUlzV2luGAUgASgFIjQKDkNER2FtZVJlc3BvbnNlEhEK",
             "CUlzU3VjY2VzcxgBIAEoCBIPCgdNZXNzYWdlGAIgASgJIkwKC1N0b25lUGxh",
             "eWVkEi0KEUN1cnJlbnRQbGF5ZXJNb3ZlGAEgASgLMhIuZ29tb2t1QnVmZmVy",
-            "Lk5vZGUSDgoGR2FtZUlEGAIgASgJMtwBCgRHYW1lEkUKBkNER2FtZRIbLmdv",
+            "Lk5vZGUSDgoGR2FtZUlEGAIgASgJMqICCgRHYW1lEkUKBkNER2FtZRIbLmdv",
             "bW9rdUJ1ZmZlci5DREdhbWVSZXF1ZXN0GhwuZ29tb2t1QnVmZmVyLkNER2Ft",
             "ZVJlc3BvbnNlIgASQAoGUGxheWVkEhkuZ29tb2t1QnVmZmVyLlN0b25lUGxh",
-            "eWVkGhkuZ29tb2t1QnVmZmVyLlN0b25lUGxheWVkIgASSwoKQ2hlY2tSdWxl",
-            "cxIZLmdvbW9rdUJ1ZmZlci5TdG9uZVBsYXllZBogLmdvbW9rdUJ1ZmZlci5D",
-            "aGVja1J1bGVzUmVzcG9uc2UiAGIGcHJvdG8z"));
+            "eWVkGhkuZ29tb2t1QnVmZmVyLlN0b25lUGxheWVkIgASRAoKUGxheWVkSGVs",
+            "cBIZLmdvbW9rdUJ1ZmZlci5TdG9uZVBsYXllZBoZLmdvbW9rdUJ1ZmZlci5T",
+            "dG9uZVBsYXllZCIAEksKCkNoZWNrUnVsZXMSGS5nb21va3VCdWZmZXIuU3Rv",
+            "bmVQbGF5ZWQaIC5nb21va3VCdWZmZXIuQ2hlY2tSdWxlc1Jlc3BvbnNlIgBi",
+            "BnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {

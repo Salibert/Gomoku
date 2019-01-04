@@ -48,16 +48,16 @@ func (ia *IA) Play(board *board.Board, players player.Players) *inter.Node {
 	createListMoves(&listMoves, ia.ListMoves)
 	if len(ia.SearchZone) != 0 {
 		start := time.Now()
-		_, best = ia.MinMax(*board, listMoves, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, ia.depth, -100000, 1000000, len(ia.ListMoves), true)
+		_, best = ia.MinMax(*board, listMoves, inter.Node{Player: player.GetOpposentPlayer(ia.PlayerIndex)}, ia.Depth, -100000, 1000000, len(ia.ListMoves), true)
 		t := time.Now()
 		fmt.Println(t.Sub(start))
 	} else {
 		r := rand.New(rand.NewSource(time.Now().UnixNano()))
 		best.X = r.Intn(13) + 3
 		best.Y = r.Intn(13) + 3
-		best.Player = ia.playerIndex
+		best.Player = ia.PlayerIndex
 	}
-	best.Player = ia.playerIndex
+	best.Player = ia.PlayerIndex
 	return &best
 }
 
@@ -72,8 +72,8 @@ func (ia *IA) MinMax(board board.Board, list [sizeListMoves]inter.Node, move int
 		for _, move = range ia.SearchZone {
 			if board[move.X][move.Y] == 0 {
 
-				board[move.X][move.Y] = ia.playerIndex
-				move.Player = ia.playerIndex
+				board[move.X][move.Y] = ia.PlayerIndex
+				move.Player = ia.PlayerIndex
 				list[index] = move
 				score, _ := ia.MinMax(board, list, move, depth-1, alpha, beta, index+1, false)
 				board[move.X][move.Y] = 0
@@ -92,7 +92,7 @@ func (ia *IA) MinMax(board board.Board, list [sizeListMoves]inter.Node, move int
 		}
 	} else {
 		current = math.MaxInt64
-		playerIndex := player.GetOpposentPlayer(ia.playerIndex)
+		playerIndex := player.GetOpposentPlayer(ia.PlayerIndex)
 		for _, move = range ia.SearchZone {
 			if board[move.X][move.Y] == 0 {
 				board[move.X][move.Y] = playerIndex

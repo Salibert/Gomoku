@@ -31,6 +31,13 @@ namespace GomokuBuffer {
         __Marshaller_gomokuBuffer_StonePlayed,
         __Marshaller_gomokuBuffer_StonePlayed);
 
+    static readonly grpc::Method<global::GomokuBuffer.StonePlayed, global::GomokuBuffer.StonePlayed> __Method_PlayedHelp = new grpc::Method<global::GomokuBuffer.StonePlayed, global::GomokuBuffer.StonePlayed>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "PlayedHelp",
+        __Marshaller_gomokuBuffer_StonePlayed,
+        __Marshaller_gomokuBuffer_StonePlayed);
+
     static readonly grpc::Method<global::GomokuBuffer.StonePlayed, global::GomokuBuffer.CheckRulesResponse> __Method_CheckRules = new grpc::Method<global::GomokuBuffer.StonePlayed, global::GomokuBuffer.CheckRulesResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
@@ -53,6 +60,11 @@ namespace GomokuBuffer {
       }
 
       public virtual global::System.Threading.Tasks.Task<global::GomokuBuffer.StonePlayed> Played(global::GomokuBuffer.StonePlayed request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      public virtual global::System.Threading.Tasks.Task<global::GomokuBuffer.StonePlayed> PlayedHelp(global::GomokuBuffer.StonePlayed request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -119,6 +131,22 @@ namespace GomokuBuffer {
       {
         return CallInvoker.AsyncUnaryCall(__Method_Played, null, options, request);
       }
+            public virtual global::GomokuBuffer.StonePlayed PlayedHelp(global::GomokuBuffer.StonePlayed request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return PlayedHelp(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual global::GomokuBuffer.StonePlayed PlayedHelp(global::GomokuBuffer.StonePlayed request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_Played, null, options, request);
+      }
+      public virtual grpc::AsyncUnaryCall<global::GomokuBuffer.StonePlayed> PlayedHelpAsync(global::GomokuBuffer.StonePlayed request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return PlayedHelpAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual grpc::AsyncUnaryCall<global::GomokuBuffer.StonePlayed> PlayedHelpAsync(global::GomokuBuffer.StonePlayed request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_Played, null, options, request);
+      }
       public virtual global::GomokuBuffer.CheckRulesResponse CheckRules(global::GomokuBuffer.StonePlayed request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return CheckRules(request, new grpc::CallOptions(headers, deadline, cancellationToken));
@@ -149,6 +177,7 @@ namespace GomokuBuffer {
       return grpc::ServerServiceDefinition.CreateBuilder()
           .AddMethod(__Method_CDGame, serviceImpl.CDGame)
           .AddMethod(__Method_Played, serviceImpl.Played)
+          .AddMethod(__Method_PlayedHelp, serviceImpl.PlayedHelp)
           .AddMethod(__Method_CheckRules, serviceImpl.CheckRules).Build();
     }
 

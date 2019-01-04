@@ -32,7 +32,7 @@ type IA struct {
 	reportWin          map[int]rules.Schema
 	reportEval         map[int]rules.Schema
 	playersScore       [2]int
-	playerIndex, depth int
+	PlayerIndex, Depth int
 }
 
 // New ...
@@ -41,7 +41,7 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 		reportWin:  make(map[int]rules.Schema),
 		reportEval: make(map[int]rules.Schema),
 	}
-	regis.playerIndex = playerIndex
+	regis.PlayerIndex = playerIndex
 	config.IsActiveRuleAlignment = true
 	config.IsActiveRuleBlock = true
 	if config.IsActiveRuleCapture == true {
@@ -52,8 +52,8 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 		IsActiveRuleWin:     config.IsActiveRuleWin,
 		IsActiveRuleCapture: config.IsActiveRuleCapture,
 	}
-	regis.depth = int(config.DepthIA)
-	regis.playerIndex = int(config.PlayerIndexIA)
+	regis.Depth = int(config.DepthIA)
+	regis.PlayerIndex = int(config.PlayerIndexIA)
 	regis.reportWin[1] = rules.New(1, 2, configWin)
 	regis.reportWin[2] = rules.New(2, 1, configWin)
 	regis.reportEval[1] = rules.New(1, 2, config)

@@ -96,7 +96,16 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 	return res, nil
 }
 
-func (game *Game) PlayIA(in *inter.Node) *inter.Node {
+func (game *Game) PlayIA(in *inter.Node, isHelp bool) *inter.Node {
+	if isHelp == true {
+		depth := game.IA.Depth
+		game.IA.PlayerIndex = player.GetOpposentPlayer(game.IA.PlayerIndex)
+		game.IA.Depth = 3
+		defer func() {
+			game.IA.PlayerIndex = player.GetOpposentPlayer(game.IA.PlayerIndex)
+			game.IA.Depth = depth
+		}()
+	}
 	fmt.Println("LEN => ", len(game.IA.SearchZone))
 	return game.IA.Play(game.board, game.players)
 }

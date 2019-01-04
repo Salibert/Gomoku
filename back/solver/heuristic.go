@@ -32,7 +32,7 @@ func (ia *IA) HeuristicScore(board board.Board, list [sizeListMoves]inter.Node, 
 			return 0
 		}
 		switch node.Player {
-		case ia.playerIndex:
+		case ia.PlayerIndex:
 			value += tmp
 		default:
 			value -= tmp
@@ -53,7 +53,7 @@ func (ia *IA) isWin(board board.Board, depth int, move inter.Node) int {
 	if report.Report.PartyFinish == true {
 		if len(report.Report.WinOrLose[0]) == 0 {
 			switch move.Player {
-			case ia.playerIndex:
+			case ia.PlayerIndex:
 				return 10000 + depth
 			default:
 				return -10000 - depth
@@ -61,7 +61,7 @@ func (ia *IA) isWin(board board.Board, depth int, move inter.Node) int {
 		}
 	} else if ia.playersScore[move.Player-1] == 8 && len(report.Report.ListCapturedStone) != 0 {
 		switch move.Player {
-		case ia.playerIndex:
+		case ia.PlayerIndex:
 			return 10000 + depth
 		default:
 			return -10000 - depth

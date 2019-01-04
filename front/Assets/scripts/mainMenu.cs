@@ -13,7 +13,6 @@ public class mainMenu : MonoBehaviour {
 	public Toggle m_captureToggle;
 	public Toggle m_freeThreeToggle;
 	public Toggle m_firstPlayerToggle;
-	public Toggle m_helperPlayerToggle;
 	public GameObject Difficulty;
 	private TextMeshProUGUI textDifficulty;
 	private Dictionary<string, int> difficulty;
@@ -39,8 +38,6 @@ public class mainMenu : MonoBehaviour {
 		m_freeThreeToggle.isOn = config.IsActiveRuleFreeThree;
 		m_freeThreeToggle.onValueChanged.AddListener(delegate { FreeThreeValueChanged(m_freeThreeToggle); });
 		m_firstPlayerToggle.isOn = config.PlayerIndexIA > 2 ? true : false;
-		m_helperPlayerToggle.isOn = config.IsActiveHelperPlayer;
-		m_helperPlayerToggle.onValueChanged.AddListener(delegate { HelperPlayerValueChanged(m_helperPlayerToggle); });
 		textDifficulty = Difficulty.GetComponent<TextMeshProUGUI>();
 	}
 
@@ -75,10 +72,6 @@ public class mainMenu : MonoBehaviour {
 	void FreeThreeValueChanged(Toggle change)
     {
 		config.IsActiveRuleFreeThree = change.isOn;
-    }
-	void HelperPlayerValueChanged(Toggle change)
-    {
-		config.IsActiveHelperPlayer = change.isOn;
     }
 	public void QuitGame() {
 		Application.Quit();
