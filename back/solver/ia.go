@@ -5,7 +5,6 @@ import (
 
 	"github.com/Salibert/Gomoku/back/board"
 
-	"github.com/Salibert/Gomoku/back/player"
 	"github.com/Salibert/Gomoku/back/rules"
 	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
@@ -17,11 +16,11 @@ var salut int
 func init() {
 	Pool = &sync.Pool{
 		New: func() interface{} {
-			board := make(board.Board, 19, 19)
-			for index := 0; index < 19; index++ {
-				board[index] = make([]int, 19, 19)
-			}
-			return board
+			// board := make(board.Board, 19, 19)
+			// for index := 0; index < 19; index++ {
+			// 	board[index] = make([]int, 19, 19)
+			// }
+			return board.Board{}
 		},
 	}
 }
@@ -32,7 +31,7 @@ type IA struct {
 	ListMoves          []inter.Node
 	reportWin          map[int]rules.Schema
 	reportEval         map[int]rules.Schema
-	players            player.Players
+	playersScore       [2]int
 	playerIndex, depth int
 }
 
@@ -61,7 +60,6 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	regis.reportEval[2] = rules.New(2, 1, config)
 	regis.SearchZone = make([]inter.Node, 0, 361)
 	regis.ListMoves = make([]inter.Node, 0, 361)
-
 	return regis
 }
 

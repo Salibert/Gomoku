@@ -40,16 +40,15 @@ func createBoard(aBoard *ABoard, board board.Board) {
 	}
 }
 
-func (ia *IA) Play(board board.Board, players player.Players) *inter.Node {
-	ia.players = players
+func (ia *IA) Play(board *board.Board, players player.Players) *inter.Node {
+	ia.playersScore[0] = players[1].Score
+	ia.playersScore[1] = players[2].Score
 	var best inter.Node
 	var listMoves [sizeListMoves]inter.Node
-	var newBoard ABoard
 	createListMoves(&listMoves, ia.ListMoves)
-	createABoard(&newBoard, board)
 	if len(ia.SearchZone) != 0 {
 		start := time.Now()
-		_, best = ia.MinMax(newBoard, listMoves, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, ia.depth, -100000, 1000000, len(ia.ListMoves), true)
+		_, best = ia.MinMax(*board, listMoves, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, ia.depth, -100000, 1000000, len(ia.ListMoves), true)
 		t := time.Now()
 		fmt.Println(t.Sub(start))
 	} else {
@@ -62,11 +61,11 @@ func (ia *IA) Play(board board.Board, players player.Players) *inter.Node {
 	return &best
 }
 
-func (ia *IA) MinMax(board ABoard, list [sizeListMoves]inter.Node, move inter.Node, depth, alpha, beta, index int, max bool) (current int, best inter.Node) {
-	if result := ia.isWin(&board, depth, move); result != 0 {
+func (ia *IA) MinMax(board board.Board, list [sizeListMoves]inter.Node, move inter.Node, depth, alpha, beta, index int, max bool) (current int, best inter.Node) {
+	if result := ia.isWin(board, depth, move); result != 0 {
 		return result, move
 	} else if depth <= 0 {
-		return ia.HeuristicScore(&board, list, index, move), move
+		return ia.HeuristicScore(board, list, index, move), move
 	}
 	if max == true {
 		current = math.MinInt64

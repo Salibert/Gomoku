@@ -15,7 +15,7 @@ import (
 // Game contains all the meta data of a part
 type Game struct {
 	rwmux   sync.RWMutex
-	board   board.Board
+	board   *board.Board
 	players player.Players
 	IA      *solver.IA
 }
@@ -23,7 +23,7 @@ type Game struct {
 // New create new instance of Game
 func New(config pb.ConfigRules) *Game {
 	game := &Game{
-		board:   board.New(),
+		board:   &board.Board{},
 		players: make(player.Players),
 	}
 	game.players[1] = &player.Player{
