@@ -1,29 +1,10 @@
 package solver
 
 import (
-	"sync"
-
-	"github.com/Salibert/Gomoku/back/board"
-
 	"github.com/Salibert/Gomoku/back/rules"
 	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
-
-var Pool *sync.Pool
-var salut int
-
-func init() {
-	Pool = &sync.Pool{
-		New: func() interface{} {
-			// board := make(board.Board, 19, 19)
-			// for index := 0; index < 19; index++ {
-			// 	board[index] = make([]int, 19, 19)
-			// }
-			return board.Board{}
-		},
-	}
-}
 
 // IA ...
 type IA struct {

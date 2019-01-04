@@ -6,7 +6,7 @@ import (
 )
 
 // HeuristicScore ...
-func (ia *IA) HeuristicScore(board board.Board, list [sizeListMoves]inter.Node, index int, move inter.Node) (value int) {
+func (ia *IA) HeuristicScore(board board.Board, list Tlist, index int, move inter.Node) (value int) {
 	report := ia.reportEval[move.Player]
 	defer func() {
 		report.Report.Reset()

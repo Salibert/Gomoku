@@ -29,6 +29,7 @@ public class gameMaster : MonoBehaviour
     private bool gameIsFinish;
 
     void Awake() {
+        // "127.0.0.1:50051"
         channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
         Client = new Game.GameClient(channel);
         GameID = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
