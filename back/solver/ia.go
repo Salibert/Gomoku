@@ -1,6 +1,9 @@
 package solver
 
 import (
+	"fmt"
+	"sync"
+
 	"github.com/Salibert/Gomoku/back/rules"
 	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
@@ -14,7 +17,10 @@ type IA struct {
 	reportEval         map[int]rules.Schema
 	playersScore       [2]int
 	playerIndex, depth int
+	Pool               *sync.Pool
 }
+
+var slaut int
 
 // New ...
 func New(config pb.ConfigRules, playerIndex int) *IA {
@@ -41,6 +47,27 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	regis.reportEval[2] = rules.New(2, 1, config)
 	regis.SearchZone = make([]inter.Node, 0, 361)
 	regis.ListMoves = make([]inter.Node, 0, 361)
+	regis.Pool = &sync.Pool{
+		New: func() interface{} {
+			fmt.Println("IA BRO", slaut)
+			return regis.Clone()
+		},
+	}
+	return regis
+}
+
+// Clone ...
+func (ia *IA) Clone() *IA {
+	regis := &IA{
+		reportWin:  make(map[int]rules.Schema),
+		reportEval: make(map[int]rules.Schema),
+	}
+	regis.depth = ia.depth
+	regis.playerIndex = ia.playerIndex
+	regis.reportWin[1] = *ia.reportWin[1].Clone()
+	regis.reportWin[2] = *ia.reportWin[2].Clone()
+	regis.reportEval[1] = *ia.reportEval[1].Clone()
+	regis.reportEval[2] = *ia.reportEval[2].Clone()
 	return regis
 }
 

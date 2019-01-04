@@ -18,6 +18,8 @@ const (
 
 type Tlist [361]inter.Node
 
+var ici int
+
 func createListMoves(NewListMoves *Tlist, listMoves []inter.Node) {
 	for key, el := range listMoves {
 		NewListMoves[key] = el
@@ -39,7 +41,7 @@ func (ia *IA) Play(board *board.Board, players player.Players) *inter.Node {
 	createSearchList(&searchList, ia.SearchZone)
 	if len(ia.SearchZone) != 0 {
 		start := time.Now()
-		_, best = ia.Max(*board, listMoves, searchList, inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}, ia.depth, -100000, 1000000, len(ia.ListMoves), len(ia.SearchZone))
+		_, best = ia.Boost(*board, listMoves, searchList, len(ia.ListMoves), len(ia.SearchZone))
 		t := time.Now()
 		fmt.Println("TIME +> ", t.Sub(start))
 	} else {
@@ -50,6 +52,112 @@ func (ia *IA) Play(board *board.Board, players player.Players) *inter.Node {
 	}
 	best.Player = ia.playerIndex
 	return &best
+}
+
+func (ia *IA) Boost(board board.Board, list, searchList Tlist, indexListMoves, indexSearchList int) (current int, best inter.Node) {
+	current = math.MinInt64
+	var finish bool
+	alpha, beta := -100000, 1000000
+	// halfSearchList := int(indexSearchList / 2)
+	move := inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}
+	// for i := 0; i < indexSearchList; i++ {
+	// 	move = searchList[i]
+	// 	if board[move.X][move.Y] == 0 {
+
+	// 		board[move.X][move.Y] = ia.playerIndex
+	// 		move.Player = ia.playerIndex
+	// 		list[indexListMoves] = move
+	// 		score, _ := ia.Min(board, list, searchList, move, 0, alpha, beta, indexListMoves+1, indexSearchList)
+	// 		board[move.X][move.Y] = 0
+	// 		if score > current {
+	// 			current = score
+	// 			best = move
+	// 		}
+	// 		if score > alpha {
+	// 			alpha = score
+	// 			best = move
+	// 		}
+	// 		if alpha >= beta {
+	// 			fmt.Println("SALUT ")
+	// 			// finish = true
+	// 			break
+	// 		}
+	// 	}
+	// }
+	for i := 0; i < indexSearchList; i++ {
+		move = searchList[i]
+		if board[move.X][move.Y] == 0 {
+
+			board[move.X][move.Y] = ia.playerIndex
+			move.Player = ia.playerIndex
+			list[indexListMoves] = move
+			score, _ := ia.Min(board, list, searchList, move, 3-1, alpha, beta, indexListMoves+1, indexSearchList)
+			board[move.X][move.Y] = 0
+			if score > current {
+				current = score
+				best = move
+			}
+			if score > alpha {
+				alpha = score
+				best = move
+			}
+			if alpha >= beta {
+				fmt.Println("SALUT ")
+				// finish = true
+				break
+			}
+		}
+	}
+	if finish == true {
+		maxToken := 20
+		token := maxToken
+		chanScores := make(chan int, maxToken)
+	loop:
+		for i := 0; i < indexSearchList; i++ {
+			move = searchList[i]
+			if board[move.X][move.Y] == 0 {
+
+				board[move.X][move.Y] = ia.playerIndex
+				move.Player = ia.playerIndex
+				list[indexListMoves] = move
+				token--
+				newIa := ia.Pool.Get().(*IA)
+				fmt.Println("OK => ", ici)
+				ici++
+				go func() {
+					score, _ := newIa.Min(board, list, searchList, move, ia.depth-1, alpha, beta, indexListMoves+1, indexSearchList)
+					chanScores <- score
+					ia.Pool.Put(newIa)
+				}()
+				board[move.X][move.Y] = 0
+				if token == 0 {
+					for true {
+						if token > int(maxToken/2) {
+							break
+						}
+						select {
+						case score := <-chanScores:
+							token++
+							if score > current {
+								current = score
+								best = move
+							}
+							if score > alpha {
+								alpha = score
+								best = move
+							}
+							if alpha >= beta {
+								break loop
+							}
+						default:
+						}
+					}
+
+				}
+			}
+		}
+	}
+	return
 }
 
 func (ia *IA) Max(board board.Board, list, searchList Tlist, move inter.Node, depth, alpha, beta, indexListMoves, indexSearchList int) (current int, best inter.Node) {
