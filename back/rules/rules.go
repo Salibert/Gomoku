@@ -139,10 +139,10 @@ func checkCapture(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 	return isCapture
 }
 
-func createSliceWinOrLose(list *axis.Radius) []*inter.Node {
+func createSliceWinOrLose(list *axis.Radius, start, end int) []*inter.Node {
 	newList := make([]*inter.Node, 0, 11)
-	for _, node := range list {
-		newList = append(newList, &node)
+	for i := start; i < end; i++ {
+		newList = append(newList, &list[i])
 	}
 	return newList
 }
@@ -157,8 +157,8 @@ loop:
 				continue loop
 			}
 		}
-		newList := createSliceWinOrLose(list)
-		schema.Report.WinOrLose = append(schema.Report.WinOrLose, newList[i:], newList[:lenSchema])
+		// schema.Report.WinOrLose = append(schema.Report.WinOrLose, createSliceWinOrLose(list, i, lenSchema))
+		schema.Report.WinOrLose = append(schema.Report.WinOrLose, []*inter.Node{})
 		return true
 	}
 	return false
