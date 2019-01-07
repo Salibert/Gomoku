@@ -72,9 +72,9 @@ func New(playerIndex, opposent int, config pb.ConfigRules) Schema {
 		FuncCheck: parseRules(config),
 		Schema:    make([][]int, 5, 5),
 		Report: &ReportCheckRules{
-			ListCapturedStone: make([]*inter.Node, 0, 16),
+			ListCapturedStone: &ListStone{},
+			NextMovesOrLose:   &ListStone{},
 			WinOrLose:         make([][]*inter.Node, 0, 8),
-			NextMovesOrLose:   make([]*inter.Node, 0, 10),
 		},
 	}
 	for i, f := range rulesFuncArray {
@@ -88,6 +88,7 @@ func (schema Schema) Clone() *Schema {
 	clone := &Schema{}
 	clone.Schema = schema.Schema[:len(schema.Schema)]
 	clone.FuncCheck = schema.FuncCheck[:len(schema.FuncCheck)]
+	clone.Report = &ReportCheckRules{}
 	clone.Report = schema.Report.Clone()
 	return clone
 }
@@ -131,10 +132,16 @@ func checkFreeThreeSpace(schema Schema, list *axis.Radius, index, lenRadius int)
 func checkCapture(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 	var isCapture bool
 	if isCapture = compareNodesSchema(list, schema.Schema[Capture], index, lenRadius, 1); isCapture == true {
-		schema.Report.ListCapturedStone = append(schema.Report.ListCapturedStone, &list[index+1], &list[index+2])
+		schema.Report.ListCapturedStone[schema.Report.IndexListCapturedStone] = list[index+1]
+		schema.Report.IndexListCapturedStone++
+		schema.Report.ListCapturedStone[schema.Report.IndexListCapturedStone] = list[index+2]
+		schema.Report.IndexListCapturedStone++
 	}
 	if isCapture = compareNodesSchema(list, schema.Schema[Capture], index, lenRadius, -1); isCapture == true {
-		schema.Report.ListCapturedStone = append(schema.Report.ListCapturedStone, &list[index-1], &list[index-2])
+		schema.Report.ListCapturedStone[schema.Report.IndexListCapturedStone] = list[index-1]
+		schema.Report.IndexListCapturedStone++
+		schema.Report.ListCapturedStone[schema.Report.IndexListCapturedStone] = list[index-2]
+		schema.Report.IndexListCapturedStone++
 	}
 	return isCapture
 }
@@ -157,8 +164,7 @@ loop:
 				continue loop
 			}
 		}
-		// schema.Report.WinOrLose = append(schema.Report.WinOrLose, createSliceWinOrLose(list, i, lenSchema))
-		schema.Report.WinOrLose = append(schema.Report.WinOrLose, []*inter.Node{})
+		schema.Report.WinOrLose = append(schema.Report.WinOrLose, createSliceWinOrLose(list, i, lenSchema))
 		return true
 	}
 	return false
@@ -270,17 +276,21 @@ func (schema Schema) CheckIfPartyIsFinish(list *axis.Radius, index, lenRadius in
 		switch list[index+1].Player {
 		case list[index].Player:
 			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-1, lenRadius, 1); isSuccessChecked == true {
-				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, &list[index+2])
+				schema.Report.NextMovesOrLose[schema.Report.IndexNextMovesOrLose] = list[index+2]
+				schema.Report.IndexNextMovesOrLose++
 			} else if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+2, lenRadius, -1); isSuccessChecked == true {
-				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, &list[index-1])
+				schema.Report.NextMovesOrLose[schema.Report.IndexNextMovesOrLose] = list[index-1]
+				schema.Report.IndexNextMovesOrLose++
 			}
 		case 0:
 			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-2, lenRadius, 1); isSuccessChecked == true {
-				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, &list[index+1])
+				schema.Report.NextMovesOrLose[schema.Report.IndexNextMovesOrLose] = list[index+1]
+				schema.Report.IndexNextMovesOrLose++
 			}
 		default:
 			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+1, lenRadius, -1); isSuccessChecked == true {
-				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, &list[index-2])
+				schema.Report.NextMovesOrLose[schema.Report.IndexNextMovesOrLose] = list[index-2]
+				schema.Report.IndexNextMovesOrLose++
 			}
 		}
 	}

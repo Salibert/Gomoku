@@ -26,8 +26,7 @@ func (node *Node) Convert() *pb.Node {
 }
 
 // ConvertArrayNode ...
-func ConvertArrayNode(array []*Node) []*pb.Node {
-	lenArray := len(array)
+func ConvertArrayNode(array [16]Node, lenArray int) []*pb.Node {
 	newArray := make([]*pb.Node, lenArray, lenArray)
 	for i := 0; i < lenArray; i++ {
 		newArray[i] = array[i].Convert()

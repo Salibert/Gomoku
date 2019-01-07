@@ -12,41 +12,45 @@ const SizeBoard int = 19
 // Board ...
 type Board [SizeBoard][SizeBoard]int
 
-// New ...
-// func New() Board {
-// 	board := make(Board, 19, 19)
-// 	for i := 0; i < 19; i++ {
-// 		board[i] = make([]int, 19, 19)
-// 	}
-// 	return board
-// }
-
 // UpdateBoard board with new stone
 func (board *Board) UpdateBoard(stone inter.Node) {
 	board[stone.X][stone.Y] = stone.Player
 }
 
+func copyListStoneInSlice(listStone *rules.ListStone, len int) []*inter.Node {
+	newList := make([]*inter.Node, len, len)
+	for index := 0; index < len; index++ {
+		newList[index] = &listStone[index]
+	}
+	return newList
+}
+
 // CheckRules check all rules. Modify the report passed in params
-func (board *Board) CheckRules(initialStone inter.Node, report rules.Schema) {
+func (board *Board) CheckRules(initialStone inter.Node, report *rules.Schema) {
+	report.Report = &rules.ReportCheckRules{
+		ListCapturedStone: &rules.ListStone{},
+		NextMovesOrLose:   &rules.ListStone{},
+	}
 	board.proccessRulesByAxes(report.ProccessCheckRules, initialStone)
 	if report.Report.NbFreeThree > 1 {
 		report.Report.ItIsAValidMove = false
 		return
 	}
 	report.Report.ItIsAValidMove = true
-	if lenWinOrLose := len(report.Report.WinOrLose); lenWinOrLose != 0 {
+	if IndexWinOrLose := len(report.Report.WinOrLose); IndexWinOrLose != 0 {
 	loop:
-		for i := 0; i < lenWinOrLose; i++ {
+		for i := 0; i < IndexWinOrLose; i++ {
 			for _, checkedStone := range report.Report.WinOrLose[i] {
 				board.proccessRulesByAxes(report.CheckIfPartyIsFinish, *checkedStone)
 			}
-			if len(report.Report.NextMovesOrLose) == 0 {
+			if report.Report.IndexNextMovesOrLose == 0 {
 				report.Report.PartyFinish = true
-				report.Report.WinOrLose[i] = report.Report.NextMovesOrLose[:0]
+				report.Report.WinOrLose[i] = report.Report.WinOrLose[i][:0]
 				break loop
 			}
-			report.Report.WinOrLose[i] = report.Report.NextMovesOrLose
-			report.Report.NextMovesOrLose = make([]*inter.Node, 0, 10)
+			report.Report.WinOrLose[i] = copyListStoneInSlice(report.Report.NextMovesOrLose, report.Report.IndexNextMovesOrLose)
+			report.Report.NextMovesOrLose = &rules.ListStone{}
+			report.Report.IndexNextMovesOrLose = 0
 		}
 	}
 }
@@ -88,15 +92,15 @@ func (board *Board) proccessRulesByAxes(m func(list *axis.Radius, index, lenRadi
 
 // UpdateBoardAfterCapture ...
 func (board *Board) UpdateBoardAfterCapture(report *rules.Schema) {
-	if len := len(report.Report.ListCapturedStone); len != 0 {
-		func(list []*inter.Node, len int) {
-			var node *inter.Node
+	if report.Report.IndexListCapturedStone != 0 {
+		func(list *rules.ListStone, len int) {
+			var node inter.Node
 			for len > 0 {
 				node = list[len-1]
 				board[node.X][node.Y] = 0
 				len--
 			}
-		}(report.Report.ListCapturedStone, len)
+		}(report.Report.ListCapturedStone, report.Report.IndexListCapturedStone)
 	}
 }
 

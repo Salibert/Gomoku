@@ -49,7 +49,8 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	regis.ListMoves = make([]inter.Node, 0, 361)
 	regis.Pool = &sync.Pool{
 		New: func() interface{} {
-			fmt.Println("IA BRO", slaut)
+			fmt.Println("ICI +> ", slaut)
+			slaut++
 			return regis.Clone()
 		},
 	}
@@ -71,11 +72,13 @@ func (ia *IA) Clone() *IA {
 	return regis
 }
 
-func (ia *IA) UpdateListMove(listCapture []*inter.Node, lastMove inter.Node) {
+func (ia *IA) UpdateListMove(listCapture *rules.ListStone, lenListCapture int, lastMove inter.Node) {
 	if len(listCapture) != 0 {
-		for _, capture := range listCapture {
+		var capture inter.Node
+		for indexCapture := 0; indexCapture < lenListCapture; indexCapture++ {
+			capture = listCapture[indexCapture]
 			for i, list := range ia.ListMoves {
-				if list == *capture {
+				if list == capture {
 					lenListMoves := len(ia.ListMoves)
 					copy((ia.ListMoves)[i:], (ia.ListMoves)[i+1:])
 					(ia.ListMoves)[lenListMoves-1] = inter.Node{}

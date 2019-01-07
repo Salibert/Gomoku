@@ -47,9 +47,9 @@ func (game *Game) UpdateGame(player *player.Player, initialStone *inter.Node) {
 	game.board.UpdateBoardAfterCapture(&player.Rules)
 	if game.IA != nil {
 		game.board.UpdateSearchSpace(&game.IA.SearchZone, *initialStone, 2)
-		game.IA.UpdateListMove(player.Rules.Report.ListCapturedStone, *initialStone)
+		game.IA.UpdateListMove(player.Rules.Report.ListCapturedStone, player.Rules.Report.IndexListCapturedStone, *initialStone)
 	}
-	player.Rules.Report.Reset()
+	player.Rules.Report = nil
 	game.rwmux.Unlock()
 }
 
@@ -65,13 +65,12 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 		res.IsPossible = false
 		return res, nil
 	}
-	game.board.CheckRules(*initialStone, currentPlayer.Rules)
+	game.board.CheckRules(*initialStone, &currentPlayer.Rules)
 	if currentPlayer.Rules.Report.ItIsAValidMove == true {
-		lenListCapture := len(currentPlayer.Rules.Report.ListCapturedStone)
-		if lenListCapture != 0 {
+		if lenListCapture := currentPlayer.Rules.Report.IndexListCapturedStone; lenListCapture != 0 {
 			currentPlayer.Score += lenListCapture
 			res.NbStonedCaptured = int32(lenListCapture)
-			res.Captured = inter.ConvertArrayNode(currentPlayer.Rules.Report.ListCapturedStone)
+			res.Captured = inter.ConvertArrayNode(*currentPlayer.Rules.Report.ListCapturedStone, currentPlayer.Rules.Report.IndexListCapturedStone)
 			if currentPlayer.Score == 10 {
 				res.PartyFinish = true
 				res.IsWin = int32(currentPlayer.Index)
@@ -97,6 +96,8 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 }
 
 func (game *Game) PlayIA(in *inter.Node) *inter.Node {
+	game.rwmux.Lock()
+	defer game.rwmux.Unlock()
 	fmt.Println("LEN => ", len(game.IA.SearchZone))
 	return game.IA.Play(game.board, game.players)
 }

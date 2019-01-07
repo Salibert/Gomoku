@@ -4,29 +4,33 @@ import (
 	"github.com/Salibert/Gomoku/back/server/inter"
 )
 
+type ListStone [16]inter.Node
+type WinListStone [5]inter.Node
+
 // ReportCheckRules create a report of this move
 type ReportCheckRules struct {
-	// UPDATE RESET AND CLONE IF MODIF REPORTCHECKRULES
-	ListCapturedStone []*inter.Node
-	ItIsAValidMove    bool
-	PartyFinish       bool
-	WinOrLose         [][]*inter.Node
-	NextMovesOrLose   []*inter.Node
-	NbFreeThree       int
-	SizeAlignment     int
-	NbBlockStone      int
-	LevelCapture      int
-	AmbientScore      int
+	ListCapturedStone      *ListStone
+	IndexListCapturedStone int
+	ItIsAValidMove         bool
+	PartyFinish            bool
+	NextMovesOrLose        *ListStone
+	WinOrLose              [][]*inter.Node
+	IndexNextMovesOrLose   int
+	NbFreeThree            int
+	SizeAlignment          int
+	NbBlockStone           int
+	LevelCapture           int
+	AmbientScore           int
 }
 
 // Clone create a uniform object, Dont clone slicer but init
 func (report *ReportCheckRules) Clone() *ReportCheckRules {
 	clone := &ReportCheckRules{}
-	clone.ListCapturedStone = report.ListCapturedStone[:0]
+	clone.ListCapturedStone = &ListStone{}
 	clone.ItIsAValidMove = report.ItIsAValidMove
 	clone.PartyFinish = report.PartyFinish
 	clone.WinOrLose = report.WinOrLose[:0]
-	clone.NextMovesOrLose = report.NextMovesOrLose[:0]
+	clone.NextMovesOrLose = &ListStone{}
 	clone.NbFreeThree = report.NbFreeThree
 	clone.SizeAlignment = report.SizeAlignment
 	clone.NbBlockStone = report.NbBlockStone
@@ -37,9 +41,9 @@ func (report *ReportCheckRules) Clone() *ReportCheckRules {
 
 // Reset all report value
 func (report *ReportCheckRules) Reset() {
-	report.ListCapturedStone = report.ListCapturedStone[:0]
+	report.ListCapturedStone = &ListStone{}
 	report.WinOrLose = report.WinOrLose[:0]
-	report.NextMovesOrLose = report.NextMovesOrLose[:0]
+	report.NextMovesOrLose = &ListStone{}
 	report.PartyFinish = false
 	report.ItIsAValidMove = false
 	report.NbFreeThree = 0

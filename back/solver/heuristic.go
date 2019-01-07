@@ -8,21 +8,15 @@ import (
 // HeuristicScore ...
 func (ia *IA) HeuristicScore(board board.Board, list Tlist, index int, move inter.Node) (value int) {
 	report := ia.reportEval[move.Player]
-	defer func() {
-		report.Report.Reset()
-	}()
 	if move.Player == 0 {
 		return 0
 	}
 	var tmp int
 	for i := 0; i < index; i++ {
 		tmp = 0
-		report.Report.Reset()
 		node := list[i]
-		board.CheckRules(node, report)
-		if capture := len(report.Report.ListCapturedStone); capture != 0 {
-			tmp += capture * 50
-		}
+		board.CheckRules(node, &report)
+		tmp += report.Report.IndexListCapturedStone * 50
 		tmp += report.Report.NbFreeThree * 5
 		tmp += report.Report.SizeAlignment * 7
 		tmp += report.Report.NbBlockStone * 7
@@ -46,20 +40,21 @@ func (ia *IA) isWin(board board.Board, depth int, move inter.Node) int {
 	if move.Player == 0 {
 		return 0
 	}
-	defer func() {
-		report.Report.Reset()
-	}()
-	board.CheckRules(move, report)
+	board.CheckRules(move, &report)
 	if report.Report.PartyFinish == true {
-		if len(report.Report.WinOrLose[0]) == 0 {
-			switch move.Player {
-			case ia.playerIndex:
-				return 10000 + depth
-			default:
-				return -10000 - depth
+		var value int
+		for _, el := range report.Report.WinOrLose {
+			if len(el) == 0 {
+				switch move.Player {
+				case ia.playerIndex:
+					value += 10000 + depth
+				default:
+					value += -10000 - depth
+				}
 			}
 		}
-	} else if ia.playersScore[move.Player-1] == 8 && len(report.Report.ListCapturedStone) != 0 {
+		return value
+	} else if ia.playersScore[move.Player-1] == 8 && report.Report.IndexListCapturedStone != 0 {
 		switch move.Player {
 		case ia.playerIndex:
 			return 10000 + depth
