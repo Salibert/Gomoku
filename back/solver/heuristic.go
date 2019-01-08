@@ -56,7 +56,7 @@ func (ia *IA) isWin(board board.Board, depth int, move inter.Node) int {
 			for _, win := range report.Report.WinOrLose {
 				if len(win) == 0 {
 					switch move.Player {
-					case ia.playerIndex:
+					case ia.PlayerIndex:
 						value += 10000 + depth
 					default:
 						value += -10000 - depth

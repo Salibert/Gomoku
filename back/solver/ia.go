@@ -15,12 +15,8 @@ type IA struct {
 	reportWin          map[int]rules.Schema
 	reportEval         map[int]rules.Schema
 	playersScore       [2]int
-<<<<<<< HEAD
 	PlayerIndex, Depth int
-=======
-	playerIndex, depth int
 	Pool               *sync.Pool
->>>>>>> 47ce502bc9564bcd6a222b91949dc14dea0583d7
 }
 
 var slaut int
@@ -64,8 +60,8 @@ func (ia *IA) Clone() *IA {
 		reportWin:  make(map[int]rules.Schema),
 		reportEval: make(map[int]rules.Schema),
 	}
-	regis.depth = ia.depth
-	regis.playerIndex = ia.playerIndex
+	regis.Depth = ia.Depth
+	regis.PlayerIndex = ia.PlayerIndex
 	regis.reportWin[1] = *ia.reportWin[1].Clone()
 	regis.reportWin[2] = *ia.reportWin[2].Clone()
 	regis.reportEval[1] = *ia.reportEval[1].Clone()

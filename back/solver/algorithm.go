@@ -62,13 +62,13 @@ func (ia *IA) Play(board *board.Board, players player.Players) *inter.Node {
 func (ia *IA) Boost(board board.Board, list, searchList Tlist, indexListMoves, indexSearchList int) (current int, best inter.Node) {
 	current = math.MinInt64
 	alpha, beta := -100000, 1000000
-	move := inter.Node{Player: player.GetOpposentPlayer(ia.playerIndex)}
+	move := inter.Node{Player: player.GetOpposentPlayer(ia.PlayerIndex)}
 	for i := 0; i < indexSearchList; i++ {
 		move = searchList[i]
 		if board[move.X][move.Y] == 0 {
 
-			board[move.X][move.Y] = ia.playerIndex
-			move.Player = ia.playerIndex
+			board[move.X][move.Y] = ia.PlayerIndex
+			move.Player = ia.PlayerIndex
 			list[indexListMoves] = move
 			score, _ := ia.Min(board, list, searchList, move, 3-1, alpha, beta, indexListMoves+1, indexSearchList)
 			board[move.X][move.Y] = 0
@@ -85,15 +85,15 @@ func (ia *IA) Boost(board board.Board, list, searchList Tlist, indexListMoves, i
 			}
 		}
 	}
-	if ia.depth != 3 {
+	if ia.Depth != 3 {
 		for i := 0; i < indexSearchList; i++ {
 			move = searchList[i]
 			if board[move.X][move.Y] == 0 {
 
-				board[move.X][move.Y] = ia.playerIndex
-				move.Player = ia.playerIndex
+				board[move.X][move.Y] = ia.PlayerIndex
+				move.Player = ia.PlayerIndex
 				list[indexListMoves] = move
-				score, _ := ia.Min(board, list, searchList, move, ia.depth-1, alpha, beta, indexListMoves+1, indexSearchList)
+				score, _ := ia.Min(board, list, searchList, move, ia.Depth-1, alpha, beta, indexListMoves+1, indexSearchList)
 				board[move.X][move.Y] = 0
 				if score > current {
 					current = score
@@ -117,12 +117,12 @@ func (ia *IA) Boost(board board.Board, list, searchList Tlist, indexListMoves, i
 					i++
 					continue
 				}
-				board[move.X][move.Y] = ia.playerIndex
-				move.Player = ia.playerIndex
+				board[move.X][move.Y] = ia.PlayerIndex
+				move.Player = ia.PlayerIndex
 				list[indexListMoves] = move
 				newIA := ia.Pool.Get().(*IA)
 				go func(score int) {
-					score, _ = newIA.Min(board, list, searchList, move, ia.depth-1, alpha, beta, indexListMoves+1, indexSearchList)
+					score, _ = newIA.Min(board, list, searchList, move, ia.Depth-1, alpha, beta, indexListMoves+1, indexSearchList)
 					chanScores <- score
 					ia.Pool.Put(newIA)
 				}(0)
