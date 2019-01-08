@@ -12,15 +12,6 @@ const SizeBoard int = 19
 // Board ...
 type Board [SizeBoard][SizeBoard]int
 
-// New ...
-// func New() Board {
-// 	board := make(Board, 19, 19)
-// 	for i := 0; i < 19; i++ {
-// 		board[i] = make([]int, 19, 19)
-// 	}
-// 	return board
-// }
-
 // UpdateBoard board with new stone
 func (board *Board) UpdateBoard(stone inter.Node) {
 	board[stone.X][stone.Y] = stone.Player
@@ -37,12 +28,12 @@ func (board *Board) CheckRules(initialStone inter.Node, report rules.Schema) {
 	if lenWinOrLose := len(report.Report.WinOrLose); lenWinOrLose != 0 {
 	loop:
 		for i := 0; i < lenWinOrLose; i++ {
+
 			for _, checkedStone := range report.Report.WinOrLose[i] {
 				board.proccessRulesByAxes(report.CheckIfPartyIsFinish, *checkedStone)
 			}
 			if len(report.Report.NextMovesOrLose) == 0 {
 				report.Report.PartyFinish = true
-				report.Report.WinOrLose[i] = report.Report.NextMovesOrLose[:0]
 				break loop
 			}
 			report.Report.WinOrLose[i] = report.Report.NextMovesOrLose

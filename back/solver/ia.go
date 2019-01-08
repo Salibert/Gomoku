@@ -1,7 +1,6 @@
 package solver
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/Salibert/Gomoku/back/rules"
@@ -49,7 +48,6 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	regis.ListMoves = make([]inter.Node, 0, 361)
 	regis.Pool = &sync.Pool{
 		New: func() interface{} {
-			fmt.Println("IA BRO", slaut)
 			return regis.Clone()
 		},
 	}
@@ -68,6 +66,7 @@ func (ia *IA) Clone() *IA {
 	regis.reportWin[2] = *ia.reportWin[2].Clone()
 	regis.reportEval[1] = *ia.reportEval[1].Clone()
 	regis.reportEval[2] = *ia.reportEval[2].Clone()
+	regis.Pool = ia.Pool
 	return regis
 }
 

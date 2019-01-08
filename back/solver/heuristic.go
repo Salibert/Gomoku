@@ -51,13 +51,19 @@ func (ia *IA) isWin(board board.Board, depth int, move inter.Node) int {
 	}()
 	board.CheckRules(move, report)
 	if report.Report.PartyFinish == true {
-		if len(report.Report.WinOrLose[0]) == 0 {
-			switch move.Player {
-			case ia.playerIndex:
-				return 10000 + depth
-			default:
-				return -10000 - depth
+		if len(report.Report.WinOrLose) != 0 {
+			value := 0
+			for _, win := range report.Report.WinOrLose {
+				if len(win) == 0 {
+					switch move.Player {
+					case ia.playerIndex:
+						value += 10000 + depth
+					default:
+						value += -10000 - depth
+					}
+				}
 			}
+			return value
 		}
 	} else if ia.playersScore[move.Player-1] == 8 && len(report.Report.ListCapturedStone) != 0 {
 		switch move.Player {
