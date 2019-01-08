@@ -24,6 +24,7 @@ message ConfigRules {
 service Game {
     rpc CDGame(CDGameRequest) returns (CDGameResponse) {} /* simple RPC */
     rpc Played(StonePlayed) returns (StonePlayed) {} /* simple RPC */
+    rpc PlayedHelp(StonePlayed) returns (StonePlayed) {} /* simple RPC */
     rpc CheckRules(StonePlayed) returns (CheckRulesResponse) {}
 }
 

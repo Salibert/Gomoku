@@ -53,9 +53,9 @@ func (ia *IA) Play(board *board.Board, players player.Players) *inter.Node {
 		r := rand.New(rand.NewSource(time.Now().UnixNano()))
 		best.X = r.Intn(13) + 3
 		best.Y = r.Intn(13) + 3
-		best.Player = ia.playerIndex
+		best.Player = ia.PlayerIndex
 	}
-	best.Player = ia.playerIndex
+	best.Player = ia.PlayerIndex
 	return &best
 }
 
@@ -164,8 +164,9 @@ func (ia *IA) Max(board board.Board, list, searchList Tlist, move inter.Node, de
 	for i := 0; i < indexSearchList; i++ {
 		move = searchList[i]
 		if board[move.X][move.Y] == 0 {
-			board[move.X][move.Y] = ia.playerIndex
-			move.Player = ia.playerIndex
+
+			board[move.X][move.Y] = ia.PlayerIndex
+			move.Player = ia.PlayerIndex
 			list[indexListMoves] = move
 			score, _ := ia.Min(board, list, searchList, move, depth-1, alpha, beta, indexListMoves+1, indexSearchList)
 			board[move.X][move.Y] = 0
@@ -192,7 +193,7 @@ func (ia *IA) Min(board board.Board, list, searchList Tlist, move inter.Node, de
 		return ia.HeuristicScore(board, list, indexListMoves, move), move
 	}
 	current = math.MaxInt64
-	playerIndex := player.GetOpposentPlayer(ia.playerIndex)
+	playerIndex := player.GetOpposentPlayer(ia.PlayerIndex)
 	for i := 0; i < indexSearchList; i++ {
 		move = searchList[i]
 		if board[move.X][move.Y] == 0 {

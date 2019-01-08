@@ -119,6 +119,22 @@ public class gameMaster : MonoBehaviour
             throw;
         }
     }
+    async public void GetPlayedHelp(GomokuBuffer.Node node) {
+        DateTime start = DateTime.Now;
+        try {
+            GomokuBuffer.StonePlayed reply = await Client.PlayedHelpAsync(
+                new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
+            TimeSpan end = DateTime.Now.Subtract(start);
+            time.text = end.ToString();
+            await GetCheckRules(reply.CurrentPlayerMove, reply.CurrentPlayerMove.Player);
+            Transform stone = goban.GetStone(reply.CurrentPlayerMove);
+            stone.transform.GetComponent<stone>().SetStone();
+            goban.board.Add(stone.transform.GetComponent<stone>());
+        } catch (Exception e) {
+            Debug.Log("RPC failed" + e);
+            throw;
+        }
+    }
     public int GetPlayerIndexIA(){
         return this.PlayerIndexIA;
     }
