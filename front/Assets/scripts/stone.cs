@@ -67,18 +67,18 @@ public class stone : MonoBehaviour
         meshRend.enabled = true;
     }
     void OnMouseDown() {
-        if (!isCreate && !goban.GM.GetGameIsFinish()) {
+        if (!isCreate && !pauseMenu.GameIsPaused) {
             modePlayed();
         }
     }
     void OnMouseEnter() {
-        if (!isCreate && !goban.GM.GetGameIsFinish()) {
+        if (!isCreate && !pauseMenu.GameIsPaused) {
             renderStone();
         }
     }
 
     void OnMouseExit() {
-        if (!isCreate && !goban.GM.GetGameIsFinish()) {
+        if (!isCreate && !pauseMenu.GameIsPaused) {
             meshRend.enabled = false;
         }
     }

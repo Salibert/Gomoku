@@ -57,6 +57,7 @@ public class gameMaster : MonoBehaviour
 
     }
 	IEnumerator PartyFinish(int player, Vector3 lastMove) {
+        pauseMenu.GameIsPaused = true;
         StartCoroutine(movingSpot(lastMove));
         yield return new WaitForSeconds(5);
         winner.text = "Player " + player.ToString();

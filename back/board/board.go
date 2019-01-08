@@ -28,7 +28,6 @@ func (board *Board) CheckRules(initialStone inter.Node, report rules.Schema) {
 	if lenWinOrLose := len(report.Report.WinOrLose); lenWinOrLose != 0 {
 	loop:
 		for i := 0; i < lenWinOrLose; i++ {
-
 			for _, checkedStone := range report.Report.WinOrLose[i] {
 				board.proccessRulesByAxes(report.CheckIfPartyIsFinish, *checkedStone)
 			}
