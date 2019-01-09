@@ -29,9 +29,9 @@ public class gameMaster : MonoBehaviour
 
     public managerLights manager;
 
-    void Awake() {
-        // "127.0.0.1:50051"
-        channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
+    void Awake() {        
+        string url = mainMenu.urlTcp == "" ? "127.0.0.1:50051" : mainMenu.urlTcp;
+        channel = new Channel(url, ChannelCredentials.Insecure);
         Client = new Game.GameClient(channel);
         GameID = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         CurrentPlayer = Player1.GetComponent<player>();
@@ -39,6 +39,11 @@ public class gameMaster : MonoBehaviour
         player1 = CurrentPlayer;
         player2 = Player2.GetComponent<player>();
         PlayerIndexIA = mainMenu.config.PlayerIndexIA;
+        if (PlayerIndexIA == 1) {
+            manager.SwitchHouseToGround();
+        } else {
+            goban.GM.manager.SwitchGroundToHouse();
+        }
     }
 
     IEnumerator playerFirstIA()
@@ -66,12 +71,8 @@ public class gameMaster : MonoBehaviour
 	}
     public void NextPlayer() {
         if (CurrentPlayer.GetIndex() == player1.GetIndex()) {
-            manager.DownListHouseLights();
-            manager.StartListGroundLights();
             CurrentPlayer = player2;
         } else {
-            manager.DownListGroundLights();
-            manager.StartListHouseLights();
             CurrentPlayer = player1;
         }
     }
@@ -108,7 +109,7 @@ public class gameMaster : MonoBehaviour
         }
     }
 
-    async public void GetPlayed(GomokuBuffer.Node node) {
+    async public Task<bool> GetPlayed(GomokuBuffer.Node node) {
         DateTime start = DateTime.Now;
         try {
             GomokuBuffer.StonePlayed reply = await Client.PlayedAsync(
@@ -119,22 +120,24 @@ public class gameMaster : MonoBehaviour
             Transform stone = goban.GetStone(reply.CurrentPlayerMove);
             stone.transform.GetComponent<stone>().SetStone();
             goban.board.Add(stone.transform.GetComponent<stone>());
+            return true;
         } catch (Exception e) {
             Debug.Log("RPC failed" + e);
             throw;
         }
     }
-    async public void GetPlayedHelp(GomokuBuffer.Node node) {
-        DateTime start = DateTime.Now;
+    async public Task<bool> GetPlayedHelp(GomokuBuffer.Node node) {
         try {
             GomokuBuffer.StonePlayed reply = await Client.PlayedHelpAsync(
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
-            TimeSpan end = DateTime.Now.Subtract(start);
-            time.text = end.ToString();
             await GetCheckRules(reply.CurrentPlayerMove, reply.CurrentPlayerMove.Player);
             Transform stone = goban.GetStone(reply.CurrentPlayerMove);
             stone.transform.GetComponent<stone>().SetStone();
             goban.board.Add(stone.transform.GetComponent<stone>());
+            manager.SwitchGroundToHouse();
+            GetPlayed(new GomokuBuffer.Node(){ Player=CurrentPlayer.index });
+            manager.SwitchHouseToGround();
+            return true;
         } catch (Exception e) {
             Debug.Log("RPC failed" + e);
             throw;

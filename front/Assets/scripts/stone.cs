@@ -37,6 +37,11 @@ public class stone : MonoBehaviour
     async void playedMode1vs1() {
         if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
             SetStone();
+            if (goban.GM.GetPlayerTurn() == 1) {
+                goban.GM.manager.SwitchHouseToGround();
+            } else {
+                goban.GM.manager.SwitchGroundToHouse();
+            }
             goban.board.Add(transform.GetComponent<stone>());
         } else {
             Debug.Log("IMPOSSIBLE");
@@ -48,7 +53,9 @@ public class stone : MonoBehaviour
                 SetStone();
                 goban.board.Add(transform.GetComponent<stone>());
                 if (!goban.GM.GetGameIsFinish()) {
-                    goban.GM.GetPlayed(node);
+                    goban.GM.manager.SwitchGroundToHouse();
+                    await goban.GM.GetPlayed(node);
+                    goban.GM.manager.SwitchHouseToGround();
                 }
             } else {
                 Debug.Log("IMPOSSIBLE");

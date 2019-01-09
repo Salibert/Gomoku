@@ -131,13 +131,13 @@ namespace GomokuBuffer {
       {
         return CallInvoker.AsyncUnaryCall(__Method_Played, null, options, request);
       }
-            public virtual global::GomokuBuffer.StonePlayed PlayedHelp(global::GomokuBuffer.StonePlayed request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::GomokuBuffer.StonePlayed PlayedHelp(global::GomokuBuffer.StonePlayed request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return PlayedHelp(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       public virtual global::GomokuBuffer.StonePlayed PlayedHelp(global::GomokuBuffer.StonePlayed request, grpc::CallOptions options)
       {
-        return CallInvoker.BlockingUnaryCall(__Method_Played, null, options, request);
+        return CallInvoker.BlockingUnaryCall(__Method_PlayedHelp, null, options, request);
       }
       public virtual grpc::AsyncUnaryCall<global::GomokuBuffer.StonePlayed> PlayedHelpAsync(global::GomokuBuffer.StonePlayed request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
@@ -145,7 +145,7 @@ namespace GomokuBuffer {
       }
       public virtual grpc::AsyncUnaryCall<global::GomokuBuffer.StonePlayed> PlayedHelpAsync(global::GomokuBuffer.StonePlayed request, grpc::CallOptions options)
       {
-        return CallInvoker.AsyncUnaryCall(__Method_Played, null, options, request);
+        return CallInvoker.AsyncUnaryCall(__Method_PlayedHelp, null, options, request);
       }
       public virtual global::GomokuBuffer.CheckRulesResponse CheckRules(global::GomokuBuffer.StonePlayed request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {

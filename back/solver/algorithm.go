@@ -85,72 +85,72 @@ func (ia *IA) Boost(board board.Board, list, searchList Tlist, indexListMoves, i
 			}
 		}
 	}
-	if ia.Depth != 3 {
-		for i := 0; i < indexSearchList; i++ {
-			move = searchList[i]
-			if board[move.X][move.Y] == 0 {
+	// if ia.Depth != 3 {
+	// 	for i := 0; i < indexSearchList; i++ {
+	// 		move = searchList[i]
+	// 		if board[move.X][move.Y] == 0 {
 
-				board[move.X][move.Y] = ia.PlayerIndex
-				move.Player = ia.PlayerIndex
-				list[indexListMoves] = move
-				score, _ := ia.Min(board, list, searchList, move, ia.Depth-1, alpha, beta, indexListMoves+1, indexSearchList)
-				board[move.X][move.Y] = 0
-				if score > current {
-					current = score
-					best = move
-				}
-				if score > alpha {
-					alpha = score
-					best = move
-				}
-				if alpha >= beta {
-					break
-				}
-				break
-			}
-		}
-		chanScores := make(chan int, indexSearchList)
-		for i := 1; i < indexSearchList; i++ {
-			if i < indexSearchList {
-				move = searchList[i]
-				if board[move.X][move.Y] != 0 {
-					i++
-					continue
-				}
-				board[move.X][move.Y] = ia.PlayerIndex
-				move.Player = ia.PlayerIndex
-				list[indexListMoves] = move
-				newIA := ia.Pool.Get().(*IA)
-				go func(score int) {
-					score, _ = newIA.Min(board, list, searchList, move, ia.Depth-1, alpha, beta, indexListMoves+1, indexSearchList)
-					chanScores <- score
-					ia.Pool.Put(newIA)
-				}(0)
-				board[move.X][move.Y] = 0
-			}
-		}
-	loop:
-		for true {
-			select {
-			case score := <-chanScores:
-				if score > current {
-					current = score
-					best = move
-				}
-				if score > alpha {
-					alpha = score
-					best = move
-				}
-				if alpha >= beta {
-					break loop
-				}
-				if len(chanScores) == 0 {
-					break loop
-				}
-			default:
-			}
-		}
-	}
+	// 			board[move.X][move.Y] = ia.PlayerIndex
+	// 			move.Player = ia.PlayerIndex
+	// 			list[indexListMoves] = move
+	// 			score, _ := ia.Min(board, list, searchList, move, ia.Depth-1, alpha, beta, indexListMoves+1, indexSearchList)
+	// 			board[move.X][move.Y] = 0
+	// 			if score > current {
+	// 				current = score
+	// 				best = move
+	// 			}
+	// 			if score > alpha {
+	// 				alpha = score
+	// 				best = move
+	// 			}
+	// 			if alpha >= beta {
+	// 				break
+	// 			}
+	// 			break
+	// 		}
+	// 	}
+	// 	chanScores := make(chan int, indexSearchList)
+	// 	for i := 1; i < indexSearchList; i++ {
+	// 		if i < indexSearchList {
+	// 			move = searchList[i]
+	// 			if board[move.X][move.Y] != 0 {
+	// 				i++
+	// 				continue
+	// 			}
+	// 			board[move.X][move.Y] = ia.PlayerIndex
+	// 			move.Player = ia.PlayerIndex
+	// 			list[indexListMoves] = move
+	// 			newIA := ia.Pool.Get().(*IA)
+	// 			go func(score int) {
+	// 				score, _ = newIA.Min(board, list, searchList, move, ia.Depth-1, alpha, beta, indexListMoves+1, indexSearchList)
+	// 				chanScores <- score
+	// 				ia.Pool.Put(newIA)
+	// 			}(0)
+	// 			board[move.X][move.Y] = 0
+	// 		}
+	// 	}
+	// loop:
+	// 	for true {
+	// 		select {
+	// 		case score := <-chanScores:
+	// 			if score > current {
+	// 				current = score
+	// 				best = move
+	// 			}
+	// 			if score > alpha {
+	// 				alpha = score
+	// 				best = move
+	// 			}
+	// 			if alpha >= beta {
+	// 				break loop
+	// 			}
+	// 			if len(chanScores) == 0 {
+	// 				break loop
+	// 			}
+	// 		default:
+	// 		}
+	// 	}
+	// }
 	return
 }
 

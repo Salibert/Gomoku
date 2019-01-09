@@ -40,4 +40,14 @@ public class managerLights : MonoBehaviour {
 	public void DownListGroundLights() {
 		StartCoroutine(GradualnessDownLight(listGroundLights, IntensityGround, IntensityGround));
 	}
+
+	public void SwitchGroundToHouse() {
+		StartCoroutine(GradualnessDownLight(listGroundLights, IntensityGround, IntensityGround));
+		StartCoroutine(GradualnessStartLight(listHouseLights, IntensityHouse, IntensityHouse));
+	}
+	public void SwitchHouseToGround() {
+		StartCoroutine(GradualnessDownLight(listHouseLights, IntensityHouse, IntensityHouse));
+		StartCoroutine(GradualnessStartLight(listGroundLights, IntensityGround, IntensityGround));
+	}
+
 }

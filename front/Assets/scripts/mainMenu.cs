@@ -10,6 +10,8 @@ public class mainMenu : MonoBehaviour {
 
 	static public int modeGame;
 	static public GomokuBuffer.ConfigRules config;
+	public InputField inputFieldUrl;
+	static public string urlTcp;
 	public Toggle m_captureToggle;
 	public Toggle m_freeThreeToggle;
 	public Toggle m_firstPlayerToggle;
@@ -25,13 +27,14 @@ public class mainMenu : MonoBehaviour {
 				IsActiveRuleFreeThree = true,
 				IsActiveRuleWin = true,
 			};
+			urlTcp = "";
 		}
-		nameDifficulty = new String[]{ "easy","medium","hard","very hard","master"};
+		nameDifficulty = new String[]{ "easy","medium","hard"};
 		difficulty = new Dictionary<string, int>();
 		int lvl = 1;
 		for (int key=0; key < nameDifficulty.Length; key++) {
-			lvl += 2;
 			difficulty.Add(nameDifficulty[key], lvl);
+			lvl += 2;
 		};
 		m_captureToggle.isOn = config.IsActiveRuleCapture;
 		m_captureToggle.onValueChanged.AddListener(delegate { CaptureValueChanged(m_captureToggle); });
@@ -41,6 +44,12 @@ public class mainMenu : MonoBehaviour {
 		textDifficulty = Difficulty.GetComponent<TextMeshProUGUI>();
 	}
 
+	public void ValidateUrlTcp() {
+		urlTcp = inputFieldUrl.text;
+	}
+	public void ResetUrlTcp() {
+		urlTcp = "";
+	}
 	public void PlayGame1VS1() {
 		modeGame = 2;
 		config.PlayerIndexIA = 0;
