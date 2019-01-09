@@ -10,24 +10,15 @@ import (
 const SizeBoard int = 19
 
 // Board ...
-type Board [][]int
-
-// New ...
-func New() Board {
-	board := make(Board, 19, 19)
-	for i := 0; i < 19; i++ {
-		board[i] = make([]int, 19, 19)
-	}
-	return board
-}
+type Board [SizeBoard][SizeBoard]int
 
 // UpdateBoard board with new stone
-func (board Board) UpdateBoard(stone inter.Node) {
+func (board *Board) UpdateBoard(stone inter.Node) {
 	board[stone.X][stone.Y] = stone.Player
 }
 
 // CheckRules check all rules. Modify the report passed in params
-func (board Board) CheckRules(initialStone inter.Node, report rules.Schema) {
+func (board *Board) CheckRules(initialStone inter.Node, report rules.Schema) {
 	board.proccessRulesByAxes(report.ProccessCheckRules, initialStone)
 	if report.Report.NbFreeThree > 1 {
 		report.Report.ItIsAValidMove = false
@@ -42,7 +33,6 @@ func (board Board) CheckRules(initialStone inter.Node, report rules.Schema) {
 			}
 			if len(report.Report.NextMovesOrLose) == 0 {
 				report.Report.PartyFinish = true
-				report.Report.WinOrLose[i] = report.Report.NextMovesOrLose[:0]
 				break loop
 			}
 			report.Report.WinOrLose[i] = report.Report.NextMovesOrLose
@@ -51,41 +41,43 @@ func (board Board) CheckRules(initialStone inter.Node, report rules.Schema) {
 	}
 }
 
-func (board Board) createListCheckStone(index int, initialStone inter.Node) ([]*inter.Node, int) {
-	listCheckStone := make([]*inter.Node, 0, 11)
-	var indexStone int
+func (board *Board) sendRadius(m func(list *axis.Radius, index, lenRadius int), index int, initialStone inter.Node) {
+	listCheckStone := &axis.Radius{}
+	var indexStone, indexRadius int
 	axisCheck := axis.DialRightAxes[index]
 	Y, X := initialStone.Y+(axisCheck.Y*5), initialStone.X+(axisCheck.X*5)
 	for i := 5; i > 0; i-- {
 		if Y >= 0 && X >= 0 && Y < SizeBoard && X < SizeBoard {
-
-			listCheckStone = append(listCheckStone, &inter.Node{X: X, Y: Y, Player: board[X][Y]})
+			listCheckStone[indexRadius] = inter.Node{X: X, Y: Y, Player: board[X][Y]}
+			indexRadius++
 		}
 		Y -= axisCheck.Y
 		X -= axisCheck.X
 	}
-	indexStone = len(listCheckStone)
-	listCheckStone = append(listCheckStone, &initialStone)
+	indexStone = indexRadius
+	indexRadius++
+	listCheckStone[indexStone] = initialStone
 	axisCheck = axisCheck.Inverse()
 	Y, X = initialStone.Y+axisCheck.Y, initialStone.X+axisCheck.X
 	for i := 0; i < 5; i++ {
 		if Y >= 0 && X >= 0 && Y < SizeBoard && X < SizeBoard {
-			listCheckStone = append(listCheckStone, &inter.Node{X: X, Y: Y, Player: board[X][Y]})
+			listCheckStone[indexRadius] = inter.Node{X: X, Y: Y, Player: board[X][Y]}
+			indexRadius++
 		}
 		Y += axisCheck.Y
 		X += axisCheck.X
 	}
-	return listCheckStone, indexStone
+	m(listCheckStone, indexStone, indexRadius)
 }
 
-func (board Board) proccessRulesByAxes(m func(list []*inter.Node, index int), initialStone inter.Node) {
+func (board *Board) proccessRulesByAxes(m func(list *axis.Radius, index, lenRadius int), initialStone inter.Node) {
 	for index := 0; index < 4; index++ {
-		m(board.createListCheckStone(index, initialStone))
+		board.sendRadius(m, index, initialStone)
 	}
 }
 
 // UpdateBoardAfterCapture ...
-func (board Board) UpdateBoardAfterCapture(report *rules.Schema) {
+func (board *Board) UpdateBoardAfterCapture(report *rules.Schema) {
 	if len := len(report.Report.ListCapturedStone); len != 0 {
 		func(list []*inter.Node, len int) {
 			var node *inter.Node
@@ -125,7 +117,7 @@ func searchIfZoneExist(searchZone []inter.Node, x, y int) bool {
 	return false
 }
 
-func (board Board) UpdateSearchSpace(searchZone *[]inter.Node, lastMove inter.Node, size int) {
+func (board *Board) UpdateSearchSpace(searchZone *[]inter.Node, lastMove inter.Node, size int) {
 	lenSearchZone := len(*searchZone)
 	for i := 0; i < lenSearchZone; i++ {
 		if (*searchZone)[i].Y == lastMove.Y && (*searchZone)[i].Y == lastMove.Y {

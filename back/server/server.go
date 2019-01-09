@@ -46,7 +46,19 @@ func (s *Server) CDGame(ctx context.Context, in *pb.CDGameRequest) (res *pb.CDGa
 // Played ...
 func (s *Server) Played(ctx context.Context, in *pb.StonePlayed) (res *pb.StonePlayed, err error) {
 	fmt.Println("END +> ", res)
-	res, err = manegeGame.CurrentGames.PlayedIA(in)
+	res, err = manegeGame.CurrentGames.PlayedIA(in, false)
+	select {
+	case <-ctx.Done():
+		return nil, nil
+	default:
+		return res, err
+	}
+}
+
+// Played ...
+func (s *Server) PlayedHelp(ctx context.Context, in *pb.StonePlayed) (res *pb.StonePlayed, err error) {
+	fmt.Println("END +> ", res)
+	res, err = manegeGame.CurrentGames.PlayedIA(in, true)
 	select {
 	case <-ctx.Done():
 		return nil, nil

@@ -3,28 +3,10 @@ package solver
 import (
 	"sync"
 
-	"github.com/Salibert/Gomoku/back/board"
-
-	"github.com/Salibert/Gomoku/back/player"
 	"github.com/Salibert/Gomoku/back/rules"
 	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
-
-var Pool *sync.Pool
-var salut int
-
-func init() {
-	Pool = &sync.Pool{
-		New: func() interface{} {
-			board := make(board.Board, 19, 19)
-			for index := 0; index < 19; index++ {
-				board[index] = make([]int, 19, 19)
-			}
-			return board
-		},
-	}
-}
 
 // IA ...
 type IA struct {
@@ -32,9 +14,12 @@ type IA struct {
 	ListMoves          []inter.Node
 	reportWin          map[int]rules.Schema
 	reportEval         map[int]rules.Schema
-	players            player.Players
-	playerIndex, depth int
+	playersScore       [2]int
+	PlayerIndex, Depth int
+	Pool               *sync.Pool
 }
+
+var slaut int
 
 // New ...
 func New(config pb.ConfigRules, playerIndex int) *IA {
@@ -42,7 +27,7 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 		reportWin:  make(map[int]rules.Schema),
 		reportEval: make(map[int]rules.Schema),
 	}
-	regis.playerIndex = playerIndex
+	regis.PlayerIndex = playerIndex
 	config.IsActiveRuleAlignment = true
 	config.IsActiveRuleBlock = true
 	if config.IsActiveRuleCapture == true {
@@ -53,15 +38,35 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 		IsActiveRuleWin:     config.IsActiveRuleWin,
 		IsActiveRuleCapture: config.IsActiveRuleCapture,
 	}
-	regis.depth = int(config.DepthIA)
-	regis.playerIndex = int(config.PlayerIndexIA)
+	regis.Depth = int(config.DepthIA)
+	regis.PlayerIndex = int(config.PlayerIndexIA)
 	regis.reportWin[1] = rules.New(1, 2, configWin)
 	regis.reportWin[2] = rules.New(2, 1, configWin)
 	regis.reportEval[1] = rules.New(1, 2, config)
 	regis.reportEval[2] = rules.New(2, 1, config)
 	regis.SearchZone = make([]inter.Node, 0, 361)
 	regis.ListMoves = make([]inter.Node, 0, 361)
+	regis.Pool = &sync.Pool{
+		New: func() interface{} {
+			return regis.Clone()
+		},
+	}
+	return regis
+}
 
+// Clone ...
+func (ia *IA) Clone() *IA {
+	regis := &IA{
+		reportWin:  make(map[int]rules.Schema),
+		reportEval: make(map[int]rules.Schema),
+	}
+	regis.Depth = ia.Depth
+	regis.PlayerIndex = ia.PlayerIndex
+	regis.reportWin[1] = *ia.reportWin[1].Clone()
+	regis.reportWin[2] = *ia.reportWin[2].Clone()
+	regis.reportEval[1] = *ia.reportEval[1].Clone()
+	regis.reportEval[2] = *ia.reportEval[2].Clone()
+	regis.Pool = ia.Pool
 	return regis
 }
 

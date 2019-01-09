@@ -1,12 +1,13 @@
 package rules
 
 import (
+	"github.com/Salibert/Gomoku/back/axis"
 	"github.com/Salibert/Gomoku/back/server/inter"
 	pb "github.com/Salibert/Gomoku/back/server/pb"
 )
 
 // FuncCheckRules ...
-type FuncCheckRules func(schema Schema, list []*inter.Node, index int) bool
+type FuncCheckRules func(schema Schema, list *axis.Radius, index, lenRadius int) bool
 
 // Schema ...
 type Schema struct {
@@ -91,10 +92,9 @@ func (schema Schema) Clone() *Schema {
 	return clone
 }
 
-func compareNodesSchema(list []*inter.Node, schema []int, index int, direction int) bool {
-	len := len(list)
+func compareNodesSchema(list *axis.Radius, schema []int, index, lenRadius, direction int) bool {
 	for _, player := range schema {
-		if 0 <= index && index < len && player == list[index].Player {
+		if 0 <= index && index < lenRadius && player == list[index].Player {
 			index += direction
 		} else {
 			return false
@@ -103,10 +103,10 @@ func compareNodesSchema(list []*inter.Node, schema []int, index int, direction i
 	return true
 }
 
-func checkFreeThreeNoSpace(schema Schema, list []*inter.Node, index int) bool {
+func checkFreeThreeNoSpace(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 	var isSuccess bool
 	for i := 3; i > 0; i-- {
-		if isSuccess = compareNodesSchema(list, schema.Schema[FreeThreeNoSpace], index-i, 1); isSuccess == true {
+		if isSuccess = compareNodesSchema(list, schema.Schema[FreeThreeNoSpace], index-i, lenRadius, 1); isSuccess == true {
 			schema.Report.NbFreeThree++
 			return true
 		}
@@ -114,12 +114,12 @@ func checkFreeThreeNoSpace(schema Schema, list []*inter.Node, index int) bool {
 	return false
 }
 
-func checkFreeThreeSpace(schema Schema, list []*inter.Node, index int) bool {
+func checkFreeThreeSpace(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 	var isFreeThree1, isFreeThree2 bool
-	if isFreeThree1 = compareNodesSchema(list, schema.Schema[FreeThreeSpace], index-1, 1); isFreeThree1 == true {
+	if isFreeThree1 = compareNodesSchema(list, schema.Schema[FreeThreeSpace], index-1, lenRadius, 1); isFreeThree1 == true {
 		schema.Report.NbFreeThree++
 	}
-	if isFreeThree2 = compareNodesSchema(list, schema.Schema[FreeThreeSpace], index+1, -1); isFreeThree2 == true {
+	if isFreeThree2 = compareNodesSchema(list, schema.Schema[FreeThreeSpace], index+1, lenRadius, -1); isFreeThree2 == true {
 		schema.Report.NbFreeThree++
 	}
 	if isFreeThree1 == true || isFreeThree2 == true {
@@ -128,48 +128,55 @@ func checkFreeThreeSpace(schema Schema, list []*inter.Node, index int) bool {
 	return false
 }
 
-func checkCapture(schema Schema, list []*inter.Node, index int) bool {
+func checkCapture(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 	var isCapture bool
-	if isCapture = compareNodesSchema(list, schema.Schema[Capture], index, 1); isCapture == true {
-		schema.Report.ListCapturedStone = append(schema.Report.ListCapturedStone, list[index+1], list[index+2])
+	if isCapture = compareNodesSchema(list, schema.Schema[Capture], index, lenRadius, 1); isCapture == true {
+		schema.Report.ListCapturedStone = append(schema.Report.ListCapturedStone, &list[index+1], &list[index+2])
 	}
-	if isCapture = compareNodesSchema(list, schema.Schema[Capture], index, -1); isCapture == true {
-		schema.Report.ListCapturedStone = append(schema.Report.ListCapturedStone, list[index-1], list[index-2])
+	if isCapture = compareNodesSchema(list, schema.Schema[Capture], index, lenRadius, -1); isCapture == true {
+		schema.Report.ListCapturedStone = append(schema.Report.ListCapturedStone, &list[index-1], &list[index-2])
 	}
 	return isCapture
 }
 
-func checkWin(schema Schema, list []*inter.Node, index int) bool {
+func createSliceWinOrLose(list *axis.Radius, start, end int) []*inter.Node {
+	newList := make([]*inter.Node, 0, 11)
+	for i := start; i < end; i++ {
+		newList = append(newList, &list[i])
+	}
+	return newList
+}
+
+func checkWin(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 	schemaWin := schema.Schema[Win]
 	lenSchema := len(schemaWin)
-	lenList := len(list)
 loop:
-	for i := 0; i+lenSchema <= lenList; i++ {
+	for i := 0; i+lenSchema <= lenRadius; i++ {
 		for index := 0; index < lenSchema; index++ {
 			if list[i+index].Player != schemaWin[index] {
 				continue loop
 			}
 		}
-		schema.Report.WinOrLose = append(schema.Report.WinOrLose, list[i:], list[:lenSchema])
+		// schema.Report.WinOrLose = append(schema.Report.WinOrLose, createSliceWinOrLose(list, i, lenSchema))
+		schema.Report.WinOrLose = append(schema.Report.WinOrLose, []*inter.Node{})
 		return true
 	}
 	return false
 }
 
 // ProccessCheckRules ...
-func (schema Schema) ProccessCheckRules(list []*inter.Node, index int) {
+func (schema Schema) ProccessCheckRules(list *axis.Radius, index, lenRadius int) {
 	var isSuccessChecked bool
 	for _, f := range schema.FuncCheck {
-		if isSuccessChecked = f(schema, list, index); isSuccessChecked == true {
+		if isSuccessChecked = f(schema, list, index, lenRadius); isSuccessChecked == true {
 			return
 		}
 	}
 }
 
-func checkBlock(schema Schema, list []*inter.Node, index int) bool {
-	lenList := len(list)
+func checkBlock(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 	blocked := 0
-	for i := index + 1; i < lenList; i++ {
+	for i := index + 1; i < lenRadius; i++ {
 		if list[i].Player != 0 && list[i].Player != list[index].Player {
 			blocked++
 			continue
@@ -187,7 +194,7 @@ func checkBlock(schema Schema, list []*inter.Node, index int) bool {
 	return false
 }
 
-func ambientScore(schema Schema, list []*inter.Node, index int) bool {
+func ambientScore(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 	ambientScore := 0
 	if index-1 >= 0 {
 		switch list[index-1].Player {
@@ -197,7 +204,7 @@ func ambientScore(schema Schema, list []*inter.Node, index int) bool {
 			ambientScore++
 		}
 	}
-	if index+1 < len(list) {
+	if index+1 < lenRadius {
 		switch list[index+1].Player {
 		case 0:
 			ambientScore++
@@ -209,10 +216,9 @@ func ambientScore(schema Schema, list []*inter.Node, index int) bool {
 	return false
 }
 
-func checkAlignment(schema Schema, list []*inter.Node, index int) bool {
-	lenList := len(list)
+func checkAlignment(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 	alignment := 0
-	for i := index + 1; i < lenList; i++ {
+	for i := index + 1; i < lenRadius; i++ {
 		if list[i].Player == list[index].Player {
 			alignment++
 			continue
@@ -230,25 +236,24 @@ func checkAlignment(schema Schema, list []*inter.Node, index int) bool {
 	return false
 }
 
-func probableCapture(schema Schema, list []*inter.Node, index int) bool {
+func probableCapture(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 	var isSuccessChecked bool
 	schemaProbableCapture := schema.Schema[ProbableCapture]
 	levelCapture := 0
-	len := len(list)
-	if index != 0 && index != len-1 {
+	if index != 0 && index != lenRadius-1 {
 		switch list[index+1].Player {
 		case list[index].Player:
-			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-1, 1); isSuccessChecked == true {
+			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-1, lenRadius, 1); isSuccessChecked == true {
 				levelCapture++
-			} else if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+2, -1); isSuccessChecked == true {
+			} else if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+2, lenRadius, -1); isSuccessChecked == true {
 				levelCapture++
 			}
 		case 0:
-			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-2, 1); isSuccessChecked == true {
+			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-2, lenRadius, 1); isSuccessChecked == true {
 				levelCapture++
 			}
 		default:
-			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+1, -1); isSuccessChecked == true {
+			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+1, lenRadius, -1); isSuccessChecked == true {
 				levelCapture++
 			}
 		}
@@ -258,25 +263,24 @@ func probableCapture(schema Schema, list []*inter.Node, index int) bool {
 }
 
 // CheckIfPartyIsFinish ...
-func (schema Schema) CheckIfPartyIsFinish(list []*inter.Node, index int) {
+func (schema Schema) CheckIfPartyIsFinish(list *axis.Radius, index, lenRadius int) {
 	var isSuccessChecked bool
 	schemaProbableCapture := schema.Schema[ProbableCapture]
-	len := len(list)
-	if index != 0 && index != len-1 {
+	if index != 0 && index != lenRadius-1 {
 		switch list[index+1].Player {
 		case list[index].Player:
-			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-1, 1); isSuccessChecked == true {
-				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, list[index+2])
-			} else if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+2, -1); isSuccessChecked == true {
-				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, list[index-1])
+			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-1, lenRadius, 1); isSuccessChecked == true {
+				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, &list[index+2])
+			} else if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+2, lenRadius, -1); isSuccessChecked == true {
+				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, &list[index-1])
 			}
 		case 0:
-			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-2, 1); isSuccessChecked == true {
-				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, list[index+1])
+			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index-2, lenRadius, 1); isSuccessChecked == true {
+				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, &list[index+1])
 			}
 		default:
-			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+1, -1); isSuccessChecked == true {
-				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, list[index-2])
+			if isSuccessChecked = compareNodesSchema(list, schemaProbableCapture, index+1, lenRadius, -1); isSuccessChecked == true {
+				schema.Report.NextMovesOrLose = append(schema.Report.NextMovesOrLose, &list[index-2])
 			}
 		}
 	}

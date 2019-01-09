@@ -15,7 +15,7 @@ import (
 // Game contains all the meta data of a part
 type Game struct {
 	rwmux   sync.RWMutex
-	board   board.Board
+	board   *board.Board
 	players player.Players
 	IA      *solver.IA
 }
@@ -23,7 +23,7 @@ type Game struct {
 // New create new instance of Game
 func New(config pb.ConfigRules) *Game {
 	game := &Game{
-		board:   board.New(),
+		board:   &board.Board{},
 		players: make(player.Players),
 	}
 	game.players[1] = &player.Player{
@@ -96,7 +96,16 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 	return res, nil
 }
 
-func (game *Game) PlayIA(in *inter.Node) *inter.Node {
+func (game *Game) PlayIA(in *inter.Node, isHelp bool) *inter.Node {
+	if isHelp == true {
+		depth := game.IA.Depth
+		game.IA.PlayerIndex = player.GetOpposentPlayer(game.IA.PlayerIndex)
+		game.IA.Depth = 3
+		defer func() {
+			game.IA.PlayerIndex = player.GetOpposentPlayer(game.IA.PlayerIndex)
+			game.IA.Depth = depth
+		}()
+	}
 	fmt.Println("LEN => ", len(game.IA.SearchZone))
 	return game.IA.Play(game.board, game.players)
 }

@@ -37,6 +37,11 @@ public class stone : MonoBehaviour
     async void playedMode1vs1() {
         if (await goban.GM.GetCheckRules(node, goban.GM.GetPlayerTurn())) {
             SetStone();
+            if (goban.GM.GetPlayerTurn() == 1) {
+                goban.GM.manager.SwitchHouseToGround();
+            } else {
+                goban.GM.manager.SwitchGroundToHouse();
+            }
             goban.board.Add(transform.GetComponent<stone>());
         } else {
             Debug.Log("IMPOSSIBLE");
@@ -48,7 +53,9 @@ public class stone : MonoBehaviour
                 SetStone();
                 goban.board.Add(transform.GetComponent<stone>());
                 if (!goban.GM.GetGameIsFinish()) {
-                    goban.GM.GetPlayed(node);
+                    goban.GM.manager.SwitchGroundToHouse();
+                    await goban.GM.GetPlayed(node);
+                    goban.GM.manager.SwitchHouseToGround();
                 }
             } else {
                 Debug.Log("IMPOSSIBLE");
@@ -67,18 +74,18 @@ public class stone : MonoBehaviour
         meshRend.enabled = true;
     }
     void OnMouseDown() {
-        if (!isCreate && !goban.GM.GetGameIsFinish()) {
+        if (!isCreate && !pauseMenu.GameIsPaused) {
             modePlayed();
         }
     }
     void OnMouseEnter() {
-        if (!isCreate && !goban.GM.GetGameIsFinish()) {
+        if (!isCreate && !pauseMenu.GameIsPaused) {
             renderStone();
         }
     }
 
     void OnMouseExit() {
-        if (!isCreate && !goban.GM.GetGameIsFinish()) {
+        if (!isCreate && !pauseMenu.GameIsPaused) {
             meshRend.enabled = false;
         }
     }
@@ -88,9 +95,9 @@ public class stone : MonoBehaviour
         node.Player = 0;
         isCreate = false;
         Vector3 up = transform.position;
-        up.y += 0.1f;
+        up.y += 0.2f;
         transform.position = up;
-        gravity.attachedRigidbody.useGravity = false;
+        gravity.attachedRigidbody.useGravity = true;
     }
     public void SetStone() {
         rend.material = goban.GM.GetCurrentMaterial();

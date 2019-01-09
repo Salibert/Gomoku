@@ -25,11 +25,13 @@ public class gameMaster : MonoBehaviour
     public Text winner;
     public Text time;
     public GameObject spotligth;
-    public Transform StoneOrbit;
     private bool gameIsFinish;
 
-    void Awake() {
-        channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
+    public managerLights manager;
+
+    void Awake() {        
+        string url = mainMenu.urlTcp == "" ? "127.0.0.1:50051" : mainMenu.urlTcp;
+        channel = new Channel(url, ChannelCredentials.Insecure);
         Client = new Game.GameClient(channel);
         GameID = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
         CurrentPlayer = Player1.GetComponent<player>();
@@ -37,7 +39,11 @@ public class gameMaster : MonoBehaviour
         player1 = CurrentPlayer;
         player2 = Player2.GetComponent<player>();
         PlayerIndexIA = mainMenu.config.PlayerIndexIA;
-        StoneOrbit.GetComponent<StoneOrbit>().SwitchAnimation(1);
+        if (PlayerIndexIA == 1) {
+            manager.SwitchHouseToGround();
+        } else {
+            goban.GM.manager.SwitchGroundToHouse();
+        }
     }
 
     IEnumerator playerFirstIA()
@@ -56,6 +62,7 @@ public class gameMaster : MonoBehaviour
 
     }
 	IEnumerator PartyFinish(int player, Vector3 lastMove) {
+        pauseMenu.GameIsPaused = true;
         StartCoroutine(movingSpot(lastMove));
         yield return new WaitForSeconds(5);
         winner.text = "Player " + player.ToString();
@@ -102,17 +109,40 @@ public class gameMaster : MonoBehaviour
         }
     }
 
-    async public void GetPlayed(GomokuBuffer.Node node) {
+    async public Task<bool> GetPlayed(GomokuBuffer.Node node) {
         DateTime start = DateTime.Now;
         try {
             GomokuBuffer.StonePlayed reply = await Client.PlayedAsync(
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
             TimeSpan end = DateTime.Now.Subtract(start);
-            time.text = end.ToString();
+            if (end.Seconds != 0f) {
+                time.text = end.Milliseconds.ToString() + " s";
+            }
+            if (end.Milliseconds != 0f) {
+                time.text = end.Milliseconds.ToString() + " ms";
+            }
             await GetCheckRules(reply.CurrentPlayerMove, reply.CurrentPlayerMove.Player);
             Transform stone = goban.GetStone(reply.CurrentPlayerMove);
             stone.transform.GetComponent<stone>().SetStone();
             goban.board.Add(stone.transform.GetComponent<stone>());
+            return true;
+        } catch (Exception e) {
+            Debug.Log("RPC failed" + e);
+            throw;
+        }
+    }
+    async public Task<bool> GetPlayedHelp(GomokuBuffer.Node node) {
+        try {
+            GomokuBuffer.StonePlayed reply = await Client.PlayedHelpAsync(
+                new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
+            await GetCheckRules(reply.CurrentPlayerMove, reply.CurrentPlayerMove.Player);
+            Transform stone = goban.GetStone(reply.CurrentPlayerMove);
+            stone.transform.GetComponent<stone>().SetStone();
+            goban.board.Add(stone.transform.GetComponent<stone>());
+            manager.SwitchGroundToHouse();
+            GetPlayed(new GomokuBuffer.Node(){ Player=CurrentPlayer.index });
+            manager.SwitchHouseToGround();
+            return true;
         } catch (Exception e) {
             Debug.Log("RPC failed" + e);
             throw;

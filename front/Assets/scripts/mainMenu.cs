@@ -10,10 +10,11 @@ public class mainMenu : MonoBehaviour {
 
 	static public int modeGame;
 	static public GomokuBuffer.ConfigRules config;
+	public InputField inputFieldUrl;
+	static public string urlTcp;
 	public Toggle m_captureToggle;
 	public Toggle m_freeThreeToggle;
 	public Toggle m_firstPlayerToggle;
-	public Toggle m_helperPlayerToggle;
 	public GameObject Difficulty;
 	private TextMeshProUGUI textDifficulty;
 	private Dictionary<string, int> difficulty;
@@ -26,24 +27,29 @@ public class mainMenu : MonoBehaviour {
 				IsActiveRuleFreeThree = true,
 				IsActiveRuleWin = true,
 			};
+			urlTcp = "";
 		}
-		nameDifficulty = new String[]{ "easy","medium","hard","very hard","master"};
+		nameDifficulty = new String[]{ "easy","medium","hard"};
 		difficulty = new Dictionary<string, int>();
 		int lvl = 1;
 		for (int key=0; key < nameDifficulty.Length; key++) {
-			lvl += 2;
 			difficulty.Add(nameDifficulty[key], lvl);
+			lvl += 2;
 		};
 		m_captureToggle.isOn = config.IsActiveRuleCapture;
 		m_captureToggle.onValueChanged.AddListener(delegate { CaptureValueChanged(m_captureToggle); });
 		m_freeThreeToggle.isOn = config.IsActiveRuleFreeThree;
 		m_freeThreeToggle.onValueChanged.AddListener(delegate { FreeThreeValueChanged(m_freeThreeToggle); });
 		m_firstPlayerToggle.isOn = config.PlayerIndexIA > 2 ? true : false;
-		m_helperPlayerToggle.isOn = config.IsActiveHelperPlayer;
-		m_helperPlayerToggle.onValueChanged.AddListener(delegate { HelperPlayerValueChanged(m_helperPlayerToggle); });
 		textDifficulty = Difficulty.GetComponent<TextMeshProUGUI>();
 	}
 
+	public void ValidateUrlTcp() {
+		urlTcp = inputFieldUrl.text;
+	}
+	public void ResetUrlTcp() {
+		urlTcp = "";
+	}
 	public void PlayGame1VS1() {
 		modeGame = 2;
 		config.PlayerIndexIA = 0;
@@ -75,10 +81,6 @@ public class mainMenu : MonoBehaviour {
 	void FreeThreeValueChanged(Toggle change)
     {
 		config.IsActiveRuleFreeThree = change.isOn;
-    }
-	void HelperPlayerValueChanged(Toggle change)
-    {
-		config.IsActiveHelperPlayer = change.isOn;
     }
 	public void QuitGame() {
 		Application.Quit();
