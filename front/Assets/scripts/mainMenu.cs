@@ -29,7 +29,7 @@ public class mainMenu : MonoBehaviour {
 			};
 			urlTcp = "";
 		}
-		nameDifficulty = new String[]{ "easy","medium","hard"};
+		nameDifficulty = new String[]{ "easy","medium","hard","very hard", "master"};
 		difficulty = new Dictionary<string, int>();
 		int lvl = 1;
 		for (int key=0; key < nameDifficulty.Length; key++) {

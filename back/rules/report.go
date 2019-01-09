@@ -22,11 +22,12 @@ type ReportCheckRules struct {
 // Clone create a uniform object, Dont clone slicer but init
 func (report *ReportCheckRules) Clone() *ReportCheckRules {
 	clone := &ReportCheckRules{}
-	clone.ListCapturedStone = report.ListCapturedStone[:0]
+	clone.ListCapturedStone = make([]*inter.Node, 0, 16)
 	clone.ItIsAValidMove = report.ItIsAValidMove
 	clone.PartyFinish = report.PartyFinish
-	clone.WinOrLose = report.WinOrLose[:0]
-	clone.NextMovesOrLose = report.NextMovesOrLose[:0]
+	clone.WinOrLose = make([][]*inter.Node, 0, 8)
+
+	clone.NextMovesOrLose = make([]*inter.Node, 0, 16)
 	clone.NbFreeThree = report.NbFreeThree
 	clone.SizeAlignment = report.SizeAlignment
 	clone.NbBlockStone = report.NbBlockStone
