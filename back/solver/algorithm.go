@@ -70,7 +70,7 @@ func (ia *IA) Boost(board board.Board, list, searchList Tlist, indexListMoves, i
 			board[move.X][move.Y] = ia.PlayerIndex
 			move.Player = ia.PlayerIndex
 			list[indexListMoves] = move
-			score, _ := ia.Min(board, list, searchList, move, 3-1, alpha, beta, indexListMoves+1, indexSearchList)
+			score, _ := ia.Min(board, list, searchList, move, ia.Depth-1, alpha, beta, indexListMoves+1, indexSearchList)
 			board[move.X][move.Y] = 0
 			if score > current {
 				current = score
