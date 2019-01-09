@@ -25,8 +25,9 @@ public class gameMaster : MonoBehaviour
     public Text winner;
     public Text time;
     public GameObject spotligth;
-    public Transform StoneOrbit;
     private bool gameIsFinish;
+
+    public managerLights manager;
 
     void Awake() {
         // "127.0.0.1:50051"
@@ -38,7 +39,6 @@ public class gameMaster : MonoBehaviour
         player1 = CurrentPlayer;
         player2 = Player2.GetComponent<player>();
         PlayerIndexIA = mainMenu.config.PlayerIndexIA;
-        StoneOrbit.GetComponent<StoneOrbit>().SwitchAnimation(1);
     }
 
     IEnumerator playerFirstIA()
@@ -66,8 +66,12 @@ public class gameMaster : MonoBehaviour
 	}
     public void NextPlayer() {
         if (CurrentPlayer.GetIndex() == player1.GetIndex()) {
+            manager.DownListHouseLights();
+            manager.StartListGroundLights();
             CurrentPlayer = player2;
         } else {
+            manager.DownListGroundLights();
+            manager.StartListHouseLights();
             CurrentPlayer = player1;
         }
     }
