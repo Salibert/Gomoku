@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
-	"sync"
 	"time"
 
 	"github.com/Salibert/Gomoku/back/board"
@@ -18,10 +17,6 @@ const (
 )
 
 type Tlist [361]inter.Node
-type IASelfService struct {
-	billy IA
-	rwmux sync.RWMutex
-}
 
 var ici int
 
@@ -32,18 +27,61 @@ func createListMoves(NewListMoves *Tlist, listMoves []inter.Node) {
 }
 
 func createSearchList(NewListMoves *Tlist, listMoves []inter.Node) {
-	for key, el := range listMoves {
-		NewListMoves[key] = el
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	if r.Intn(10)%2 == 0 {
+		lenListMoves := len(listMoves)
+		lenListMoves--
+		for _, el := range listMoves {
+			NewListMoves[lenListMoves] = el
+			lenListMoves--
+		}
+	} else {
+		for key, el := range listMoves {
+			NewListMoves[key] = el
+		}
 	}
 }
 
+func createSearchListByNewListMoves(NewListMoves *Tlist, list [][]*inter.Node) {
+	var index int
+	for _, el := range list {
+		for _, element := range el {
+			NewListMoves[index] = *element
+			index++
+		}
+	}
+}
+
+func pushFront(list *Tlist, node inter.Node, lenList int) {
+	var tmp, move inter.Node
+	var offset int
+	move = list[0]
+	list[0] = node
+	list[0].Player = 0
+	for i := 1; i < lenList; i++ {
+		tmp = list[i]
+		if node.X == tmp.X && node.Y == tmp.Y {
+			offset = 1
+			continue
+		}
+		list[i-offset] = move
+		move = tmp
+	}
+	list[lenList] = inter.Node{}
+}
+
 func (ia *IA) Play(board *board.Board, players player.Players) *inter.Node {
+	ici = 0
 	ia.playersScore[0] = players[1].Score
 	ia.playersScore[1] = players[2].Score
 	var best inter.Node
 	var listMoves, searchList Tlist
 	createListMoves(&listMoves, ia.ListMoves)
-	createSearchList(&searchList, ia.SearchZone)
+	if len(players[ia.PlayerIndex].NextMovesOrLose) != 0 {
+		createSearchListByNewListMoves(&searchList, players[ia.PlayerIndex].NextMovesOrLose)
+	} else {
+		createSearchList(&searchList, ia.SearchZone)
+	}
 	if len(ia.SearchZone) != 0 {
 		start := time.Now()
 		_, best = ia.Boost(*board, listMoves, searchList, len(ia.ListMoves), len(ia.SearchZone))
@@ -60,10 +98,11 @@ func (ia *IA) Play(board *board.Board, players player.Players) *inter.Node {
 }
 
 func (ia *IA) Boost(board board.Board, list, searchList Tlist, indexListMoves, indexSearchList int) (current int, best inter.Node) {
+	ici += indexSearchList
 	current = math.MinInt64
 	alpha, beta := -100000, 1000000
 	move := inter.Node{Player: player.GetOpposentPlayer(ia.PlayerIndex)}
-	if ia.Depth > 3 && indexSearchList > 50 {
+	if ia.Depth > 5 && indexSearchList > 34 {
 		for i := 0; i < indexSearchList; i++ {
 			move = searchList[i]
 			if board[move.X][move.Y] == 0 {
@@ -129,27 +168,12 @@ func (ia *IA) Boost(board board.Board, list, searchList Tlist, indexListMoves, i
 			}
 		}
 	} else {
-		for i := 0; i < indexSearchList; i++ {
-			move = searchList[i]
-			if board[move.X][move.Y] == 0 {
-
-				board[move.X][move.Y] = ia.PlayerIndex
-				move.Player = ia.PlayerIndex
-				list[indexListMoves] = move
-				score, _ := ia.Min(board, list, searchList, move, ia.Depth-1, alpha, beta, indexListMoves+1, indexSearchList)
-				board[move.X][move.Y] = 0
-				if score > current {
-					current = score
-					best = move
-				}
-				if score > alpha {
-					alpha = score
-					best = move
-				}
-				if alpha >= beta {
-					break
-				}
-			}
+		if ia.Depth > 3 {
+			current, best = ia.Max(board, list, searchList, move, 3, alpha, beta, indexListMoves, indexSearchList)
+			pushFront(&searchList, best, indexSearchList+1)
+			current, best = ia.Max(board, list, searchList, move, ia.Depth, alpha, beta, indexListMoves, indexSearchList)
+		} else {
+			current, best = ia.Max(board, list, searchList, move, ia.Depth, alpha, beta, indexListMoves, indexSearchList)
 		}
 	}
 	return
@@ -309,6 +333,7 @@ func (ia *IA) Max(board board.Board, list, searchList Tlist, move inter.Node, de
 	} else if depth <= 0 {
 		return ia.HeuristicScore(board, list, indexListMoves, move), move
 	}
+	ici += indexSearchList
 	current = math.MinInt64
 	for i := 0; i < indexSearchList; i++ {
 		move = searchList[i]
@@ -341,6 +366,7 @@ func (ia *IA) Min(board board.Board, list, searchList Tlist, move inter.Node, de
 	} else if depth <= 0 {
 		return ia.HeuristicScore(board, list, indexListMoves, move), move
 	}
+	ici += indexSearchList
 	current = math.MaxInt64
 	playerIndex := player.GetOpposentPlayer(ia.PlayerIndex)
 	for i := 0; i < indexSearchList; i++ {

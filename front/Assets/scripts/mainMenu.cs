@@ -29,10 +29,11 @@ public class mainMenu : MonoBehaviour {
 			};
 			urlTcp = "";
 		}
-		nameDifficulty = new String[]{ "easy","medium","hard","very hard", "master"};
+		nameDifficulty = new String[]{ "easy","medium","hard","very hard", "master" };
 		difficulty = new Dictionary<string, int>();
 		int lvl = 1;
 		for (int key=0; key < nameDifficulty.Length; key++) {
+			nameDifficulty[key] = nameDifficulty[key] + " " + lvl;
 			difficulty.Add(nameDifficulty[key], lvl);
 			lvl += 2;
 		};

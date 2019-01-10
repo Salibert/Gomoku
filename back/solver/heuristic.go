@@ -21,13 +21,13 @@ func (ia *IA) HeuristicScore(board board.Board, list Tlist, index int, move inte
 		node := list[i]
 		board.CheckRules(node, report)
 		if capture := len(report.Report.ListCapturedStone); capture != 0 {
-			tmp += capture * 50
+			tmp += capture * 60
 		}
-		tmp += report.Report.NbFreeThree * 5
-		tmp += report.Report.SizeAlignment * 7
-		tmp += report.Report.NbBlockStone * 7
+		tmp += report.Report.NbFreeThree * 6
+		tmp += report.Report.SizeAlignment * 6
+		tmp += report.Report.NbBlockStone * 8
 		tmp += report.Report.AmbientScore
-		tmp -= report.Report.LevelCapture * 110
+		tmp -= report.Report.LevelCapture * 100
 		if report.Report.ItIsAValidMove == false {
 			return 0
 		}

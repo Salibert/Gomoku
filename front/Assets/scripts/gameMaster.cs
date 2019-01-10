@@ -65,7 +65,7 @@ public class gameMaster : MonoBehaviour
         pauseMenu.GameIsPaused = true;
         StartCoroutine(movingSpot(lastMove));
         yield return new WaitForSeconds(5);
-        winner.text = "Player " + player.ToString();
+        winner.text = "Player " + player.ToString() + " Win";
 		finishGameUI.SetActive(true);
         GetCDGame(true);
 	}

@@ -79,6 +79,9 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 			}
 		} else {
 			res.PartyFinish = currentPlayer.Rules.Report.PartyFinish
+			if res.PartyFinish == true {
+				res.IsWin = int32(currentPlayer.Index)
+			}
 		}
 		if len(currentPlayer.NextMovesOrLose) != 0 {
 			if res.PartyFinish = currentPlayer.CheckIfThisMoveBlockLose(initialStone); res.PartyFinish == true {

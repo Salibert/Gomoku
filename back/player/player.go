@@ -48,7 +48,7 @@ func (player Player) CheckIfThisMoveBlockLose(lastMove *inter.Node) (checkLose b
 	for _, arrayBlockedStone := range player.NextMovesOrLose {
 		checkLose = true
 		for _, blockedStone := range arrayBlockedStone {
-			if lastMove == blockedStone {
+			if lastMove.X == blockedStone.X && lastMove.Y == blockedStone.Y {
 				checkLose = false
 			}
 		}

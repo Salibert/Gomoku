@@ -11,5 +11,4 @@ else
             echo "Lib successfully imported"
         fi
     fi
-    
 fi
