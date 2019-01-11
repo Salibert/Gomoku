@@ -141,7 +141,7 @@ func checkCapture(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 
 func createSliceWinOrLose(list *axis.Radius, start, end int) []*inter.Node {
 	newList := make([]*inter.Node, 0, 11)
-	for i := start; i < end; i++ {
+	for i := start; i < start+end; i++ {
 		newList = append(newList, &list[i])
 	}
 	return newList
@@ -157,8 +157,7 @@ loop:
 				continue loop
 			}
 		}
-		// schema.Report.WinOrLose = append(schema.Report.WinOrLose, createSliceWinOrLose(list, i, lenSchema))
-		schema.Report.WinOrLose = append(schema.Report.WinOrLose, []*inter.Node{})
+		schema.Report.WinOrLose = append(schema.Report.WinOrLose, createSliceWinOrLose(list, i, lenSchema))
 		return true
 	}
 	return false
@@ -175,22 +174,40 @@ func (schema Schema) ProccessCheckRules(list *axis.Radius, index, lenRadius int)
 }
 
 func checkBlock(schema Schema, list *axis.Radius, index, lenRadius int) bool {
-	blocked := 0
+	var blockedDown, blockedUp int
+	var blankDown, blankUp bool
 	for i := index + 1; i < lenRadius; i++ {
 		if list[i].Player != 0 && list[i].Player != list[index].Player {
-			blocked++
+			blockedUp++
 			continue
+		} else if list[i].Player == 0 && blockedUp > 2 {
+			blankUp = true
 		}
 		break
 	}
 	for i := index - 1; i > 0; i-- {
 		if list[i].Player != 0 && list[i].Player != list[index].Player {
-			blocked++
+			blockedDown++
 			continue
+		} else if list[i].Player == 0 && blockedDown > 2 {
+			blankDown = true
 		}
 		break
 	}
-	schema.Report.NbBlockStone += (blocked * blocked)
+	if blankUp == true {
+		blockedUp += 2
+	}
+	if blankDown == true {
+		blockedDown += 2
+	}
+	if blockedDown == 3 && blankDown == true {
+		blockedDown *= 2
+	}
+	if blockedUp == 3 && blankUp == true {
+		blockedUp *= 2
+	}
+	blockedUp += blockedDown
+	schema.Report.NbBlockStone += (blockedUp * blockedUp)
 	return false
 }
 
@@ -217,20 +234,35 @@ func ambientScore(schema Schema, list *axis.Radius, index, lenRadius int) bool {
 }
 
 func checkAlignment(schema Schema, list *axis.Radius, index, lenRadius int) bool {
-	alignment := 0
-	for i := index + 1; i < lenRadius; i++ {
+	var blancAlignmentUp, blancAlignmentDown bool
+	var i, alignment int
+	for i = index + 1; i < lenRadius; i++ {
 		if list[i].Player == list[index].Player {
 			alignment++
+
 			continue
+		} else if list[i].Player == 0 {
+			blancAlignmentUp = true
 		}
 		break
 	}
-	for i := index - 1; i > 0; i-- {
+	for i = index - 1; i > 0; i-- {
 		if list[i].Player == list[index].Player {
 			alignment++
 			continue
+		} else if list[i].Player == 0 {
+			blancAlignmentDown = true
 		}
 		break
+	}
+	if alignment == 3 {
+		if blancAlignmentUp == true || blancAlignmentDown == true {
+			alignment *= 2
+		} else {
+			alignment -= int(alignment / 2)
+		}
+	} else if alignment == 4 {
+		alignment *= 4
 	}
 	schema.Report.SizeAlignment += (alignment * alignment)
 	return false

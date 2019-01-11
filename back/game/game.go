@@ -46,7 +46,11 @@ func New(config pb.ConfigRules) *Game {
 func (game *Game) UpdateGame(player *player.Player, initialStone *inter.Node) {
 	game.board.UpdateBoardAfterCapture(&player.Rules)
 	if game.IA != nil {
-		game.board.UpdateSearchSpace(&game.IA.SearchZone, *initialStone, 2)
+		if game.IA.Depth > 3 {
+			game.board.UpdateSearchSpace(&game.IA.SearchZone, *initialStone, 1)
+		} else {
+			game.board.UpdateSearchSpace(&game.IA.SearchZone, *initialStone, 2)
+		}
 		game.IA.UpdateListMove(player.Rules.Report.ListCapturedStone, *initialStone)
 	}
 	player.Rules.Report.Reset()
@@ -79,6 +83,9 @@ func (game *Game) ProccessRules(initialStone *inter.Node) (*pb.CheckRulesRespons
 			}
 		} else {
 			res.PartyFinish = currentPlayer.Rules.Report.PartyFinish
+			if res.PartyFinish == true {
+				res.IsWin = int32(currentPlayer.Index)
+			}
 		}
 		if len(currentPlayer.NextMovesOrLose) != 0 {
 			if res.PartyFinish = currentPlayer.CheckIfThisMoveBlockLose(initialStone); res.PartyFinish == true {

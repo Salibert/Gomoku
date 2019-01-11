@@ -35,8 +35,7 @@ func New(config pb.ConfigRules, playerIndex int) *IA {
 	}
 	config.IsActiveRuleAmbientSearch = true
 	configWin := pb.ConfigRules{
-		IsActiveRuleWin:     config.IsActiveRuleWin,
-		IsActiveRuleCapture: config.IsActiveRuleCapture,
+		IsActiveRuleWin: config.IsActiveRuleWin,
 	}
 	regis.Depth = int(config.DepthIA)
 	regis.PlayerIndex = int(config.PlayerIndexIA)

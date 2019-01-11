@@ -10,8 +10,8 @@ public class mainMenu : MonoBehaviour {
 
 	static public int modeGame;
 	static public GomokuBuffer.ConfigRules config;
-	public InputField inputFieldUrl;
 	static public string urlTcp;
+	public InputField inputFieldUrl;
 	public Toggle m_captureToggle;
 	public Toggle m_freeThreeToggle;
 	public Toggle m_firstPlayerToggle;
@@ -29,10 +29,11 @@ public class mainMenu : MonoBehaviour {
 			};
 			urlTcp = "";
 		}
-		nameDifficulty = new String[]{ "easy","medium","hard","very hard", "master"};
+		nameDifficulty = new String[]{ "easy","medium","hard","very hard", "master" };
 		difficulty = new Dictionary<string, int>();
 		int lvl = 1;
 		for (int key=0; key < nameDifficulty.Length; key++) {
+			nameDifficulty[key] = nameDifficulty[key] + " " + lvl;
 			difficulty.Add(nameDifficulty[key], lvl);
 			lvl += 2;
 		};

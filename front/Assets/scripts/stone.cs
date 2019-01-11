@@ -74,18 +74,18 @@ public class stone : MonoBehaviour
         meshRend.enabled = true;
     }
     void OnMouseDown() {
-        if (!isCreate && !pauseMenu.GameIsPaused) {
+        if (!isCreate && !pauseMenu.GameIsPaused && !goban.GM.helper.GetLockerHelpher()) {
             modePlayed();
         }
     }
     void OnMouseEnter() {
-        if (!isCreate && !pauseMenu.GameIsPaused) {
+        if (!isCreate && !pauseMenu.GameIsPaused && !goban.GM.helper.GetLockerHelpher()) {
             renderStone();
         }
     }
 
     void OnMouseExit() {
-        if (!isCreate && !pauseMenu.GameIsPaused) {
+        if (!isCreate && !pauseMenu.GameIsPaused && !goban.GM.helper.GetLockerHelpher()) {
             meshRend.enabled = false;
         }
     }
