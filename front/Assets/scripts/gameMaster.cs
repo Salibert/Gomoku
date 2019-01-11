@@ -15,7 +15,7 @@ public class gameMaster : MonoBehaviour
     public Transform Player2;
     private player player1;
     private player player2;
-
+    public helperButton helper;
     protected Channel channel;
     protected string GameID;
     protected Game.GameClient Client;
@@ -115,12 +115,18 @@ public class gameMaster : MonoBehaviour
             GomokuBuffer.StonePlayed reply = await Client.PlayedAsync(
                 new GomokuBuffer.StonePlayed(){ CurrentPlayerMove=node.Clone(), GameID=GameID  });
             TimeSpan end = DateTime.Now.Subtract(start);
-            if (end.Seconds != 0f) {
-                time.text = end.Milliseconds.ToString() + " s";
+            time.text = "";
+            string unit = " ms";
+            time.text = end.Milliseconds.ToString();
+            if (end.Seconds > 0f) {
+                time.text = end.Seconds.ToString() + "." + time.text;
+                unit = " s";
             }
-            if (end.Milliseconds != 0f) {
-                time.text = end.Milliseconds.ToString() + " ms";
+            if (end.Minutes > 0f) {
+                time.text = end.Minutes.ToString()+ "." + time.text;
+                unit = " min";
             }
+            time.text = time.text + unit;
             await GetCheckRules(reply.CurrentPlayerMove, reply.CurrentPlayerMove.Player);
             Transform stone = goban.GetStone(reply.CurrentPlayerMove);
             stone.transform.GetComponent<stone>().SetStone();

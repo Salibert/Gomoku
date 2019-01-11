@@ -5290,6 +5290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player1: {fileID: 246166367}
   Player2: {fileID: 235508303}
+  helper: {fileID: 1719937118}
   finishGameUI: {fileID: 1676462550}
   winner: {fileID: 233081430}
   time: {fileID: 1292677717}

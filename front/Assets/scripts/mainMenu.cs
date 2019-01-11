@@ -10,8 +10,8 @@ public class mainMenu : MonoBehaviour {
 
 	static public int modeGame;
 	static public GomokuBuffer.ConfigRules config;
-	public InputField inputFieldUrl;
 	static public string urlTcp;
+	public InputField inputFieldUrl;
 	public Toggle m_captureToggle;
 	public Toggle m_freeThreeToggle;
 	public Toggle m_firstPlayerToggle;

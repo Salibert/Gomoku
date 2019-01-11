@@ -34,12 +34,12 @@ public class goban : MonoBehaviour
             int other = player == 1 ? 2 : 1;
             Transform zonesCapture = transform.Find("zonesCapture");
             zoneCapture = new Dictionary<int, Transform>();
-            line = Instantiate(zoneCapturePrefab,new Vector3(){ x=transform.position.x, y=transform.position.y, z= transform.position.z - 11}, new Quaternion(), zonesCapture);
-            line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(player));
-            zoneCapture.Add(player, line);
             line = Instantiate(zoneCapturePrefab,new Vector3(){ x=transform.position.x, y=transform.position.y, z= transform.position.z + 11}, new Quaternion(), zonesCapture);
+            line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(player));
+            zoneCapture.Add(other, line);
+            line = Instantiate(zoneCapturePrefab,new Vector3(){ x=transform.position.x, y=transform.position.y, z= transform.position.z - 11}, new Quaternion(), zonesCapture);
             line.GetComponent<zoneCapture>().SetZoneCapture(GM.GetPlayer(other));
-            zoneCapture.Add(other, line);   
+            zoneCapture.Add(player, line);   
         }
         GM.GetCDGame(false);
     }

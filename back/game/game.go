@@ -46,7 +46,11 @@ func New(config pb.ConfigRules) *Game {
 func (game *Game) UpdateGame(player *player.Player, initialStone *inter.Node) {
 	game.board.UpdateBoardAfterCapture(&player.Rules)
 	if game.IA != nil {
-		game.board.UpdateSearchSpace(&game.IA.SearchZone, *initialStone, 2)
+		if game.IA.Depth > 3 {
+			game.board.UpdateSearchSpace(&game.IA.SearchZone, *initialStone, 1)
+		} else {
+			game.board.UpdateSearchSpace(&game.IA.SearchZone, *initialStone, 2)
+		}
 		game.IA.UpdateListMove(player.Rules.Report.ListCapturedStone, *initialStone)
 	}
 	player.Rules.Report.Reset()

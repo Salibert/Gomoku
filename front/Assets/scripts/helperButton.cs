@@ -13,7 +13,10 @@ public class helperButton : MonoBehaviour {
             GomokuBuffer.Node node = new GomokuBuffer.Node(){Player=goban.GM.GetPlayerTurn()};
             await goban.GM.GetPlayedHelp(node);
             lockHelper = false;
-            Debug.Log(name + " Game Object Clicked!");
         }
+    }
+
+    public bool GetLockerHelpher() {
+        return lockHelper;
     }
 }
