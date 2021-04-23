@@ -32,13 +32,13 @@ func (player Player) Clone() *Player {
 	}
 }
 
-// GetOpposentPlayer return index to opposent player
-func GetOpposentPlayer(player int) (opposent int) {
+// GetOpposentPlayer return index to opponent player
+func GetOpposentPlayer(player int) (opponent int) {
 	switch player {
 	case 1:
-		opposent = 2
+		opponent = 2
 	default:
-		opposent = 1
+		opponent = 1
 	}
 	return
 }
